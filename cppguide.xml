@@ -40,13 +40,9 @@ Krishna Kumar<br/>
   </p>
   <p>
     The goal of this guide is to manage this complexity by describing
-    in detail the dos and don'ts of writing C++
-    code. These rules exist to
-    keep
-    
-    the
-    code base manageable while still allowing coders to use C++ language
-    features productively.
+    in detail the dos and don'ts of writing C++ code. These rules exist to
+    keep the code base manageable while still allowing coders to use 
+    C++ language features productively.
   </p>
   <p>
     <em>Style</em>, also known as readability, is what we call the
@@ -56,11 +52,7 @@ Krishna Kumar<br/>
   </p>
   <p>
     One way in which we keep the code base manageable is by enforcing
-    <em>consistency</em>.
-    
-    It is very important that any
-    
-    programmer
+    <em>consistency</em>. It is very important that any programmer
     be able to look at another's code and quickly understand it.
     Maintaining a uniform style and following conventions means that we can
     more easily use "pattern-matching" to infer what various symbols are
@@ -86,10 +78,383 @@ Krishna Kumar<br/>
 </CATEGORY>
 </OVERVIEW>
 
+
+<CATEGORY title="Naming">
+  <p>
+    The most important consistency rules are those that govern
+    naming. The style of a name immediately informs us what sort of
+    thing the named entity is: a type, a variable, a function, a
+    constant, a macro, etc., without requiring us to search for the
+    declaration of that entity. The pattern-matching engine in our
+    brains relies a great deal on these naming rules.
+    
+  </p>
+  <p>
+    Naming rules are pretty arbitrary, but
+    
+    we feel that consistency is more important than individual preferences
+    in this area, so regardless of whether you find them sensible or not,
+    the rules are the rules.
+  </p>
+
+  <STYLEPOINT title="General Naming Rules">
+    <SUMMARY>
+      Function names, variable names, and filenames should be
+      descriptive; eschew abbreviation.
+    </SUMMARY>
+    <BODY>
+      <p>
+        Give as descriptive a name as possible, within reason. Do
+        not worry about saving horizontal space as it is far more
+        important to make your code immediately understandable by a
+        new reader. Do not use abbreviations that are ambiguous or
+        unfamiliar to readers outside your project, and do not
+        abbreviate by deleting letters within a word.
+      </p>
+      <CODE_SNIPPET>
+        int price_count_reader;    // No abbreviation.
+        int num_errors;            // "num" is a widespread convention.
+        int num_dns_connections;   // Most people know what "DNS" stands for.
+      </CODE_SNIPPET>
+      <BAD_CODE_SNIPPET>
+        int n;                     // Meaningless.
+        int nerr;                  // Ambiguous abbreviation.
+        int n_comp_conns;          // Ambiguous abbreviation.
+        int wgc_connections;       // Only your group knows what this stands for.
+        int pc_reader;             // Lots of things can be abbreviated "pc".
+        int cstmr_id;              // Deletes internal letters.
+      </BAD_CODE_SNIPPET>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="File Names">
+    <SUMMARY>
+      Filenames should be all lowercase and can include underscores
+      (<code>_</code>) or dashes (<code>-</code>).  Follow the
+      convention that your
+      
+      project
+      uses. If there is no consistent local pattern to follow, prefer "_".
+    </SUMMARY>
+    <BODY>
+      <p>
+        Examples of acceptable file names:
+      </p>
+      <p>
+        <code>
+          my_useful_class.cc<br/>
+          my-useful-class.cc<br/>
+          myusefulclass.cc<br/>
+          myusefulclass_test.cc  // _unittest and _regtest are deprecated.<br/>
+        </code>
+      </p>
+      <p>
+        C++ files should end in <code>.cc</code> and header files
+        should end in <code>.hh</code>.
+      </p>
+      <p>
+        Do not use filenames that already exist
+        in <code>/usr/include</code>, such as <code>db.hh</code>.
+      </p>
+      <p>
+        In general, make your filenames very specific.  For example,
+        use <code>http_server_logs.hh</code> rather
+        than <code>logs.hh</code>.  A very common case is to have a
+        pair of files called, e.g., <code>foo_bar.hh</code>
+        and <code>foo_bar.cc</code>, defining a class
+        called <code>FooBar</code>.
+      </p>
+      <p>
+        Inline functions must be in a <code>.hh</code> file. If your
+        inline functions are very short, they should go directly into your
+        <code>.hh</code> file. However, if your inline functions
+        include a lot of code, they may go into a third file that
+        ends in <code>-inl.hh</code>.  In a class with a lot of inline
+        code, your class could have three files:
+      </p>
+      <CODE_SNIPPET>
+        url_table.hh      // The class declaration.
+        url_table.cc     // The class definition.
+        url_table-inl.hh  // Inline functions that include lots of code.
+      </CODE_SNIPPET>
+      <p>
+        See also the section <a href="#The_-inl.hh_Files">-inl.hh Files</a>
+      </p>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Type Names">
+    <SUMMARY>
+      Type names start with a capital letter and have a capital
+      letter for each new word, with no underscores:
+      <code>MyExcitingClass</code>, <code>MyExcitingEnum</code>.
+    </SUMMARY>
+    <BODY>
+      <p>
+        The names of all types — classes, structs, typedefs, and enums
+        — have the same naming convention.  Type names should start
+        with a capital letter and have a capital letter for each new
+        word.  No underscores.  For example:
+      </p>
+      <CODE_SNIPPET>
+        // classes and structs
+        class UrlTable { ...
+        class UrlTableTester { ...
+        struct UrlTableProperties { ...
+
+        // typedefs
+        typedef hash_map&lt;UrlTableProperties *, string&gt; PropertiesMap;
+
+        // enums
+        enum UrlTableErrors { ...
+      </CODE_SNIPPET>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Variable Names">
+    <SUMMARY>
+      Variable names are all lowercase, with underscores between
+      words.  Class member variables have trailing underscores.  For
+      instance: <code>my_exciting_local_variable</code>,
+      <code>my_exciting_member_variable_</code>.
+    </SUMMARY>
+    <BODY>
+      <SUBSECTION title="Common Variable names">
+        <p>
+          For example:
+        </p>
+        <CODE_SNIPPET>
+          string table_name;  // OK - uses underscore.
+          string tablename;   // OK - all lowercase.
+        </CODE_SNIPPET>
+        <BAD_CODE_SNIPPET>
+          string tableName;   // Bad - mixed case.
+        </BAD_CODE_SNIPPET>
+      </SUBSECTION>
+
+      <SUBSECTION title="Class Data Members">
+        <p>
+          Data members (also called instance variables or member
+          variables) are lowercase with optional underscores like
+          regular variable names, but always end with a trailing
+          underscore.
+        </p>
+        <CODE_SNIPPET>
+          string table_name_;  // OK - underscore at end.
+          string tablename_;   // OK.
+        </CODE_SNIPPET>
+      </SUBSECTION>
+
+      <SUBSECTION title="Struct Variables">
+        <p>
+          Data members in structs should be named like regular
+          variables without the trailing underscores that data members
+          in classes have.
+        </p>
+        <CODE_SNIPPET>
+          struct UrlTableProperties {
+            string name;
+            int num_entries;
+          }
+        </CODE_SNIPPET>
+        <p>
+          See <a HREF="#Structs_vs._Classes">Structs vs. Classes</a> for a
+          discussion of when to use a struct versus a class.
+        </p>
+      </SUBSECTION>
+
+      <SUBSECTION title="Global Variables">
+        <p>
+          There are no special requirements for global variables,
+          which should be rare in any case, but if you use one,
+          consider prefixing it with <code>g_</code> or some other
+          marker to easily distinguish it from local variables.
+        </p>
+      </SUBSECTION>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Constant Names">
+    <SUMMARY>
+      Use a <code>k</code> followed by mixed case:
+      <code>kDaysInAWeek</code>.
+    </SUMMARY>
+    <BODY>
+      <p>
+        All compile-time constants, whether they are declared locally,
+        globally, or as part of a class, follow a slightly different
+        naming convention from other variables. Use a <code>k</code>
+        followed by words with uppercase first letters:
+      </p>
+      <CODE_SNIPPET>
+        const int kDaysInAWeek = 7;
+      </CODE_SNIPPET>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Function Names">
+    <SUMMARY>
+      Regular functions have mixed case; accessors and mutators match
+      the name of the variable: <code>MyExcitingFunction()</code>,
+      <code>MyExcitingMethod()</code>,
+      <code>my_exciting_member_variable()</code>,
+      <code>set_my_exciting_member_variable()</code>.
+    </SUMMARY>
+    <BODY>
+      <SUBSECTION title="Regular Functions">
+        <p>
+          Functions should start with a capital letter and have a
+          capital letter for each new word. No underscores.
+        </p>
+        <p>
+          If your function crashes upon an error, you should append OrDie to
+          the function name. This only applies to functions which could be
+          used by production code and to errors that are reasonably
+          likely to occur during normal operation.
+        </p>
+        <CODE_SNIPPET>
+          AddTableEntry()
+          DeleteUrl()
+          OpenFileOrDie()
+        </CODE_SNIPPET>
+      </SUBSECTION>
+
+      <SUBSECTION title="Accessors and Mutators">
+        <p>
+          Accessors and mutators (get and set functions) should match
+          the name of the variable they are getting and setting.  This
+          shows an excerpt of a class whose instance variable is
+          <code>num_entries_</code>.
+        </p>
+        <CODE_SNIPPET>
+          class MyClass {
+           public:
+            ...
+            int num_entries() const { return num_entries_; }
+            void set_num_entries(int num_entries) { num_entries_ = num_entries; }
+
+           private:
+            int num_entries_;
+          };
+        </CODE_SNIPPET>
+        <p>
+          You may also use lowercase letters for other very short
+          inlined functions. For example if a function were so cheap
+          you would not cache the value if you were calling it in a
+          loop, then lowercase naming would be acceptable.
+        </p>
+      </SUBSECTION>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Namespace Names">
+    
+    <SUMMARY>
+      Namespace names are all lower-case, and based on project names and
+      possibly their directory structure:
+      <code>google_awesome_project</code>.
+    </SUMMARY>
+    <BODY>
+      <p>
+        See <a HREF="#Namespaces">Namespaces</a> for a discussion of
+        namespaces and how to name them.
+      </p>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Enumerator Names">
+    <SUMMARY>
+      Enumerators should be named <i>either</i> like
+      <A HREF="#Constant_Names">constants</A> or like
+      <A HREF="#Macro_Names">macros</A>: either <code>kEnumName</code>
+      or <code>ENUM_NAME</code>.
+    </SUMMARY>
+    <BODY>
+      <p>
+        Preferably, the individual enumerators should be named like
+        <A HREF="#Constant_Names">constants</A>.  However, it is also
+        acceptable to name them like <A HREF="#Macro_Names">macros</A>.    The enumeration name,
+        <code>UrlTableErrors</code> (and
+        <code>AlternateUrlTableErrors</code>), is a type, and
+        therefore mixed case.
+      </p>
+      <CODE_SNIPPET>
+        enum UrlTableErrors {
+          kOK = 0,
+          kErrorOutOfMemory,
+          kErrorMalformedInput,
+        };
+        enum AlternateUrlTableErrors {
+          OK = 0,
+          OUT_OF_MEMORY = 1,
+          MALFORMED_INPUT = 2,
+        };
+      </CODE_SNIPPET>
+      <p>
+        Until January 2009, the style was to name enum values like
+        <A HREF="#Macro_Names">macros</A>.  This caused problems with
+        name collisions between enum values and macros.  Hence, the
+        change to prefer constant-style naming was put in place.  New
+        code should prefer constant-style naming if possible.
+        However, there is no reason to change old code to use
+        constant-style names, unless the old names are actually
+        causing a compile-time problem.
+      </p>
+      
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Macro Names">
+    <SUMMARY>
+      You're not really going to <A HREF="#Preprocessor_Macros">define
+      a macro</A>, are you?  If you do, they're like this:
+      <code>MY_MACRO_THAT_SCARES_SMALL_CHILDREN</code>.
+    </SUMMARY>
+    <BODY>
+      <p>
+        Please see the <a href="#Preprocessor_Macros">description of
+        macros</a>; in general macros should <em>not</em> be used.
+        However, if they are absolutely needed, then they should be
+        named with all capitals and underscores.
+      </p>
+      <CODE_SNIPPET>
+        #define ROUND(x) ...
+        #define PI_ROUNDED 3.0
+      </CODE_SNIPPET>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Exceptions to Naming Rules">
+    <SUMMARY>
+      If you are naming something that is analogous to an existing C
+      or C++ entity then you can follow the existing naming convention
+      scheme.
+    </SUMMARY>
+    <BODY>
+      <p>
+        <dl>
+          <dt> <code>bigopen()</code> </dt>
+          <dd>   function name, follows form of <code>open()</code> </dd>
+          <dt> <code>uint</code> </dt>
+          <dd>   <code>typedef</code> </dd>
+          <dt> <code>bigpos</code> </dt>
+          <dd>   <code>struct</code> or <code>class</code>, follows form of
+                 <code>pos</code> </dd>
+          <dt> <code>sparse_hash_map</code> </dt>
+          <dd>   STL-like entity; follows STL naming conventions </dd>
+          <dt> <code>LONGLONG_MAX</code> </dt>
+          <dd>   a constant, as in <code>INT_MAX</code> </dd>
+        </dl>
+      </p>
+    </BODY>
+  </STYLEPOINT>
+</CATEGORY>
+
+
 <CATEGORY title="Header Files">
   <p>
     In general, every <code>.cc</code> file should have an associated
-    <code>.h</code> file. There are some common exceptions, such as
+    <code>.hh</code> file. There are some common exceptions, such as
     
     unittests
     and small <code>.cc</code> files containing just a <code>main()</code>
@@ -116,7 +481,7 @@ Krishna Kumar<br/>
       <p>
         To guarantee uniqueness, they should be based on the full path
         in a project's source tree.  For example, the file
-        <code>foo/src/bar/baz.h</code> in project <code>foo</code> should
+        <code>foo/src/bar/baz.hh</code> in project <code>foo</code> should
         have the following guard:
       </p>
       <CODE_SNIPPET>
@@ -194,7 +559,7 @@ Krishna Kumar<br/>
         brought in transitively via headers not directly included. One
         exception is that <code>myfile.cc</code> may rely on
         <code>#include</code>s and forward declarations from its corresponding
-        header file <code>myfile.h</code>.
+        header file <code>myfile.hh</code>.
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -251,9 +616,9 @@ Krishna Kumar<br/>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="The -inl.h Files">
+  <STYLEPOINT title="The -inl.hh Files">
     <SUMMARY>
-      You may use file names with a <code>-inl.h</code> suffix to define
+      You may use file names with a <code>-inl.hh</code> suffix to define
       complex inline functions when needed.
     </SUMMARY>
     <BODY>
@@ -262,29 +627,29 @@ Krishna Kumar<br/>
         file, so that the compiler has the definition available for
         inlining at the call sites.  However, implementation code
         properly belongs in <code>.cc</code> files, and we do not like
-        to have much actual code in <code>.h</code> files unless there
+        to have much actual code in <code>.hh</code> files unless there
         is a readability or performance advantage.
       </p>
       <p>
         If an inline function definition is short, with very little,
         if any, logic in it, you should put the code in your
-        <code>.h</code> file.  For example, accessors and mutators
+        <code>.hh</code> file.  For example, accessors and mutators
         should certainly be inside a class definition.  More complex
-        inline functions may also be put in a <code>.h</code> file for
+        inline functions may also be put in a <code>.hh</code> file for
         the convenience of the implementer and callers, though if this
-        makes the <code>.h</code> file too unwieldy you can instead
-        put that code in a separate <code>-inl.h</code> file.
+        makes the <code>.hh</code> file too unwieldy you can instead
+        put that code in a separate <code>-inl.hh</code> file.
         This separates the implementation from the class definition,
         while still allowing the implementation to be included where
         necessary.
       </p>
       <p>
-        Another use of <code>-inl.h</code> files is for definitions of
+        Another use of <code>-inl.hh</code> files is for definitions of
         function templates.  This can be used to keep your template
         definitions easy to read.
       </p>
       <p>
-        Do not forget that a <code>-inl.h</code> file requires a
+        Do not forget that a <code>-inl.hh</code> file requires a
         <a href="#The__define_Guard"><code>#define</code> guard</a> just
         like any other header file.
       </p>
@@ -323,9 +688,9 @@ Krishna Kumar<br/>
       Use standard order for readability and to avoid hidden
       dependencies: C library, C++ library,
       
-      other libraries' <code>.h</code>, your
+      other libraries' <code>.hh</code>, your
       project's
-      <code>.h</code>.
+      <code>.hh</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -336,30 +701,30 @@ Krishna Kumar<br/>
         directory) or <code>..</code> (the parent directory).  For
         example,
         
-        <code>google-awesome-project/src/base/logging.h</code>
+        <code>google-awesome-project/src/base/logging.hh</code>
         should be included as
       </p>
       <CODE_SNIPPET>
-        #include "base/logging.h"
+        #include "base/logging.hh"
       </CODE_SNIPPET>
       <p>
         In <code><var>dir/foo</var>.cc</code> or <code><var>dir/foo_test</var>.cc</code>,
         whose main purpose is to implement or test the stuff in
-        <code><var>dir2/foo2</var>.h</code>, order your includes as
+        <code><var>dir2/foo2</var>.hh</code>, order your includes as
         follows:
       </p>
       <ol>
-        <li> <code><var>dir2/foo2</var>.h</code> (preferred location
+        <li> <code><var>dir2/foo2</var>.hh</code> (preferred location
           — see details below).</li>
         <li> C system files.</li>
         <li> C++ system files.</li>
-        <li> Other libraries' <code>.h</code> files.</li>
+        <li> Other libraries' <code>.hh</code> files.</li>
         <li> 
              Your project's
-             <code>.h</code> files.</li>
+             <code>.hh</code> files.</li>
       </ol>
       <p>
-        With the preferred ordering, if <code><var>dir2/foo2</var>.h</code>
+        With the preferred ordering, if <code><var>dir2/foo2</var>.hh</code>
         omits any necessary includes, the build of
         <code><var>dir/foo</var>.cc</code> or
         <code><var>dir/foo</var>_test.cc</code> will break.
@@ -369,9 +734,9 @@ Krishna Kumar<br/>
       </p>
       <p>
         <code><var>dir/foo</var>.cc</code> and
-        <code><var>dir2/foo2</var>.h</code> are often in the same
+        <code><var>dir2/foo2</var>.hh</code> are often in the same
         directory (e.g. <code>base/basictypes_test.cc</code> and
-        <code>base/basictypes.h</code>), but can be in different
+        <code>base/basictypes.hh</code>), but can be in different
         directories too.
       </p>
       
@@ -387,16 +752,16 @@ Krishna Kumar<br/>
         might look like this:
       </p>
       <CODE_SNIPPET>
-        #include "foo/public/fooserver.h"  // Preferred location.
+        #include "foo/public/fooserver.hh"  // Preferred location.
 
-        #include &lt;sys/types.h&gt;
-        #include &lt;unistd.h&gt;
+        #include &lt;sys/types.hh&gt;
+        #include &lt;unistd.hh&gt;
         #include &lt;hash_map&gt;
         #include &lt;vector&gt;
 
-        #include "base/basictypes.h"
-        #include "base/commandlineflags.h"
-        #include "foo/public/bar.h"
+        #include "base/basictypes.hh"
+        #include "base/commandlineflags.hh"
+        #include "foo/public/bar.hh"
       </CODE_SNIPPET>
       <p>
         Exception: sometimes, system-specific code needs conditional includes.
@@ -405,9 +770,9 @@ Krishna Kumar<br/>
         Example:
       </p>
       <CODE_SNIPPET>
-        #include "foo/public/fooserver.h"
+        #include "foo/public/fooserver.hh"
 
-        #include "base/port.h"  // For LANG_CXX11.
+        #include "base/port.hh"  // For LANG_CXX11.
 
         #ifdef LANG_CXX11
         #include &lt;initializer_list&gt;
@@ -510,7 +875,7 @@ Krishna Kumar<br/>
                    an unnamed namespace.
                  </p>
                  </li>
-            <li> Do not use unnamed namespaces in <code>.h</code>
+            <li> Do not use unnamed namespaces in <code>.hh</code>
                  files.
                  </li>
           </ul>
@@ -527,7 +892,7 @@ Krishna Kumar<br/>
                  definitions/declarations, and forward declarations of classes
                  from other namespaces:
                  <CODE_SNIPPET>
-                   // In the .h file
+                   // In the .hh file
                    namespace mynamespace {
 
                    // All declarations are within the namespace scope.
@@ -557,7 +922,7 @@ Krishna Kumar<br/>
                    in other namespaces.
                  </p>
                  <CODE_SNIPPET>
-                   #include "a.h"
+                   #include "a.hh"
 
                    DEFINE_bool(someflag, false, "dummy flag");
 
@@ -593,23 +958,23 @@ Krishna Kumar<br/>
 
             <li> You may use a <SYNTAX>using-declaration</SYNTAX>
                  anywhere in a <code>.cc</code> file, and in functions,
-                 methods or classes in <code>.h</code> files.
+                 methods or classes in <code>.hh</code> files.
                  <CODE_SNIPPET>
                    // OK in .cc files.
-                   // Must be in a function, method or class in .h files.
+                   // Must be in a function, method or class in .hh files.
                    using ::foo::bar;
                  </CODE_SNIPPET>
                  </li>
 
             <li> Namespace aliases are allowed anywhere in a
                  <code>.cc</code> file, anywhere inside the named
-                 namespace that wraps an entire <code>.h</code> file,
+                 namespace that wraps an entire <code>.hh</code> file,
                  and in functions and methods.
                  <CODE_SNIPPET>
                    // Shorten access to some commonly used names in .cc files.
                    namespace fbz = ::foo::bar::baz;
 
-                   // Shorten access to some commonly used names (in a .h file).
+                   // Shorten access to some commonly used names (in a .hh file).
                    namespace librarian {
                    // The following alias is available to all files including
                    // this header (in namespace librarian):
@@ -625,7 +990,7 @@ Krishna Kumar<br/>
                    }  // namespace librarian
                  </CODE_SNIPPET>
                  <p>
-                 Note that an alias in a .h file is visible to everyone
+                 Note that an alias in a .hh file is visible to everyone
                  #including that file, so public headers (those available
                  outside a project) and headers transitively #included by them,
                  should avoid defining aliases, as part of the general
@@ -1631,165 +1996,6 @@ Krishna Kumar<br/>
   </STYLEPOINT>
 </CATEGORY>
 
-<CATEGORY title="Magical Formatting Tools">
-  
-  <p>
-    There are various tricks and utilities that we use to make C++
-    code more robust, and various ways we use C++ that may differ from
-    what you see elsewhere.
-  </p>
-
-  
-
-  <STYLEPOINT title="Ownership and Smart Pointers">
-    <SUMMARY>
-      Prefer to have single, fixed owners for dynamically allocated objects.
-      Prefer to transfer ownership with smart pointers.
-    </SUMMARY>
-    <BODY>
-      <DEFINITION>
-        <p>
-          "Ownership" is a bookkeeping technique for managing dynamically
-          allocated memory (and other resources). The owner of a dynamically
-          allocated object is an object or function that is responsible for
-          ensuring that it is deleted when no longer needed. Ownership can
-          sometimes be shared, in which case the last owner is typically
-          responsible for deleting it. Even when ownership is not shared,
-          it can be transferred from one piece of code to another.
-        </p>
-        <p>
-          "Smart" pointers are classes that act like pointers, e.g. by
-          overloading the <code>*</code> and <code>-&gt;</code> operators.
-          Some smart pointer types can be used to automate ownership
-          bookkeeping, to ensure these responsibilities are met.
-          <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr">
-          <code>std::unique_ptr</code></a> is a smart pointer type introduced
-          in C++11, which expresses exclusive ownership of a dynamically
-          allocated object; the object is deleted when the
-          <code>std::unique_ptr</code> goes out of scope. It cannot be copied,
-          but can be <em>moved</em> to represent ownership transfer. 
-          <code>shared_ptr</code> is a smart pointer type which expresses
-          shared ownership of a dynamically allocated object. 
-          <code>shared_ptr</code>s can be copied; ownership of the object is
-          shared among all copies, and the object is deleted when the last
-          <code>shared_ptr</code> is destroyed. 
-        </p>
-      </DEFINITION>
-      <PROS>
-        <ul>
-          <li>It's virtually impossible to manage dynamically allocated memory
-            without some sort of ownership logic.</li>
-          <li>Transferring ownership of an object can be cheaper than copying
-            it (if copying it is even possible).</li>
-          <li>Transferring ownership can be simpler than 'borrowing' a pointer
-            or reference, because it reduces the need to coordinate the
-            lifetime of the object between the two users.</li>
-          <li>Smart pointers can improve readability by making ownership logic
-            explicit, self-documenting, and unambiguous.</li>
-          <li>Smart pointers can eliminate manual ownership bookkeeping,
-            simplifying the code and ruling out large classes of errors.</li>
-          <li>For const objects, shared ownership can be a simple and efficient
-            alternative to deep copying.</li>
-        </ul>
-      </PROS>
-      <CONS>
-        <ul>
-          <li>Ownership must be represented and transferred via pointers
-            (whether smart or plain). Pointer semantics are more complicated
-            than value semantics, especially in APIs: you have to worry not
-            just about ownership, but also aliasing, lifetime, and mutability,
-            among other issues.</li>
-          <li>The performance costs of value semantics are often overestimated,
-            so the performance benefits of ownership transfer might not justify
-            the readability and complexity costs.</li>
-          <li>APIs that transfer ownership force their clients into a single
-            memory management model.</li>
-          <li>Code using smart pointers is less explicit about where the
-            resource releases take place.</li>
-          <li><code>std::unique_ptr</code> expresses ownership transfer
-            using C++11's move semantics, which are
-            <a href="#Rvalue_references">generally forbidden</a> in Google
-            code, and may confuse some programmers.</li>
-          <li>Shared ownership can be a tempting alternative to careful
-            ownership design, obfuscating the design of a system.</li>
-          <li>Shared ownership requires explicit bookkeeping at run-time,
-            which can be costly.</li>
-          <li>In some cases (e.g. cyclic references), objects with shared
-            ownership may never be deleted.</li>
-          <li>Smart pointers are not perfect substitutes for plain
-            pointers.</li>
-        </ul>
-      </CONS>
-      <DECISION>
-        <p>
-          If dynamic allocation is necessary, prefer to keep ownership with
-          the code that allocated it. If other code needs access to the object,
-          consider passing it a copy, or passing a pointer or reference
-          without transferring ownership. Prefer to use
-          <code>std::unique_ptr</code> to make ownership transfer explicit.
-          For example:
-            <CODE_SNIPPET>
-              std::unique_ptr&lt;Foo&gt; FooFactory();
-              void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);
-            </CODE_SNIPPET>
-          
-        </p>
-        <p>
-          Do not design your code to use shared ownership without a very good
-          reason. One such reason is to avoid expensive copy operations,
-          but you should only do this if the performance benefits are
-          significant, and the underlying object is immutable (i.e.
-          <code>shared_ptr&lt;const Foo&gt;</code>).  If you do use shared
-          ownership, prefer to use <code>shared_ptr</code>.
-          
-        </p>
-        <p>
-          Do not use <code>scoped_ptr</code> in new code unless you need to be
-          compatible with older versions of C++. Never use
-          <code>linked_ptr</code> or <code>std::auto_ptr</code>. In all three
-          cases, use <code>std::unique_ptr</code> instead.
-        </p>
-        
-      </DECISION>
-    </BODY>
-  </STYLEPOINT>
-  <STYLEPOINT title="astyle">
-    <SUMMARY>
-      Use <code> AStyle </code> to format your code.
-    </SUMMARY>
-    <BODY>
-      <p>
-	<a href="http://sourceforge.net/projects/astyle/">http://sourceforge.net/projects/astyle/</a>
-      </p>
-    </BODY>
-  </STYLEPOINT>
-  <STYLEPOINT title="cpplint">
-    <SUMMARY>
-      Use
-      <code>cpplint.py</code>
-      to detect style errors.
-    </SUMMARY>
-    <BODY>
-      <p>
-        <code>cpplint.py</code>
-        is a tool that reads a source file and
-        identifies many style errors.  It is not perfect, and has both false
-        positives and false negatives, but it is still a valuable tool.  False
-        positives can be ignored by putting <code>// NOLINT</code> at
-        the end of the line.
-      </p>
-      
-      <p>
-        Some projects have instructions on how to run <code>cpplint.py</code>
-        from their project tools. If the project you are contributing to does
-        not, you can download <A HREF="http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py"><code>cpplint.py</code></A> separately.
-      </p>
-    </BODY>
-  </STYLEPOINT>
-
-  
-</CATEGORY>
-
 <CATEGORY title="Other C++ Features">
   <STYLEPOINT title="Reference Arguments">
     <SUMMARY>
@@ -2639,7 +2845,7 @@ Krishna Kumar<br/>
       size, use
       
       a precise-width integer type from
-      <code>&lt;stdint.h&gt;</code>, such as <code>int16_t</code>. If
+      <code>&lt;stdint.hh&gt;</code>, such as <code>int16_t</code>. If
       your variable represents a value that could ever be greater than or
       equal to 2^31 (2GiB), use a 64-bit type such as <code>int64_t</code>.
       Keep in mind that even if your value won't ever be too large for an
@@ -2663,7 +2869,7 @@ Krishna Kumar<br/>
       <DECISION>
         <p>
           
-          <code>&lt;stdint.h&gt;</code> defines
+          <code>&lt;stdint.hh&gt;</code> defines
           types like <code>int16_t</code>, <code>uint32_t</code>,
           <code>int64_t</code>, etc.
           You should always use those in preference to
@@ -2757,10 +2963,10 @@ Krishna Kumar<br/>
             understand some of these specifiers and the
             standard is missing a few, so we have to define our
             own ugly versions in some cases (in the style of the
-            standard include file <code>inttypes.h</code>):
+            standard include file <code>inttypes.hh</code>):
           </p>
           <CODE_SNIPPET>
-            // printf macros for size_t, in the style of inttypes.h
+            // printf macros for size_t, in the style of inttypes.hh
             #ifdef _LP64
             #define __PRIS_PREFIX "z"
             #else
@@ -2924,7 +3130,7 @@ Krishna Kumar<br/>
         macros; if you use macros, follow it whenever possible:
       </p>
       <ul>
-        <li> Don't define macros in a <code>.h</code> file.
+        <li> Don't define macros in a <code>.hh</code> file.
              </li>
         <li> <code>#define</code> macros right before you use them,
              and <code>#undef</code> them right after.
@@ -3268,15 +3474,15 @@ Krishna Kumar<br/>
         who might read and maintain code, we only allow an approved subset of
         Boost features.  Currently, the following libraries are permitted:
         <ul>
-          <li> <a href="http://www.boost.org/libs/utility/call_traits.htm">
-               Call Traits</a> from <code>boost/call_traits.hpp</code>
+          <li> <a href="http://www.boost.org/libs/utility/call_traits.hhtm">
+               Call Traits</a> from <code>boost/call_traits.hhpp</code>
                </li>
-          <li> <a href="http://www.boost.org/libs/utility/compressed_pair.htm">
-               Compressed Pair</a> from <code>boost/compressed_pair.hpp</code>
+          <li> <a href="http://www.boost.org/libs/utility/compressed_pair.hhtm">
+               Compressed Pair</a> from <code>boost/compressed_pair.hhpp</code>
                </li>
           <li> <a href="http://www.boost.org/libs/graph/">
                The Boost Graph Library (BGL)</a> from <code>boost/graph</code>,
-               except serialization (<code>adj_list_serialize.hpp</code>) and
+               except serialization (<code>adj_list_serialize.hhpp</code>) and
                parallel/distributed algorithms and data structures
                (<code>boost/graph/parallel/*</code> and
                <code>boost/graph/distributed/*</code>).
@@ -3289,20 +3495,20 @@ Krishna Kumar<br/>
           <li> The part of
                <a href="http://www.boost.org/libs/iterator/">
                Iterator</a> that deals with defining iterators:
-               <code>boost/iterator/iterator_adaptor.hpp</code>,
-               <code>boost/iterator/iterator_facade.hpp</code>, and
-               <code>boost/function_output_iterator.hpp</code></li>
+               <code>boost/iterator/iterator_adaptor.hhpp</code>,
+               <code>boost/iterator/iterator_facade.hhpp</code>, and
+               <code>boost/function_output_iterator.hhpp</code></li>
           <li> The part of
                <a href="http://www.boost.org/libs/polygon/">
                Polygon</a> that deals with Voronoi diagram construction and
                doesn't depend on the rest of Polygon:
-               <code>boost/polygon/voronoi_builder.hpp</code>,
-               <code>boost/polygon/voronoi_diagram.hpp</code>, and
-               <code>boost/polygon/voronoi_geometry_type.hpp</code></li>
+               <code>boost/polygon/voronoi_builder.hhpp</code>,
+               <code>boost/polygon/voronoi_diagram.hhpp</code>, and
+               <code>boost/polygon/voronoi_geometry_type.hhpp</code></li>
           <li> <a href="http://www.boost.org/libs/bimap/">
                Bimap</a> from <code>boost/bimap</code>
                </li>
-          <li> <a href="http://www.boost.org/libs/math/doc/html/dist.html">
+          <li> <a href="http://www.boost.org/libs/math/doc/html/dist.hhtml">
                Statistical Distributions and Functions</a> from
                <code>boost/math/distributions</code>
                </li>
@@ -3316,7 +3522,7 @@ Krishna Kumar<br/>
       because they've been superseded by standard libraries in C++11:
       <ul>
         <li> <a href="http://www.boost.org/libs/array/">
-             Array</a> from <code>boost/array.hpp</code>: use
+             Array</a> from <code>boost/array.hhpp</code>: use
              <a href="http://en.cppreference.com/w/cpp/container/array">
              <code>std::array</code></a> instead.
              </li>
@@ -3402,7 +3608,7 @@ Krishna Kumar<br/>
           interface style.
         </li>
         <li>
-          The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.h&gt;</code>
+          The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.hh&gt;</code>
           headers, because many compilers do not support those
           features reliably.
         </li>
@@ -3416,377 +3622,6 @@ Krishna Kumar<br/>
   </BODY>
   </STYLEPOINT>
 
-</CATEGORY>
-
-<CATEGORY title="Naming">
-  <p>
-    The most important consistency rules are those that govern
-    naming. The style of a name immediately informs us what sort of
-    thing the named entity is: a type, a variable, a function, a
-    constant, a macro, etc., without requiring us to search for the
-    declaration of that entity. The pattern-matching engine in our
-    brains relies a great deal on these naming rules.
-    
-  </p>
-  <p>
-    Naming rules are pretty arbitrary, but
-    
-    we feel that consistency is more important than individual preferences
-    in this area, so regardless of whether you find them sensible or not,
-    the rules are the rules.
-  </p>
-
-  <STYLEPOINT title="General Naming Rules">
-    <SUMMARY>
-      Function names, variable names, and filenames should be
-      descriptive; eschew abbreviation.
-    </SUMMARY>
-    <BODY>
-      <p>
-        Give as descriptive a name as possible, within reason. Do
-        not worry about saving horizontal space as it is far more
-        important to make your code immediately understandable by a
-        new reader. Do not use abbreviations that are ambiguous or
-        unfamiliar to readers outside your project, and do not
-        abbreviate by deleting letters within a word.
-      </p>
-      <CODE_SNIPPET>
-        int price_count_reader;    // No abbreviation.
-        int num_errors;            // "num" is a widespread convention.
-        int num_dns_connections;   // Most people know what "DNS" stands for.
-      </CODE_SNIPPET>
-      <BAD_CODE_SNIPPET>
-        int n;                     // Meaningless.
-        int nerr;                  // Ambiguous abbreviation.
-        int n_comp_conns;          // Ambiguous abbreviation.
-        int wgc_connections;       // Only your group knows what this stands for.
-        int pc_reader;             // Lots of things can be abbreviated "pc".
-        int cstmr_id;              // Deletes internal letters.
-      </BAD_CODE_SNIPPET>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="File Names">
-    <SUMMARY>
-      Filenames should be all lowercase and can include underscores
-      (<code>_</code>) or dashes (<code>-</code>).  Follow the
-      convention that your
-      
-      project
-      uses. If there is no consistent local pattern to follow, prefer "_".
-    </SUMMARY>
-    <BODY>
-      <p>
-        Examples of acceptable file names:
-      </p>
-      <p>
-        <code>
-          my_useful_class.cc<br/>
-          my-useful-class.cc<br/>
-          myusefulclass.cc<br/>
-          myusefulclass_test.cc  // _unittest and _regtest are deprecated.<br/>
-        </code>
-      </p>
-      <p>
-        C++ files should end in <code>.cc</code> and header files
-        should end in <code>.h</code>.
-      </p>
-      <p>
-        Do not use filenames that already exist
-        in <code>/usr/include</code>, such as <code>db.h</code>.
-      </p>
-      <p>
-        In general, make your filenames very specific.  For example,
-        use <code>http_server_logs.h</code> rather
-        than <code>logs.h</code>.  A very common case is to have a
-        pair of files called, e.g., <code>foo_bar.h</code>
-        and <code>foo_bar.cc</code>, defining a class
-        called <code>FooBar</code>.
-      </p>
-      <p>
-        Inline functions must be in a <code>.h</code> file. If your
-        inline functions are very short, they should go directly into your
-        <code>.h</code> file. However, if your inline functions
-        include a lot of code, they may go into a third file that
-        ends in <code>-inl.h</code>.  In a class with a lot of inline
-        code, your class could have three files:
-      </p>
-      <CODE_SNIPPET>
-        url_table.h      // The class declaration.
-        url_table.cc     // The class definition.
-        url_table-inl.h  // Inline functions that include lots of code.
-      </CODE_SNIPPET>
-      <p>
-        See also the section <a href="#The_-inl.h_Files">-inl.h Files</a>
-      </p>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Type Names">
-    <SUMMARY>
-      Type names start with a capital letter and have a capital
-      letter for each new word, with no underscores:
-      <code>MyExcitingClass</code>, <code>MyExcitingEnum</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        The names of all types — classes, structs, typedefs, and enums
-        — have the same naming convention.  Type names should start
-        with a capital letter and have a capital letter for each new
-        word.  No underscores.  For example:
-      </p>
-      <CODE_SNIPPET>
-        // classes and structs
-        class UrlTable { ...
-        class UrlTableTester { ...
-        struct UrlTableProperties { ...
-
-        // typedefs
-        typedef hash_map&lt;UrlTableProperties *, string&gt; PropertiesMap;
-
-        // enums
-        enum UrlTableErrors { ...
-      </CODE_SNIPPET>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Variable Names">
-    <SUMMARY>
-      Variable names are all lowercase, with underscores between
-      words.  Class member variables have trailing underscores.  For
-      instance: <code>my_exciting_local_variable</code>,
-      <code>my_exciting_member_variable_</code>.
-    </SUMMARY>
-    <BODY>
-      <SUBSECTION title="Common Variable names">
-        <p>
-          For example:
-        </p>
-        <CODE_SNIPPET>
-          string table_name;  // OK - uses underscore.
-          string tablename;   // OK - all lowercase.
-        </CODE_SNIPPET>
-        <BAD_CODE_SNIPPET>
-          string tableName;   // Bad - mixed case.
-        </BAD_CODE_SNIPPET>
-      </SUBSECTION>
-
-      <SUBSECTION title="Class Data Members">
-        <p>
-          Data members (also called instance variables or member
-          variables) are lowercase with optional underscores like
-          regular variable names, but always end with a trailing
-          underscore.
-        </p>
-        <CODE_SNIPPET>
-          string table_name_;  // OK - underscore at end.
-          string tablename_;   // OK.
-        </CODE_SNIPPET>
-      </SUBSECTION>
-
-      <SUBSECTION title="Struct Variables">
-        <p>
-          Data members in structs should be named like regular
-          variables without the trailing underscores that data members
-          in classes have.
-        </p>
-        <CODE_SNIPPET>
-          struct UrlTableProperties {
-            string name;
-            int num_entries;
-          }
-        </CODE_SNIPPET>
-        <p>
-          See <a HREF="#Structs_vs._Classes">Structs vs. Classes</a> for a
-          discussion of when to use a struct versus a class.
-        </p>
-      </SUBSECTION>
-
-      <SUBSECTION title="Global Variables">
-        <p>
-          There are no special requirements for global variables,
-          which should be rare in any case, but if you use one,
-          consider prefixing it with <code>g_</code> or some other
-          marker to easily distinguish it from local variables.
-        </p>
-      </SUBSECTION>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Constant Names">
-    <SUMMARY>
-      Use a <code>k</code> followed by mixed case:
-      <code>kDaysInAWeek</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        All compile-time constants, whether they are declared locally,
-        globally, or as part of a class, follow a slightly different
-        naming convention from other variables. Use a <code>k</code>
-        followed by words with uppercase first letters:
-      </p>
-      <CODE_SNIPPET>
-        const int kDaysInAWeek = 7;
-      </CODE_SNIPPET>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Function Names">
-    <SUMMARY>
-      Regular functions have mixed case; accessors and mutators match
-      the name of the variable: <code>MyExcitingFunction()</code>,
-      <code>MyExcitingMethod()</code>,
-      <code>my_exciting_member_variable()</code>,
-      <code>set_my_exciting_member_variable()</code>.
-    </SUMMARY>
-    <BODY>
-      <SUBSECTION title="Regular Functions">
-        <p>
-          Functions should start with a capital letter and have a
-          capital letter for each new word. No underscores.
-        </p>
-        <p>
-          If your function crashes upon an error, you should append OrDie to
-          the function name. This only applies to functions which could be
-          used by production code and to errors that are reasonably
-          likely to occur during normal operation.
-        </p>
-        <CODE_SNIPPET>
-          AddTableEntry()
-          DeleteUrl()
-          OpenFileOrDie()
-        </CODE_SNIPPET>
-      </SUBSECTION>
-
-      <SUBSECTION title="Accessors and Mutators">
-        <p>
-          Accessors and mutators (get and set functions) should match
-          the name of the variable they are getting and setting.  This
-          shows an excerpt of a class whose instance variable is
-          <code>num_entries_</code>.
-        </p>
-        <CODE_SNIPPET>
-          class MyClass {
-           public:
-            ...
-            int num_entries() const { return num_entries_; }
-            void set_num_entries(int num_entries) { num_entries_ = num_entries; }
-
-           private:
-            int num_entries_;
-          };
-        </CODE_SNIPPET>
-        <p>
-          You may also use lowercase letters for other very short
-          inlined functions. For example if a function were so cheap
-          you would not cache the value if you were calling it in a
-          loop, then lowercase naming would be acceptable.
-        </p>
-      </SUBSECTION>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Namespace Names">
-    
-    <SUMMARY>
-      Namespace names are all lower-case, and based on project names and
-      possibly their directory structure:
-      <code>google_awesome_project</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        See <a HREF="#Namespaces">Namespaces</a> for a discussion of
-        namespaces and how to name them.
-      </p>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Enumerator Names">
-    <SUMMARY>
-      Enumerators should be named <i>either</i> like
-      <A HREF="#Constant_Names">constants</A> or like
-      <A HREF="#Macro_Names">macros</A>: either <code>kEnumName</code>
-      or <code>ENUM_NAME</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        Preferably, the individual enumerators should be named like
-        <A HREF="#Constant_Names">constants</A>.  However, it is also
-        acceptable to name them like <A HREF="#Macro_Names">macros</A>.    The enumeration name,
-        <code>UrlTableErrors</code> (and
-        <code>AlternateUrlTableErrors</code>), is a type, and
-        therefore mixed case.
-      </p>
-      <CODE_SNIPPET>
-        enum UrlTableErrors {
-          kOK = 0,
-          kErrorOutOfMemory,
-          kErrorMalformedInput,
-        };
-        enum AlternateUrlTableErrors {
-          OK = 0,
-          OUT_OF_MEMORY = 1,
-          MALFORMED_INPUT = 2,
-        };
-      </CODE_SNIPPET>
-      <p>
-        Until January 2009, the style was to name enum values like
-        <A HREF="#Macro_Names">macros</A>.  This caused problems with
-        name collisions between enum values and macros.  Hence, the
-        change to prefer constant-style naming was put in place.  New
-        code should prefer constant-style naming if possible.
-        However, there is no reason to change old code to use
-        constant-style names, unless the old names are actually
-        causing a compile-time problem.
-      </p>
-      
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Macro Names">
-    <SUMMARY>
-      You're not really going to <A HREF="#Preprocessor_Macros">define
-      a macro</A>, are you?  If you do, they're like this:
-      <code>MY_MACRO_THAT_SCARES_SMALL_CHILDREN</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        Please see the <a href="#Preprocessor_Macros">description of
-        macros</a>; in general macros should <em>not</em> be used.
-        However, if they are absolutely needed, then they should be
-        named with all capitals and underscores.
-      </p>
-      <CODE_SNIPPET>
-        #define ROUND(x) ...
-        #define PI_ROUNDED 3.0
-      </CODE_SNIPPET>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Exceptions to Naming Rules">
-    <SUMMARY>
-      If you are naming something that is analogous to an existing C
-      or C++ entity then you can follow the existing naming convention
-      scheme.
-    </SUMMARY>
-    <BODY>
-      <p>
-        <dl>
-          <dt> <code>bigopen()</code> </dt>
-          <dd>   function name, follows form of <code>open()</code> </dd>
-          <dt> <code>uint</code> </dt>
-          <dd>   <code>typedef</code> </dd>
-          <dt> <code>bigpos</code> </dt>
-          <dd>   <code>struct</code> or <code>class</code>, follows form of
-                 <code>pos</code> </dd>
-          <dt> <code>sparse_hash_map</code> </dt>
-          <dd>   STL-like entity; follows STL naming conventions </dd>
-          <dt> <code>LONGLONG_MAX</code> </dt>
-          <dd>   a constant, as in <code>INT_MAX</code> </dd>
-        </dl>
-      </p>
-    </BODY>
-  </STYLEPOINT>
 </CATEGORY>
 
 <CATEGORY title="Comments">
@@ -3844,19 +3679,19 @@ Krishna Kumar<br/>
           Every file should have a comment at the top describing its contents.
         </p>
         <p>
-          Generally a <code>.h</code> file will describe the classes
+          Generally a <code>.hh</code> file will describe the classes
           that are declared in the file with an overview of what they
           are for and how they are used. A <code>.cc</code> file
           should contain more information about implementation details
           or discussions of tricky algorithms. If you feel the
           implementation details or a discussion of the algorithms
-          would be useful for someone reading the <code>.h</code>,
+          would be useful for someone reading the <code>.hh</code>,
           feel free to put it there instead, but mention in the
           <code>.cc</code> that the documentation is in the
-          <code>.h</code> file.
+          <code>.hh</code> file.
         </p>
         <p>
-          Do not duplicate comments in both the <code>.h</code> and
+          Do not duplicate comments in both the <code>.hh</code> and
           the <code>.cc</code>. Duplicated comments diverge.
         </p>
       </SUBSECTION>
@@ -3991,7 +3826,7 @@ Krishna Kumar<br/>
         </p>
         <p>
           Note you should <em>not</em> just repeat the comments given
-          with the function declaration, in the <code>.h</code> file or
+          with the function declaration, in the <code>.hh</code> file or
           wherever.  It's okay to recapitulate briefly what the function
           does, but the focus of the comments should be on how it does it.
         </p>
@@ -5190,6 +5025,166 @@ Krishna Kumar<br/>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
+
+
+<CATEGORY title="Formatting Tools">
+  
+  <p>
+    There are various tricks and utilities that we use to make C++
+    code more robust, and various ways we use C++ that may differ from
+    what you see elsewhere.
+  </p>
+
+  
+
+  <STYLEPOINT title="Ownership and Smart Pointers">
+    <SUMMARY>
+      Prefer to have single, fixed owners for dynamically allocated objects.
+      Prefer to transfer ownership with smart pointers.
+    </SUMMARY>
+    <BODY>
+      <DEFINITION>
+        <p>
+          "Ownership" is a bookkeeping technique for managing dynamically
+          allocated memory (and other resources). The owner of a dynamically
+          allocated object is an object or function that is responsible for
+          ensuring that it is deleted when no longer needed. Ownership can
+          sometimes be shared, in which case the last owner is typically
+          responsible for deleting it. Even when ownership is not shared,
+          it can be transferred from one piece of code to another.
+        </p>
+        <p>
+          "Smart" pointers are classes that act like pointers, e.g. by
+          overloading the <code>*</code> and <code>-&gt;</code> operators.
+          Some smart pointer types can be used to automate ownership
+          bookkeeping, to ensure these responsibilities are met.
+          <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr">
+          <code>std::unique_ptr</code></a> is a smart pointer type introduced
+          in C++11, which expresses exclusive ownership of a dynamically
+          allocated object; the object is deleted when the
+          <code>std::unique_ptr</code> goes out of scope. It cannot be copied,
+          but can be <em>moved</em> to represent ownership transfer. 
+          <code>shared_ptr</code> is a smart pointer type which expresses
+          shared ownership of a dynamically allocated object. 
+          <code>shared_ptr</code>s can be copied; ownership of the object is
+          shared among all copies, and the object is deleted when the last
+          <code>shared_ptr</code> is destroyed. 
+        </p>
+      </DEFINITION>
+      <PROS>
+        <ul>
+          <li>It's virtually impossible to manage dynamically allocated memory
+            without some sort of ownership logic.</li>
+          <li>Transferring ownership of an object can be cheaper than copying
+            it (if copying it is even possible).</li>
+          <li>Transferring ownership can be simpler than 'borrowing' a pointer
+            or reference, because it reduces the need to coordinate the
+            lifetime of the object between the two users.</li>
+          <li>Smart pointers can improve readability by making ownership logic
+            explicit, self-documenting, and unambiguous.</li>
+          <li>Smart pointers can eliminate manual ownership bookkeeping,
+            simplifying the code and ruling out large classes of errors.</li>
+          <li>For const objects, shared ownership can be a simple and efficient
+            alternative to deep copying.</li>
+        </ul>
+      </PROS>
+      <CONS>
+        <ul>
+          <li>Ownership must be represented and transferred via pointers
+            (whether smart or plain). Pointer semantics are more complicated
+            than value semantics, especially in APIs: you have to worry not
+            just about ownership, but also aliasing, lifetime, and mutability,
+            among other issues.</li>
+          <li>The performance costs of value semantics are often overestimated,
+            so the performance benefits of ownership transfer might not justify
+            the readability and complexity costs.</li>
+          <li>APIs that transfer ownership force their clients into a single
+            memory management model.</li>
+          <li>Code using smart pointers is less explicit about where the
+            resource releases take place.</li>
+          <li><code>std::unique_ptr</code> expresses ownership transfer
+            using C++11's move semantics, which are
+            <a href="#Rvalue_references">generally forbidden</a> in Google
+            code, and may confuse some programmers.</li>
+          <li>Shared ownership can be a tempting alternative to careful
+            ownership design, obfuscating the design of a system.</li>
+          <li>Shared ownership requires explicit bookkeeping at run-time,
+            which can be costly.</li>
+          <li>In some cases (e.g. cyclic references), objects with shared
+            ownership may never be deleted.</li>
+          <li>Smart pointers are not perfect substitutes for plain
+            pointers.</li>
+        </ul>
+      </CONS>
+      <DECISION>
+        <p>
+          If dynamic allocation is necessary, prefer to keep ownership with
+          the code that allocated it. If other code needs access to the object,
+          consider passing it a copy, or passing a pointer or reference
+          without transferring ownership. Prefer to use
+          <code>std::unique_ptr</code> to make ownership transfer explicit.
+          For example:
+            <CODE_SNIPPET>
+              std::unique_ptr&lt;Foo&gt; FooFactory();
+              void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);
+            </CODE_SNIPPET>
+          
+        </p>
+        <p>
+          Do not design your code to use shared ownership without a very good
+          reason. One such reason is to avoid expensive copy operations,
+          but you should only do this if the performance benefits are
+          significant, and the underlying object is immutable (i.e.
+          <code>shared_ptr&lt;const Foo&gt;</code>).  If you do use shared
+          ownership, prefer to use <code>shared_ptr</code>.
+          
+        </p>
+        <p>
+          Do not use <code>scoped_ptr</code> in new code unless you need to be
+          compatible with older versions of C++. Never use
+          <code>linked_ptr</code> or <code>std::auto_ptr</code>. In all three
+          cases, use <code>std::unique_ptr</code> instead.
+        </p>
+        
+      </DECISION>
+    </BODY>
+  </STYLEPOINT>
+  <STYLEPOINT title="astyle">
+    <SUMMARY>
+      Use <code> <a href="http://sourceforge.net/projects/astyle/"> Artistic Style</a> </code> to auto-format your code.
+    </SUMMARY>
+    <BODY>
+      <p>
+	You can automatically format your code to confirm to this style guide by running 
+	<code>./astyle --style=stroustrup *.cc or *.hh </code>
+      </p>
+    </BODY>
+  </STYLEPOINT>
+  <STYLEPOINT title="cpplint">
+    <SUMMARY>
+      Use
+      <code>cpplint.py</code>
+      to detect style errors.
+    </SUMMARY>
+    <BODY>
+      <p>
+        <code>cpplint.py</code>
+        is a tool that reads a source file and
+        identifies many style errors.  It is not perfect, and has both false
+        positives and false negatives, but it is still a valuable tool.  False
+        positives can be ignored by putting <code>// NOLINT</code> at
+        the end of the line.
+      </p>
+      
+      <p>
+        Some projects have instructions on how to run <code>cpplint.py</code>
+        from their project tools. If the project you are contributing to does
+        not, you can download <A HREF="http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py"><code>cpplint.py</code></A> separately.
+      </p>
+    </BODY>
+  </STYLEPOINT> 
+</CATEGORY>
+
 
 <PARTING_WORDS>
   <p>
