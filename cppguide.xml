@@ -87,11 +87,8 @@ Krishna Kumar<br/>
     
   </p>
   <p>
-    Naming rules are pretty arbitrary, but
-    
-    we feel that consistency is more important than individual preferences
-    in this area, so regardless of whether you find them sensible or not,
-    the rules are the rules.
+    Remember that a maintaining a consistent style is often more important
+    than doing every little detail in the way you think best.
   </p>
 
   <STYLEPOINT title="General Naming Rules">
@@ -112,18 +109,20 @@ Krishna Kumar<br/>
 	i should be a loop index. 
       </p>
       <CODE_SNIPPET>
-        int particles_in_elements; // No abbreviation.
-        int num_errors;            // "num" is a widespread convention.
-        int num_mpm_point;         // Most people know what "mpm" stands for.
-        for (int i = 0; ...        // Used conventionally as a loop index.
+        int number_particles_;   // No abbreviation.
+        int num_errors;          // "num" is a widespread convention.
+        int num_mpm_point;       // Most people know what "mpm" stands for.
+        for (int i = 0; ...      // Used conventionally as a loop index.
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
-        int n;                     // Meaningless.
-        int nerr;                  // Ambiguous abbreviation.
-        int n_comp_conns;          // Ambiguous abbreviation.
-        int lem_connections;       // Only your group knows what this stands for.
-        int pc_reader;             // Lots of things can be abbreviated "pc".
-        int prtcl_id;              // Deletes internal letters.
+        int n;                   // Meaningless.
+        int nerr;                // Ambiguous abbreviation.
+        int n_comp_conns;        // Ambiguous abbreviation.
+        int lem_connections;     // Only your group knows what this stands for.
+        int pc_reader;           // Lots of things can be abbreviated "pc".
+        int prtcl_id;            // Deletes internal letters.
+        int the_number_of_elements_in_a_cell 
+                                 // A bit too long.
       </BAD_CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -140,44 +139,41 @@ Krishna Kumar<br/>
       </p>
       <p>
         <code>
-          my_useful_class.cc<br/>
-          myusefulclass.cc<br/>
-          myusefulclass_test.cc  // _unittest and _regtest are deprecated.<br/>
+          particle_soil_mpm.cc<br/>
+          particlesoilmpm.cc<br/>
+          particlesoilmpm_test.cc  // _unittest and _regtest are deprecated.<br/>
         </code>
       </p>
       <p>
-        C++ files should end in <code>.cc</code> and header files
-        should end in <code>.hh</code>.
-      </p>
-      <p>
         Do not use filenames that already exist
-        in <code>/usr/include</code>, such as <code>db.hh</code>.
+        in <code>/usr/include</code>, such as <code>error.h</code>.
       </p>      
       <p>
         In general, make your filenames very specific.  For example,
-        use <code>http_server_logs.hh</code> rather
-        than <code>logs.hh</code>.  A very common case is to have a
+        use <code>particle_soil_mpm.hh</code> rather
+        than <code>particle.hh</code>.  A very common case is to have a
         pair of files called, e.g., <code>foo_bar.hh</code>
         and <code>foo_bar.cc</code>, defining a class
         called <code>FooBar</code>.
       </p>
       <p>
-        Inline functions must be in a <code>.hh</code> file. If your
-        inline functions are very short, they should go directly into your
-        <code>.hh</code> file. However, if your inline functions
-        include a lot of code, they may go into a third file that
-        ends in <code>-inl.hh</code>.  In a class with a lot of inline
-        code, your class could have three files:
+        Inline functions must be in a <code>.hh</code> file. 
+	However, for shared template code the class definitions
+	may go into a third file that ends in <code>.tcc</code>.  
       </p>
       <CODE_SNIPPET>
-        url_table.hh      // The class declaration.
-        url_table.cc     // The class definition.
-        url_table-inl.hh  // Inline functions that include lots of code.
+        particle_soil_mpm.hh      // The class declaration.
+        particle_soil_mpm.cc      // The class definition.
+        particle_soil_mpm.tcc     // Templatised class definitions.
       </CODE_SNIPPET>
       <p>
-        See also the section <a href="#The_-inl.hh_Files">-inl.hh Files</a>
+	Don't forget that header files require <a href="#The__define_Guard"><code>#define guard</code></a>. 
       </p>
-    </BODY>
+      <p>
+	See <a href="#The_.tcc_Files"><code>.tcc</code> files</a> 
+	for more information on how to defined shared templatised classes.
+      </p>
+   </BODY>
   </STYLEPOINT>
 
   <STYLEPOINT title="Type Names">
@@ -613,10 +609,10 @@ Krishna Kumar<br/>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="The -inl.hh Files">
+  <STYLEPOINT title="The .tcc Files">
     <SUMMARY>
-      You may use file names with a <code>-inl.hh</code> suffix to define
-      complex inline functions when needed.
+      You may use file extension <code>.tcc</code> for shared
+      templatised classes.
     </SUMMARY>
     <BODY>
       <p>
