@@ -1,13 +1,10 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="styleguide.xsl"?>
-<GUIDE title="Kenichi's Research Group C++ Style Guide">
-
+<GUIDE title="C++ Style Guide">
 
 <p align="right">
 Revision 1.0
 </p>
-
-
 
 <address>
 Krishna Kumar<br/>
@@ -19,8 +16,8 @@ Krishna Kumar<br/>
      <SUMMARY>
        This style guide contains many details that are initially
        hidden from view.  They are marked by the triangle icon, which you
-       see here on your left.  Click it now.
-       You should see "Hooray" appear below.
+       see here on your left.  Click it now. You should see "Hooray"
+       appear below.
      </SUMMARY>
      <BODY>
        <p>
@@ -109,20 +106,24 @@ Krishna Kumar<br/>
         important to make your code immediately understandable by a
         new reader. Do not use abbreviations that are ambiguous or
         unfamiliar to readers outside your project, and do not
-        abbreviate by deleting letters within a word.
+        abbreviate by deleting letters within a word. Short names,
+	such as x and i, are meaningful when used conventionally; 
+	that is, x should be a local variable or a parameter and 
+	i should be a loop index. 
       </p>
       <CODE_SNIPPET>
-        int price_count_reader;    // No abbreviation.
+        int particles_in_elements; // No abbreviation.
         int num_errors;            // "num" is a widespread convention.
-        int num_dns_connections;   // Most people know what "DNS" stands for.
+        int num_mpm_point;         // Most people know what "mpm" stands for.
+        for (int i = 0; ...        // Used conventionally as a loop index.
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
         int n;                     // Meaningless.
         int nerr;                  // Ambiguous abbreviation.
         int n_comp_conns;          // Ambiguous abbreviation.
-        int wgc_connections;       // Only your group knows what this stands for.
+        int lem_connections;       // Only your group knows what this stands for.
         int pc_reader;             // Lots of things can be abbreviated "pc".
-        int cstmr_id;              // Deletes internal letters.
+        int prtcl_id;              // Deletes internal letters.
       </BAD_CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -130,11 +131,8 @@ Krishna Kumar<br/>
   <STYLEPOINT title="File Names">
     <SUMMARY>
       Filenames should be all lowercase and can include underscores
-      (<code>_</code>) or dashes (<code>-</code>).  Follow the
-      convention that your
-      
-      project
-      uses. If there is no consistent local pattern to follow, prefer "_".
+      (<code>_</code>). C++ files should end in <code>.cc</code> and
+      header files should end in <code>.hh</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -143,7 +141,6 @@ Krishna Kumar<br/>
       <p>
         <code>
           my_useful_class.cc<br/>
-          my-useful-class.cc<br/>
           myusefulclass.cc<br/>
           myusefulclass_test.cc  // _unittest and _regtest are deprecated.<br/>
         </code>
@@ -155,7 +152,7 @@ Krishna Kumar<br/>
       <p>
         Do not use filenames that already exist
         in <code>/usr/include</code>, such as <code>db.hh</code>.
-      </p>
+      </p>      
       <p>
         In general, make your filenames very specific.  For example,
         use <code>http_server_logs.hh</code> rather
