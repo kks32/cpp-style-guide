@@ -327,10 +327,12 @@ Krishna Kumar<br/>
           class MpmMaterials {
            public:
             ...
-            int num_materials() const {
+            int num_materials() const 
+	    {
                 return num_materials_; 
             }
-            void set_num_materials(int num_materials) {
+            void set_num_materials(int num_materials) 
+	    {
                 num_materials_ = num_materials;
             }
 
@@ -631,7 +633,8 @@ Krishna Kumar<br/>
         <CODE_SNIPPET>
         // foo.tcc
         template &lt;typename T&gt; 
-        void Foo&lt;T&gt;::doSomething(T param) {
+        void Foo&lt;T&gt;::doSomething(T param) 
+	{
             //implementation
         }
         </CODE_SNIPPET>
@@ -760,9 +763,8 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Namespaces">
     <SUMMARY>
       Unnamed namespaces in <code>.cc</code> files are encouraged.  With
-      named namespaces, choose the name based on the
-      
-      project, and possibly its path.
+      named namespaces, choose the name based on the project, and possibly
+      its path.
       Do not use a <SYNTAX>using-directive</SYNTAX>.
       Do not use inline namespaces.
     </SUMMARY>
@@ -793,7 +795,7 @@ Krishna Kumar<br/>
         <CODE_SNIPPET>
             namespace X {
             inline namespace Y {
-              void foo();
+            void foo();
             }
             }
         </CODE_SNIPPET>
@@ -835,8 +837,8 @@ Krishna Kumar<br/>
                    namespace {                           // This is in a .cc file.
 
                    // The content of a namespace is not indented
-                   enum { kUnused, kEOF, kError };       // Commonly used tokens.
-                   bool AtEof() { return pos_ == kEOF; }  // Uses our namespace's EOF.
+                   enum { unused, eof, error };       // Commonly used tokens.
+                   bool AtEof() { return pos_ == eof; }  // Uses our namespace's EOF.
 
                    }  // namespace
                  </CODE_SNIPPET>
@@ -1130,7 +1132,7 @@ Krishna Kumar<br/>
       <BAD_CODE_SNIPPET>
         // Inefficient implementation:
         for (int i = 0; i &lt; 1000000; ++i) {
-          Foo f;  // My ctor and dtor get called 1000000 times each.
+          Foo f;  // Constructor &amp; Destructor get called 1000000 times each.
           f.DoSomething(i);
         }
       </BAD_CODE_SNIPPET>
@@ -1256,10 +1258,7 @@ Krishna Kumar<br/>
                (which is against the rules, but still), the
                constructor code will be called before
                <code>main()</code>, possibly breaking some implicit
-               assumptions in the constructor code.  For instance,
-               
-               <a href="http://google-gflags.googlecode.com/">gflags</a>
-               will not yet have been initialized.
+               assumptions in the constructor code.  
                </li>
         </ul>
       </CONS>
@@ -1286,8 +1285,8 @@ Krishna Kumar<br/>
         object with no arguments.  It is always called when calling
         <code>new[]</code> (for arrays). In-class member initialization means
         declaring a member variable using a construction like <code>int count_
-        = 17;</code> or <code>string name_{"abc"};</code>, as opposed to just
-        <code>int count_;</code> or <code>string name_;</code>.
+        = 17;</code> or <code>std::string name_{"abc"};</code>, as opposed to just
+        <code>int count_;</code> or <code>std::string name_;</code>.
       </DEFINITION>
       <PROS>
         <p>
@@ -1357,7 +1356,7 @@ Krishna Kumar<br/>
       <DEFINITION>
         Normally, if a constructor takes one argument, it can be used
         as a conversion.  For instance, if you define
-        <code>Foo::Foo(string name)</code> and then pass a string to a
+        <code>Foo::Foo(std::string name)</code> and then pass a string to a
         function that expects a <code>Foo</code>, the constructor will
         be called to convert the string into a <code>Foo</code> and
         will pass the <code>Foo</code> to your function for you.  This
@@ -1392,7 +1391,7 @@ Krishna Kumar<br/>
         <p>
           Finally, constructors that take only an initializer_list may be
           non-explicit. This is to permit construction of your type using the
-          assigment form for brace init lists (i.e. <code>MyType m = {1, 2}
+          assigment form for brace init lists (i.e. <code>MpmType materials = {1, 2}
           </code>).
         </p>
       </DECISION>
