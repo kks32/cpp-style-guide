@@ -180,26 +180,32 @@ Krishna Kumar<br/>
     <SUMMARY>
       Type names start with a capital letter and have a capital
       letter for each new word, with no underscores:
-      <code>MyExcitingClass</code>, <code>MyExcitingEnum</code>.
+      <code>MyParticleClass</code>, <code>MyParticleEnum</code>.
     </SUMMARY>
     <BODY>
       <p>
         The names of all types — classes, structs, typedefs, and enums
         — have the same naming convention.  Type names should start
         with a capital letter and have a capital letter for each new
-        word.  No underscores.  For example:
+        word.  No underscores.
+      </p>
+      <p>
+	When confronted with a situation where you could use an all
+	upper case abbreviation instead use an initial upper case letter
+	followed by all lower case letters. No matter what.
+	For example:
       </p>
       <CODE_SNIPPET>
         // classes and structs
-        class UrlTable { ...
-        class UrlTableTester { ...
-        struct UrlTableProperties { ...
+        class ParticleSoilMpm { ...
+        class ParticleMpm { ...
+        struct ParticleMpmProperties { ...
 
         // typedefs
-        typedef hash_map&lt;UrlTableProperties *, string&gt; PropertiesMap;
+        typedef hash_map&lt;ParticleMpm*, std::string&gt; PropertiesMap;
 
         // enums
-        enum UrlTableErrors { ...
+        enum MpmErrors { ...
       </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -207,21 +213,27 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Variable Names">
     <SUMMARY>
       Variable names are all lowercase, with underscores between
-      words.  Class member variables have trailing underscores.  For
-      instance: <code>my_exciting_local_variable</code>,
-      <code>my_exciting_member_variable_</code>.
+      words. Class member variables have trailing underscores.  For
+      instance: <code>local_variable</code>,
+      <code>member_variable_</code>.
     </SUMMARY>
     <BODY>
+      <p>
+	Don't use names beginning with "my". The word "my" isn't generally
+	meaningful, since it can refer to any human in the world.
+	If you want to personalize a class or variable name, give your class
+	or variable a name that describes its function, not its authorship. 
+      </p>
       <SUBSECTION title="Common Variable names">
         <p>
           For example:
         </p>
         <CODE_SNIPPET>
-          string table_name;  // OK - uses underscore.
-          string tablename;   // OK - all lowercase.
+          std::string material_name;  // OK - uses underscore.
+          std::string materialname;   // OK - all lowercase.
         </CODE_SNIPPET>
         <BAD_CODE_SNIPPET>
-          string tableName;   // Bad - mixed case.
+          std::string materialName;   // Bad - mixed case.
         </BAD_CODE_SNIPPET>
       </SUBSECTION>
 
@@ -233,8 +245,8 @@ Krishna Kumar<br/>
           underscore.
         </p>
         <CODE_SNIPPET>
-          string table_name_;  // OK - underscore at end.
-          string tablename_;   // OK.
+          std::string material_name_;  // OK - underscore at end.
+          std::string materialname_;   // OK.
         </CODE_SNIPPET>
       </SUBSECTION>
 
@@ -245,9 +257,9 @@ Krishna Kumar<br/>
           in classes have.
         </p>
         <CODE_SNIPPET>
-          struct UrlTableProperties {
-            string name;
-            int num_entries;
+          struct ParticleMpmProperties {
+            std::string name;
+            int num_points;
           }
         </CODE_SNIPPET>
         <p>
@@ -258,16 +270,15 @@ Krishna Kumar<br/>
 
       <SUBSECTION title="Global Variables">
         <p>
-          There are no special requirements for global variables,
-          which should be rare in any case, but if you use one,
-          consider prefixing it with <code>g_</code> or some other
-          marker to easily distinguish it from local variables.
+          Avoid using global variables. If your code requires global variables
+	  think again, and restructure your code. In worst case, define your
+	  global variables inside a namespace.
         </p>
       </SUBSECTION>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Constant Names">
+  <STYLEPOINT title="Const">
     <SUMMARY>
       Use a <code>k</code> followed by mixed case:
       <code>kDaysInAWeek</code>.
