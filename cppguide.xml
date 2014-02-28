@@ -331,11 +331,11 @@ Krishna Kumar<br/>
         {
             return num_materials_; 
         }
-
         void set_num_materials(int num_materials) 
         {
           num_materials_ = num_materials;
-        }       
+        }
+        
         private:
         int num_materials_;
         };
