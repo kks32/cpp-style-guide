@@ -446,16 +446,16 @@ Krishna Kumar<br/>
       <p>
         To guarantee uniqueness, they should be based on the full path
         in a project's source tree.  For example, the file
-        <code>foo/src/bar/baz.hh</code> in project <code>foo</code> should
-        have the following guard:
+        <code>mpm/src/material/bingham.hh</code> in project <code>mpm</code>
+	should have the following guard:
       </p>
       <CODE_SNIPPET>
-         #ifndef FOO_BAR_BAZ_H_
-         #define FOO_BAR_BAZ_H_
+         #ifndef MPM_SRC_MATERIAL_BINGHAM_H_
+         #define MPM_SRC_MATERIAL_BINGHAM_H_
 
          ...
 
-         #endif  // FOO_BAR_BAZ_H_
+         #endif  // MPM_SRC_MATERIAL_BINGHAM_H_
       </CODE_SNIPPET>
       
     </BODY>
@@ -531,7 +531,7 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Inline Functions">
     <SUMMARY>
-      Define functions inline only when they are small, say, 10 lines
+      Define functions inline only when they are small, say, 3 lines
       or less.
     </SUMMARY>
     <BODY>
@@ -556,9 +556,19 @@ Krishna Kumar<br/>
         of the instruction cache.
       </CONS>
       <DECISION>
+	<p>
+          The definition of an inline function needs to be in a header
+          file, so that the compiler has the definition available for
+          inlining at the call sites.  However, implementation code
+          properly belongs in <code>.cc</code> files, and we do not like
+          to have much actual code in <code>.hh</code> files unless there
+          is a readability or performance advantage. For example,
+	  accessors and mutators should certainly be inside 
+	  a class definition.
+	</p>
         <p>
           A decent rule of thumb is to not inline a function if it is
-          more than 10 lines long. Beware of destructors, which are
+          more than 5 lines long. Beware of destructors, which are
           often longer than they appear because of implicit member-
           and base-destructor calls!
         </p>
@@ -588,37 +598,48 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-        The definition of an inline function needs to be in a header
-        file, so that the compiler has the definition available for
-        inlining at the call sites.  However, implementation code
-        properly belongs in <code>.cc</code> files, and we do not like
-        to have much actual code in <code>.hh</code> files unless there
-        is a readability or performance advantage.
+	A template is not a class or a function. A template is a
+	"pattern" that the compiler uses to generate a family of
+	classes or functions.
       </p>
       <p>
-        If an inline function definition is short, with very little,
-        if any, logic in it, you should put the code in your
-        <code>.hh</code> file.  For example, accessors and mutators
-        should certainly be inside a class definition.  More complex
-        inline functions may also be put in a <code>.hh</code> file for
-        the convenience of the implementer and callers, though if this
-        makes the <code>.hh</code> file too unwieldy you can instead
-        put that code in a separate <code>-inl.hh</code> file.
-        This separates the implementation from the class definition,
-        while still allowing the implementation to be included where
-        necessary.
+	In order for the compiler to generate the code, it must 
+	see both the template definition (not just declaration) and
+	the specific types/whatever used to "fill in" the template.
+	For example, if you're trying to use a <code>Foo&lt;int&gt;</code>,
+	the compiler must see both the Foo template and the fact that 
+	you're trying to make a specific <code>Foo&lt;int&gt;</code>.
       </p>
       <p>
-        Another use of <code>-inl.hh</code> files is for definitions of
-        function templates.  This can be used to keep your template
-        definitions easy to read.
+	A common solution to this is to write the template declaration 
+	in a header file, then implement the class in an implementation 
+	file (for example .tcc), and include this implementation file
+	at the end of the header.
       </p>
       <p>
-        Do not forget that a <code>-inl.hh</code> file requires a
-        <a href="#The__define_Guard"><code>#define</code> guard</a> just
-        like any other header file.
+        <CODE_SNIPPET>
+        // foo.hh
+        template &lt;typename T&gt;
+        struct Foo {
+            void doSomething(T param);
+        };
+
+        #include "foo.tcc"
+        </CODE_SNIPPET>
       </p>
-      
+      <p>
+        <CODE_SNIPPET>
+        // foo.tcc
+        template &lt;typename T&gt; 
+        void Foo&lt;T&gt;::doSomething(T param) {
+            //implementation
+        }
+        </CODE_SNIPPET>
+      </p>
+      <p>
+	This way, implementation is still separated from declaration,
+	but is accessible to the compiler.
+      </p>
     </BODY>
   </STYLEPOINT>
 
@@ -666,11 +687,11 @@ Krishna Kumar<br/>
         directory) or <code>..</code> (the parent directory).  For
         example,
         
-        <code>google-awesome-project/src/base/logging.hh</code>
+        <code>mpm/src/material/bingham.hh</code>
         should be included as
       </p>
       <CODE_SNIPPET>
-        #include "base/logging.hh"
+        #include "material/bingham.hh"
       </CODE_SNIPPET>
       <p>
         In <code><var>dir/foo</var>.cc</code> or <code><var>dir/foo_test</var>.cc</code>,
@@ -713,36 +734,24 @@ Krishna Kumar<br/>
       <p>
         For example, the includes in
         
-        <code>google-awesome-project/src/foo/internal/fooserver.cc</code>
+        <code>mpm/src/material/base/materialbase.cc</code>
         might look like this:
       </p>
       <CODE_SNIPPET>
-        #include "foo/public/fooserver.hh"  // Preferred location.
+        #include "mpm/base/materialbase.hh"  // Preferred location.
 
         #include &lt;sys/types.hh&gt;
         #include &lt;unistd.hh&gt;
-        #include &lt;hash_map&gt;
         #include &lt;vector&gt;
 
-        #include "base/basictypes.hh"
-        #include "base/commandlineflags.hh"
-        #include "foo/public/bar.hh"
+        #include "base/materialbase.hh"
+        #include "base/materialcontainer.hh"
       </CODE_SNIPPET>
       <p>
         Exception: sometimes, system-specific code needs conditional includes.
         Such code can put conditional includes after other includes.
         Of course, keep your system-specific code small and localized.
-        Example:
       </p>
-      <CODE_SNIPPET>
-        #include "foo/public/fooserver.hh"
-
-        #include "base/port.hh"  // For LANG_CXX11.
-
-        #ifdef LANG_CXX11
-        #include &lt;initializer_list&gt;
-        #endif  // LANG_CXX11
-      </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
