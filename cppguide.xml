@@ -324,21 +324,22 @@ Krishna Kumar<br/>
           <code>num_materials_</code>.
         </p>
         <CODE_SNIPPET>
-          class MpmMaterials {
-           public:
-            ...
-            int num_materials() const 
-	    {
-                return num_materials_; 
-            }
-            void set_num_materials(int num_materials) 
-	    {
-                num_materials_ = num_materials;
-            }
+        class MpmMaterials {
+        public:
+        ...
+        int num_materials() const 
+        {
+            return num_materials_; 
+        }
 
-           private:
-            int num_materials_;
-          };
+        void set_num_materials(int num_materials) 
+        {
+          num_materials_ = num_materials;
+        }       
+        private:
+        int num_materials_;
+        };
+
         </CODE_SNIPPET>
         <p>
           You may also use lowercase letters for other very short
