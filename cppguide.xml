@@ -284,7 +284,7 @@ Krishna Kumar<br/>
           Really? are you going to use global variables in your code?
 	  If your code requires global variables, think again, and 
 	  restructure your code. In worst case, define your
-	  global variables inside a namespace.
+	  global variables as <code>const</code>inside a namespace.
         </p>
       </SUBSECTION>
     </BODY>
@@ -292,28 +292,27 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Function Names">
     <SUMMARY>
-      Regular functions have mixed case; accessors and mutators match
-      the name of the variable: <code>ParticleFunction()</code>,
-      <code>ParticleMethod()</code>,
+      Functions should be lower case; accessors and mutators match
+      the name of the variable: <code>particle_function()</code>,
+      <code>particle_method()</code>,
       <code>member_variable()</code>,
       <code>set_member_variable()</code>.
     </SUMMARY>
     <BODY>
       <SUBSECTION title="Regular Functions">
         <p>
-          Functions should start with a capital letter and have a
-          capital letter for each new word. No underscores.
+          Functions should be lower case. Use underscores to seperate words.
         </p>
         <p>
-          If your function crashes upon an error, you should append OrDie to
+          If your function crashes upon an error, you should append _or_die to
           the function name. This only applies to functions which could be
           used by production code and to errors that are reasonably
           likely to occur during normal operation.
         </p>
         <CODE_SNIPPET>
-          AddNewMaterial()
-          DeleteMaterialPoint()
-          OpenFileOrDie()
+          add_new_material()
+          delete_material_point()
+          open_file_or_die()
         </CODE_SNIPPET>
       </SUBSECTION>
 
@@ -624,7 +623,7 @@ Krishna Kumar<br/>
         // foo.h
         template &lt;typename T&gt;
         struct Foo {
-            void doSomething(T param);
+            void do_something(T param);
         };
 
         #include "foo.tcc"
@@ -634,7 +633,7 @@ Krishna Kumar<br/>
         <CODE_SNIPPET>
         // foo.tcc
         template &lt;typename T&gt; 
-        void Foo&lt;T&gt;::doSomething(T param) 
+        void Foo&lt;T&gt;::do_something(T param) 
         {
             //implementation
         }
@@ -1149,6 +1148,10 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
+	Global variables are allowed, only when you declare them as <code>const</code>
+	and are defined inside a namespace.
+      </p>
+      <p>
         Objects with static storage duration, including global variables,
         static variables, static class member variables, and function static
         variables, must be Plain Old Data (POD): only ints, chars, floats, or
@@ -1662,26 +1665,22 @@ Krishna Kumar<br/>
       </CONS>
       <DECISION>
         Multiple inheritance is allowed only when all superclasses, with the
-        possible exception of the first one, are <A href="#Interfaces">pure
-        interfaces</A>.  In order to ensure that they remain pure interfaces,
-        they must end with the <code>Interface</code> suffix.
-        <SUBSECTION title="Note:">
-          There is an <a href="#Windows_Code">exception</a> to this
-          rule on Windows.
-        </SUBSECTION>
+        possible exception of the first one, are <A href="#Abstract_Base_Class">pure
+        interfaces</A>. 
       </DECISION>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Interfaces">
+  <STYLEPOINT title="Abstract Base Class">
     <SUMMARY>
-      Classes that satisfy certain conditions are allowed, but not required, to
-      end with an <code>Interface</code> suffix.
+      Classes that provide an interface for creating families of related or dependent
+      objects without specifying their concrete class.
     </SUMMARY>
     <BODY>
       <DEFINITION>
         <p>
-        A class is a pure interface if it meets the following requirements:
+        A class is a interface or an abstract base class if it meets the 
+	following requirements:
         </p>
         <ul>
           <li> It has only public pure virtual ("<code>= 0</code>") methods
@@ -1693,8 +1692,7 @@ Krishna Kumar<br/>
                provided, it must take no arguments and it must be protected.
                </li>
           <li> If it is a subclass, it may only be derived from classes
-               that satisfy these conditions and are tagged with the
-               <code>Interface</code> suffix.
+               that satisfy these conditions.
                </li>
         </ul>
         <p>
@@ -1707,26 +1705,6 @@ Krishna Kumar<br/>
           edition, section 12.4 for details.
         </p>
       </DEFINITION>
-      <PROS>
-        Tagging a class with the <code>Interface</code> suffix lets
-        others know that they must not add implemented methods or non
-        static data members.  This is particularly important in the case of
-        <A href="#Multiple_Inheritance">multiple inheritance</A>.
-        Additionally, the interface concept is already well-understood by
-        Java programmers.
-      </PROS>
-      <CONS>
-        The <code>Interface</code> suffix lengthens the class name, which
-        can make it harder to read and understand.  Also, the interface
-        property may be considered an implementation detail that shouldn't
-        be exposed to clients.
-      </CONS>
-      <DECISION>
-        A class may end with <code>Interface</code> only if it meets the
-        above requirements.  We do not require the converse, however:
-        classes that meet the above requirements are not required to end
-        with <code>Interface</code>.
-      </DECISION>
     </BODY>
   </STYLEPOINT>
 
@@ -1829,17 +1807,12 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Access Control">
     <SUMMARY>
       Make data members <code>private</code>, and provide
-      access to them through accessor functions as needed (for
-      technical reasons, we allow data members of a test fixture class
-      to be <code>protected</code> when using
-      
-      <A href="http://code.google.com/p/googletest/">
-      Google Test</A>). Typically a variable would be
-      called <code>foo_</code> and the accessor function
+      access to them through accessor functions as needed. Use <code>protected</code> 
+      only when using it as a common data for implementers of the base class. 
+      Typically a variable would be called <code>foo_</code> and the accessor function
       <code>foo()</code>.  You may also want a mutator function
       <code>set_foo()</code>.
-      Exception: <code>static const</code> data members (typically
-      called <code>kFoo</code>) need not be <code>private</code>.
+      Exception: <code>static const</code> data members need not be <code>private</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -1847,7 +1820,8 @@ Krishna Kumar<br/>
         file.
       </p>
       <p>
-        See also <a href="#Inheritance">Inheritance</a> and <a href="#Function_Names">Function Names</a>.
+        See also <a href="#Inheritance">Inheritance</a> and 
+	<a href="#Function_Names">Function Names</a>.
       </p>
     </BODY>
   </STYLEPOINT>
@@ -1878,10 +1852,9 @@ Krishna Kumar<br/>
         <li> Data Members (except <code>static const</code> data members)</li>
       </ul>
       <p>
-        Friend declarations should always be in the private section, and
-        the <code>DISALLOW_COPY_AND_ASSIGN</code> macro invocation
-        should be at the end of the <code>private:</code> section. It
-        should be the last thing in the class. See <a href="#Copy_Constructors">Copy Constructors</a>.
+        Friend declarations should always be in the private section. It
+        should be the last thing in the class.
+	See <a href="#Copy_Constructors">Copy Constructors</a>.
       </p>
       <p>
         Method definitions in the corresponding <code>.cc</code> file
@@ -1890,7 +1863,8 @@ Krishna Kumar<br/>
       <p>
         Do not put large method definitions inline in the class
         definition.  Usually, only trivial or performance-critical,
-        and very short, methods may be defined inline.  See <a href="#Inline_Functions">Inline Functions</a> for more
+        and very short, methods may be defined inline. 
+	See <a href="#Inline_Functions">Inline Functions</a> for more
         details.
       </p>
     </BODY>
@@ -1916,10 +1890,7 @@ Krishna Kumar<br/>
       </p>
       <p>
         You could find long and complicated functions when working
-        with
-        
-        some
-        code.  Do not be intimidated by modifying existing
+        with some code.  Do not be intimidated by modifying existing
         code: if working with such a function proves to be difficult,
         you find that errors are hard to debug, or you want to use a
         piece of it in several different contexts, consider breaking
