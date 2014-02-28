@@ -267,42 +267,35 @@ Krishna Kumar<br/>
           discussion of when to use a struct versus a class.
         </p>
       </SUBSECTION>
+      
+      <SUBSECTION title="Enumerator Variables">
+	<p>
+	  Enumerator variables in <code>enum</code> should be named like
+	  regular variables.
+	</p>
+	<CODE_SNIPPET>
+        enum MpmMaterials { linear_elastic, bingham, camclay };
+	</CODE_SNIPPET>
+      </SUBSECTION>
 
       <SUBSECTION title="Global Variables">
         <p>
-          Avoid using global variables. If your code requires global variables
-	  think again, and restructure your code. In worst case, define your
+          Really? are you going to use global variables in your code?
+	  If your code requires global variables, think again, and 
+	  restructure your code. In worst case, define your
 	  global variables inside a namespace.
         </p>
       </SUBSECTION>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Const">
-    <SUMMARY>
-      Use a <code>k</code> followed by mixed case:
-      <code>kDaysInAWeek</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        All compile-time constants, whether they are declared locally,
-        globally, or as part of a class, follow a slightly different
-        naming convention from other variables. Use a <code>k</code>
-        followed by words with uppercase first letters:
-      </p>
-      <CODE_SNIPPET>
-        const int kDaysInAWeek = 7;
-      </CODE_SNIPPET>
-    </BODY>
-  </STYLEPOINT>
-
   <STYLEPOINT title="Function Names">
     <SUMMARY>
       Regular functions have mixed case; accessors and mutators match
-      the name of the variable: <code>MyExcitingFunction()</code>,
-      <code>MyExcitingMethod()</code>,
-      <code>my_exciting_member_variable()</code>,
-      <code>set_my_exciting_member_variable()</code>.
+      the name of the variable: <code>ParticleFunction()</code>,
+      <code>ParticleMethod()</code>,
+      <code>member_variable()</code>,
+      <code>set_member_variable()</code>.
     </SUMMARY>
     <BODY>
       <SUBSECTION title="Regular Functions">
@@ -317,8 +310,8 @@ Krishna Kumar<br/>
           likely to occur during normal operation.
         </p>
         <CODE_SNIPPET>
-          AddTableEntry()
-          DeleteUrl()
+          AddNewMaterial()
+          DeleteMaterialPoint()
           OpenFileOrDie()
         </CODE_SNIPPET>
       </SUBSECTION>
@@ -328,17 +321,21 @@ Krishna Kumar<br/>
           Accessors and mutators (get and set functions) should match
           the name of the variable they are getting and setting.  This
           shows an excerpt of a class whose instance variable is
-          <code>num_entries_</code>.
+          <code>num_materials_</code>.
         </p>
         <CODE_SNIPPET>
-          class MyClass {
+          class MpmMaterials {
            public:
             ...
-            int num_entries() const { return num_entries_; }
-            void set_num_entries(int num_entries) { num_entries_ = num_entries; }
+            int num_materials() const {
+                return num_materials_; 
+            }
+            void set_num_materials(int num_materials) {
+                num_materials_ = num_materials;
+            }
 
            private:
-            int num_entries_;
+            int num_materials_;
           };
         </CODE_SNIPPET>
         <p>
@@ -356,7 +353,7 @@ Krishna Kumar<br/>
     <SUMMARY>
       Namespace names are all lower-case, and based on project names and
       possibly their directory structure:
-      <code>google_awesome_project</code>.
+      <code>mpm_awesome_project</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -366,64 +363,28 @@ Krishna Kumar<br/>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Enumerator Names">
-    <SUMMARY>
-      Enumerators should be named <i>either</i> like
-      <A HREF="#Constant_Names">constants</A> or like
-      <A HREF="#Macro_Names">macros</A>: either <code>kEnumName</code>
-      or <code>ENUM_NAME</code>.
-    </SUMMARY>
-    <BODY>
-      <p>
-        Preferably, the individual enumerators should be named like
-        <A HREF="#Constant_Names">constants</A>.  However, it is also
-        acceptable to name them like <A HREF="#Macro_Names">macros</A>.    The enumeration name,
-        <code>UrlTableErrors</code> (and
-        <code>AlternateUrlTableErrors</code>), is a type, and
-        therefore mixed case.
-      </p>
-      <CODE_SNIPPET>
-        enum UrlTableErrors {
-          kOK = 0,
-          kErrorOutOfMemory,
-          kErrorMalformedInput,
-        };
-        enum AlternateUrlTableErrors {
-          OK = 0,
-          OUT_OF_MEMORY = 1,
-          MALFORMED_INPUT = 2,
-        };
-      </CODE_SNIPPET>
-      <p>
-        Until January 2009, the style was to name enum values like
-        <A HREF="#Macro_Names">macros</A>.  This caused problems with
-        name collisions between enum values and macros.  Hence, the
-        change to prefer constant-style naming was put in place.  New
-        code should prefer constant-style naming if possible.
-        However, there is no reason to change old code to use
-        constant-style names, unless the old names are actually
-        causing a compile-time problem.
-      </p>
-      
-    </BODY>
-  </STYLEPOINT>
-
   <STYLEPOINT title="Macro Names">
     <SUMMARY>
       You're not really going to <A HREF="#Preprocessor_Macros">define
-      a macro</A>, are you?  If you do, they're like this:
-      <code>MY_MACRO_THAT_SCARES_SMALL_CHILDREN</code>.
+      a macro</A>, are you? 
     </SUMMARY>
     <BODY>
       <p>
         Please see the <a href="#Preprocessor_Macros">description of
         macros</a>; in general macros should <em>not</em> be used.
-        However, if they are absolutely needed, then they should be
-        named with all capitals and underscores.
+        However, the only exception being <code>#define</code> guards,
+	then they should be named with all capitals and underscores.
+	Macros should not be used for any other purpose.
+      </p>
+      <p>
+	Use facilities from the C++ language proper, such as inline 
+	functions, templates, constructors (for initialization),
+	destructors (for cleanup), exceptions (for exiting contexts), etc
+	instead of using Macros.
       </p>
       <CODE_SNIPPET>
-        #define ROUND(x) ...
-        #define PI_ROUNDED 3.0
+      #define _MPM2D_
+      #define _FLUID_
       </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -2714,6 +2675,7 @@ Krishna Kumar<br/>
       Use <code>const</code> whenever it makes sense.
       With C++11,
       <code>constexpr</code> is a better choice for some uses of const.
+      <a href="http://www.possibility.com/Cpp/const.html"> More information </a> about const correctness.
     </SUMMARY>
     <BODY>
       <DEFINITION>
@@ -3100,14 +3062,17 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Preprocessor Macros">
     <SUMMARY>
-      Be very cautious with macros.  Prefer inline functions, enums,
+      Never use Macros. Prefer inline functions, enums, 
       and <code>const</code> variables to macros.
     </SUMMARY>
     <BODY>
       <p>
         Macros mean that the code you see is not the same as the code
         the compiler sees.  This can introduce unexpected behavior,
-        especially since macros have global scope.
+        especially since macros have global scope. Macros do not obey 
+	the C++ scope and type rules. Consequently, C++ provides
+	alternatives that fit better with the rest of C++, 
+	such as inline functions, templates, and namespaces. 
       </p>
       <p>
         Luckily, macros are not nearly as necessary in C++ as they are
@@ -3146,7 +3111,7 @@ Krishna Kumar<br/>
         <li> Try not to use macros that expand to unbalanced C++
              constructs, or at least document that behavior well.
              </li>
-        <li> Prefer not using <code>##</code> to generate function/class/variable
+        <li> <emph> DO NOT USE </emph> <code>##</code> to generate function/class/variable
              names.
              </li>
       </ul>
