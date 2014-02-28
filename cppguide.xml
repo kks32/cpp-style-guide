@@ -131,7 +131,8 @@ Krishna Kumar<br/>
     <SUMMARY>
       Filenames should be all lowercase and can include underscores
       (<code>_</code>). C++ files should end in <code>.cc</code> and
-      header files should end in <code>.hh</code>.
+      header files should end in <code>.h</code>. Follow the conventions 
+      of your project.
     </SUMMARY>
     <BODY>
       <p>
@@ -150,19 +151,19 @@ Krishna Kumar<br/>
       </p>      
       <p>
         In general, make your filenames very specific.  For example,
-        use <code>particle_soil_mpm.hh</code> rather
-        than <code>particle.hh</code>.  A very common case is to have a
-        pair of files called, e.g., <code>foo_bar.hh</code>
+        use <code>particle_soil_mpm.h</code> rather
+        than <code>particle.h</code>.  A very common case is to have a
+        pair of files called, e.g., <code>foo_bar.h</code>
         and <code>foo_bar.cc</code>, defining a class
         called <code>FooBar</code>.
       </p>
       <p>
-        Inline functions must be in a <code>.hh</code> file. 
+        Inline functions must be in a <code>.h</code> file. 
 	However, for shared template code the class definitions
 	may go into a third file that ends in <code>.tcc</code>.  
       </p>
       <CODE_SNIPPET>
-        particle_soil_mpm.hh      // The class declaration.
+        particle_soil_mpm.h      // The class declaration.
         particle_soil_mpm.cc      // The class definition.
         particle_soil_mpm.tcc     // Templatised class definitions.
       </CODE_SNIPPET>
@@ -180,7 +181,7 @@ Krishna Kumar<br/>
     <SUMMARY>
       Type names start with a capital letter and have a capital
       letter for each new word, with no underscores:
-      <code>MyParticleClass</code>, <code>MyParticleEnum</code>.
+      <code>MpmParticleClass</code>, <code>MpmParticleEnum</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -386,7 +387,7 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
       #define _MPM2D_
-      #define _FLUID_
+      #define SRC_CARTESIAN_BINGHAM_FLUID_H_
       </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -421,7 +422,7 @@ Krishna Kumar<br/>
 <CATEGORY title="Header Files">
   <p>
     In general, every <code>.cc</code> file should have an associated
-    <code>.hh</code> file. There are some common exceptions, such as
+    <code>.h</code> file. There are some common exceptions, such as
     
     unittests
     and small <code>.cc</code> files containing just a <code>main()</code>
@@ -448,7 +449,7 @@ Krishna Kumar<br/>
       <p>
         To guarantee uniqueness, they should be based on the full path
         in a project's source tree.  For example, the file
-        <code>mpm/src/material/bingham.hh</code> in project <code>mpm</code>
+        <code>mpm/src/material/bingham.h</code> in project <code>mpm</code>
 	should have the following guard:
       </p>
       <CODE_SNIPPET>
@@ -524,16 +525,16 @@ Krishna Kumar<br/>
         Always <code>#include</code> the file that actually provides the
         declarations/definitions you need; do not rely on the symbol being
         brought in transitively via headers not directly included. One
-        exception is that <code>myfile.cc</code> may rely on
+        exception is that <code>mpmsoil.cc</code> may rely on
         <code>#include</code>s and forward declarations from its corresponding
-        header file <code>myfile.hh</code>.
+        header file <code>mpmsoil.h</code>.
       </DECISION>
     </BODY>
   </STYLEPOINT>
 
   <STYLEPOINT title="Inline Functions">
     <SUMMARY>
-      Define functions inline only when they are small, say, 3 lines
+      Define functions inline only when they are small, say, 5 lines
       or less.
     </SUMMARY>
     <BODY>
@@ -563,7 +564,7 @@ Krishna Kumar<br/>
           file, so that the compiler has the definition available for
           inlining at the call sites.  However, implementation code
           properly belongs in <code>.cc</code> files, and we do not like
-          to have much actual code in <code>.hh</code> files unless there
+          to have much actual code in <code>.h</code> files unless there
           is a readability or performance advantage. For example,
 	  accessors and mutators should certainly be inside 
 	  a class definition.
@@ -620,7 +621,7 @@ Krishna Kumar<br/>
       </p>
       <p>
         <CODE_SNIPPET>
-        // foo.hh
+        // foo.h
         template &lt;typename T&gt;
         struct Foo {
             void doSomething(T param);
@@ -634,7 +635,7 @@ Krishna Kumar<br/>
         // foo.tcc
         template &lt;typename T&gt; 
         void Foo&lt;T&gt;::doSomething(T param) 
-	{
+        {
             //implementation
         }
         </CODE_SNIPPET>
@@ -677,9 +678,9 @@ Krishna Kumar<br/>
       Use standard order for readability and to avoid hidden
       dependencies: C library, C++ library,
       
-      other libraries' <code>.hh</code>, your
+      other libraries' <code>.h</code>, your
       project's
-      <code>.hh</code>.
+      <code>.h</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -690,30 +691,30 @@ Krishna Kumar<br/>
         directory) or <code>..</code> (the parent directory).  For
         example,
         
-        <code>mpm/src/material/bingham.hh</code>
+        <code>mpm/src/material/bingham.h</code>
         should be included as
       </p>
       <CODE_SNIPPET>
-        #include "material/bingham.hh"
+        #include "material/bingham.h"
       </CODE_SNIPPET>
       <p>
         In <code><var>dir/foo</var>.cc</code> or <code><var>dir/foo_test</var>.cc</code>,
         whose main purpose is to implement or test the stuff in
-        <code><var>dir2/foo2</var>.hh</code>, order your includes as
+        <code><var>dir2/foo2</var>.h</code>, order your includes as
         follows:
       </p>
       <ol>
-        <li> <code><var>dir2/foo2</var>.hh</code> (preferred location
+        <li> <code><var>dir2/foo2</var>.h</code> (preferred location
           — see details below).</li>
         <li> C system files.</li>
         <li> C++ system files.</li>
-        <li> Other libraries' <code>.hh</code> files.</li>
+        <li> Other libraries' <code>.h</code> files.</li>
         <li> 
              Your project's
-             <code>.hh</code> files.</li>
+             <code>.h</code> files.</li>
       </ol>
       <p>
-        With the preferred ordering, if <code><var>dir2/foo2</var>.hh</code>
+        With the preferred ordering, if <code><var>dir2/foo2</var>.h</code>
         omits any necessary includes, the build of
         <code><var>dir/foo</var>.cc</code> or
         <code><var>dir/foo</var>_test.cc</code> will break.
@@ -723,9 +724,9 @@ Krishna Kumar<br/>
       </p>
       <p>
         <code><var>dir/foo</var>.cc</code> and
-        <code><var>dir2/foo2</var>.hh</code> are often in the same
+        <code><var>dir2/foo2</var>.h</code> are often in the same
         directory (e.g. <code>base/basictypes_test.cc</code> and
-        <code>base/basictypes.hh</code>), but can be in different
+        <code>base/basictypes.h</code>), but can be in different
         directories too.
       </p>
       
@@ -741,14 +742,14 @@ Krishna Kumar<br/>
         might look like this:
       </p>
       <CODE_SNIPPET>
-        #include "mpm/base/materialbase.hh"  // Preferred location.
+        #include "mpm/base/materialbase.h"  // Preferred location.
 
-        #include &lt;sys/types.hh&gt;
-        #include &lt;unistd.hh&gt;
-        #include &lt;vector&gt;
+        #include &lt;sys/types.h&gt;
+        #include &lt;unistd.h&gt;
+        #include &lt;std::vector&gt;
 
-        #include "base/materialbase.hh"
-        #include "base/materialcontainer.hh"
+        #include "base/materialbase.h"
+        #include "base/materialcontainer.h"
       </CODE_SNIPPET>
       <p>
         Exception: sometimes, system-specific code needs conditional includes.
@@ -851,7 +852,7 @@ Krishna Kumar<br/>
                    an unnamed namespace.
                  </p>
                  </li>
-            <li> Do not use unnamed namespaces in <code>.hh</code>
+            <li> Do not use unnamed namespaces in <code>.h</code>
                  files.
                  </li>
           </ul>
@@ -866,7 +867,7 @@ Krishna Kumar<br/>
                  definitions/declarations, and forward declarations of classes
                  from other namespaces:
                  <CODE_SNIPPET>
-                   // In the .hh file
+                   // In the .h file
                    namespace material {
 
                    // All declarations are within the namespace scope.
@@ -896,7 +897,7 @@ Krishna Kumar<br/>
                    in other namespaces.
                  </p>
                  <CODE_SNIPPET>
-                   #include "a.hh"
+                   #include "a.h"
 
                    class C;  // Forward declaration of class C in the global namespace.
                    namespace a { class A; }  // Forward declaration of a::A.
@@ -929,23 +930,23 @@ Krishna Kumar<br/>
 
             <li> You may use a <SYNTAX>using-declaration</SYNTAX>
                  anywhere in a <code>.cc</code> file, and in functions,
-                 methods or classes in <code>.hh</code> files.
+                 methods or classes in <code>.h</code> files.
                  <CODE_SNIPPET>
                    // OK in .cc files.
-                   // Must be in a function, method or class in .hh files.
+                   // Must be in a function, method or class in .h files.
                    using ::foo::bar;
                  </CODE_SNIPPET>
                  </li>
 
             <li> Namespace aliases are allowed anywhere in a
                  <code>.cc</code> file, anywhere inside the named
-                 namespace that wraps an entire <code>.hh</code> file,
+                 namespace that wraps an entire <code>.h</code> file,
                  and in functions and methods.
                  <CODE_SNIPPET>
                    // Shorten access to some commonly used names in .cc files.
                    namespace fbz = ::foo::bar::baz;
 
-                   // Shorten access to some commonly used names (in a .hh file).
+                   // Shorten access to some commonly used names (in a .h file).
                    namespace librarian {
                    // The following alias is available to all files including
                    // this header (in namespace librarian):
@@ -953,7 +954,7 @@ Krishna Kumar<br/>
                    // within a project.
                    namespace pd_s = ::pipeline_diagnostics::sidetable;
 
-                   inline void my_inline_function() {
+                   inline void mpm_inline_function() {
                      // namespace alias local to a function (or method).
                      namespace fbz = ::foo::bar::baz;
                      ...
@@ -961,7 +962,7 @@ Krishna Kumar<br/>
                    }  // namespace librarian
                  </CODE_SNIPPET>
                  <p>
-                 Note that an alias in a .hh file is visible to everyone
+                 Note that an alias in a .h file is visible to everyone
                  #including that file, so public headers (those available
                  outside a project) and headers transitively #included by them,
                  should avoid defining aliases, as part of the general
@@ -1094,12 +1095,12 @@ Krishna Kumar<br/>
         int j = g();  // Good -- declaration has initialization.
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
-        vector&lt;int&gt; v;
+        std::vector&lt;int&gt; v;
         v.push_back(1);  // Prefer initializing using brace initialization.
         v.push_back(2);
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        vector&lt;int&gt; v = {1, 2};  // Good -- v starts initialized.
+        std::vector&lt;int&gt; v = {1, 2};  // Good -- v starts initialized.
       </CODE_SNIPPET>
       <p>
         Note that gcc implements <code>for (int i = 0; i
@@ -1130,7 +1131,7 @@ Krishna Kumar<br/>
         loop outside that loop:
       </p>
       <CODE_SNIPPET>
-        Foo f;  // My ctor and dtor get called once each.
+        Foo f;  // ctor and dtor get called once each.
         for (int i = 0; i &lt; 1000000; ++i) {
           f.DoSomething(i);
         }
@@ -1172,7 +1173,7 @@ Krishna Kumar<br/>
         destructor order.  For example, at program-end time a static
         variable might have been destroyed, but code still running —
         perhaps in another thread — tries to access it and fails.  Or
-        the destructor for a static <code>string</code> variable might be
+        the destructor for a static <code>std::string</code> variable might be
         run prior to the destructor for another variable that contains a
         reference to that string.
       </p>
@@ -1190,8 +1191,8 @@ Krishna Kumar<br/>
       </p>
       <p>
         As a result we only allow static variables to contain POD data.  This
-        rule completely disallows <code>vector</code> (use C arrays instead), or
-        <code>string</code> (use <code>const char []</code>).
+        rule completely disallows <code>std::vector</code> (use C arrays instead), or
+        <code>std::string</code> (use <code>const char []</code>).
       </p>
       
       <p>
@@ -1273,8 +1274,8 @@ Krishna Kumar<br/>
         The default constructor is called when we <code>new</code> a class
         object with no arguments.  It is always called when calling
         <code>new[]</code> (for arrays). In-class member initialization means
-        declaring a member variable using a construction like <code>int count_
-        = 17;</code> or <code>std::string name_{"abc"};</code>, as opposed to just
+        declaring a member variable using a construction like <code>int num_errors_
+        = 17;</code> or <code>std::string error_name_{"convergence"};</code>, as opposed to just
         <code>int count_;</code> or <code>std::string name_;</code>.
       </DEFINITION>
       <PROS>
@@ -1365,7 +1366,7 @@ Krishna Kumar<br/>
           We require all single argument constructors to be
           explicit. Always put <code>explicit</code> in front of
           one-argument constructors in the class definition:
-          <code>explicit Foo(string name);</code>
+          <code>explicit Foo(std::string name);</code>
         </p>
         <p>
           The exception is copy constructors, which, in the rare
@@ -1390,7 +1391,6 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Copy Constructors">
     <SUMMARY>
       Provide a copy constructor and assignment operator only when necessary.
-      Otherwise, disable them with <code>DISALLOW_COPY_AND_ASSIGN</code>.
     </SUMMARY>
     <BODY>
       <DEFINITION>
@@ -1433,41 +1433,12 @@ Krishna Kumar<br/>
         </p>
         <p>
           If your class does not need a copy constructor or assignment
-          operator, you must explicitly disable them.
-          
-          
+          operator, you must explicitly disable them.         
           To do so, add dummy declarations for the copy constructor and
           assignment operator in the <code>private:</code> section of your
           class, but do not provide any corresponding definition (so that
           any attempt to use them results in a link error). 
-        </p>
-        <p>
-          For convenience, a <code>DISALLOW_COPY_AND_ASSIGN</code> macro
-          can be used:
-        </p>
-        <CODE_SNIPPET>
-          // A macro to disallow the copy constructor and operator= functions
-          // This should be used in the private: declarations for a class
-          #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
-            TypeName(const TypeName&amp;);               \
-            void operator=(const TypeName&amp;)
-        </CODE_SNIPPET>
-        <p>
-          Then, in <code>class Foo</code>:
-        </p>
-        <CODE_SNIPPET>
-          class Foo {
-           public:
-            Foo(int f);
-            ~Foo();
-
-           private:
-            DISALLOW_COPY_AND_ASSIGN(Foo);
-          };
-        </CODE_SNIPPET>
-        <p>
-        </p>
-        
+        </p>       
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -1488,7 +1459,7 @@ Krishna Kumar<br/>
           syntax. For example:
         </p>
         <CODE_SNIPPET>
-          X::X(const string&amp; name) : name_(name) {
+          X::X(const std::string&amp; name) : name_(name) {
             ...
           }
 
@@ -1506,7 +1477,7 @@ Krishna Kumar<br/>
           public:
             Base();
             Base(int n);
-            Base(const string&amp; s);
+            Base(const std::string&amp; s);
             ...
           };
 
@@ -1988,7 +1959,7 @@ Krishna Kumar<br/>
           <code>const</code>:
         </p>
         <CODE_SNIPPET>
-          void Foo(const string &amp;in, string *out);
+          void Foo(const std::string &amp;in, std::string *out);
         </CODE_SNIPPET>
         <p>
           In fact it is a very strong convention in Google code that input
@@ -2033,14 +2004,14 @@ Krishna Kumar<br/>
       <DEFINITION>
         Rvalue references are a type of reference that can only bind to temporary
         objects. The syntax is similar to traditional reference syntax.
-        For example, <code>void f(string&amp;&amp; s);</code> declares a
+        For example, <code>void f(std::string&amp;&amp; s);</code> declares a
         function whose argument is an rvalue reference to a string.
       </DEFINITION>
       <PROS>
         <ul>
           <li>Defining a move constructor (a constructor taking an rvalue
             reference to the class type) makes it possible to move a value instead
-            of copying it. If <code>v1</code> is a <code>vector&lt;string&gt;</code>,
+            of copying it. If <code>v1</code> is a <code>std::vector&lt;std::string&gt;</code>,
             for example, then <code>auto v2(std::move(v1))</code> will probably
             just result in some simple pointer manipulation instead of copying a
             large amount of data. In some cases this can result in a major
@@ -2102,13 +2073,13 @@ Krishna Kumar<br/>
       <DEFINITION>
         <p>
           You may write a function that takes a
-          <code>const string&amp;</code> and overload it with another that
+          <code>const std::string&amp;</code> and overload it with another that
           takes <code>const char*</code>.
         </p>
         <CODE_SNIPPET>
-          class MyClass {
+          class MpmClass {
            public:
-            void Analyze(const string &amp;text);
+            void Analyze(const std::string &amp;text);
             void Analyze(const char *text, size_t textlen);
           };
         </CODE_SNIPPET>
@@ -2182,7 +2153,7 @@ Krishna Kumar<br/>
         </p>
         <CODE_SNIPPET>
           // Support up to 4 params by using a default empty AlphaNum.
-          string StrCat(const AlphaNum &amp;a,
+          std::string StrCat(const AlphaNum &amp;a,
                         const AlphaNum &amp;b = gEmptyAlphaNum,
                         const AlphaNum &amp;c = gEmptyAlphaNum,
                         const AlphaNum &amp;d = gEmptyAlphaNum);
@@ -2808,7 +2779,7 @@ Krishna Kumar<br/>
       size, use
       
       a precise-width integer type from
-      <code>&lt;stdint.hh&gt;</code>, such as <code>int16_t</code>. If
+      <code>&lt;stdint.h&gt;</code>, such as <code>int16_t</code>. If
       your variable represents a value that could ever be greater than or
       equal to 2^31 (2GiB), use a 64-bit type such as <code>int64_t</code>.
       Keep in mind that even if your value won't ever be too large for an
@@ -2832,7 +2803,7 @@ Krishna Kumar<br/>
       <DECISION>
         <p>
           
-          <code>&lt;stdint.hh&gt;</code> defines
+          <code>&lt;stdint.h&gt;</code> defines
           types like <code>int16_t</code>, <code>uint32_t</code>,
           <code>int64_t</code>, etc.
           You should always use those in preference to
@@ -2926,10 +2897,10 @@ Krishna Kumar<br/>
             understand some of these specifiers and the
             standard is missing a few, so we have to define our
             own ugly versions in some cases (in the style of the
-            standard include file <code>inttypes.hh</code>):
+            standard include file <code>inttypes.h</code>):
           </p>
           <CODE_SNIPPET>
-            // printf macros for size_t, in the style of inttypes.hh
+            // printf macros for size_t, in the style of inttypes.h
             #ifdef _LP64
             #define __PRIS_PREFIX "z"
             #else
@@ -3043,8 +3014,8 @@ Krishna Kumar<br/>
              needed to create 64-bit constants.  For example:
              
              <CODE_SNIPPET>
-             int64_t my_value = 0x123456789LL;
-             uint64_t my_mask = 3ULL &lt;&lt; 48;
+             int64_t some_value = 0x123456789LL;
+             uint64_t some_mask = 3ULL &lt;&lt; 48;
              </CODE_SNIPPET>
              </li>
 
@@ -3096,7 +3067,7 @@ Krishna Kumar<br/>
         macros; if you use macros, follow it whenever possible:
       </p>
       <ul>
-        <li> Don't define macros in a <code>.hh</code> file.
+        <li> Don't define macros in a <code>.h</code> file.
              </li>
         <li> <code>#define</code> macros right before you use them,
              and <code>#undef</code> them right after.
@@ -3196,7 +3167,7 @@ Krishna Kumar<br/>
       it. You can use <code>auto</code> either to initialize a
       variable by copying, or to bind a reference.
         <CODE_SNIPPET>
-          vector&lt;string&gt; v;
+          std::vector&lt;std::string&gt; v;
           ...
           auto s1 = v[0];  // Makes a copy of v[0].
           const auto&amp; s2 = v[0];  // s2 is a reference to v[0].
@@ -3207,7 +3178,7 @@ Krishna Kumar<br/>
         C++ type names can sometimes be long and cumbersome,
         especially when they involve templates or namespaces. In a statement like
         <CODE_SNIPPET>
-          sparse_hash_map&lt;string, int&gt;::iterator iter = m.find(val);
+          sparse_hash_map&lt;std::string, int&gt;::iterator iter = m.find(val);
         </CODE_SNIPPET>
         the return type is hard to read, and obscures the primary
         purpose of the statement. Changing it to
@@ -3294,17 +3265,17 @@ Krishna Kumar<br/>
     a few examples of its use.
       <CODE_SNIPPET>
         // Vector takes lists of elements.
-        vector&lt;string&gt; v{"foo", "bar"};
+        std::vector&lt;std::string&gt; v{"foo", "bar"};
 
         // The same, except this form cannot be used if the initializer_list
         // constructor is explicit. You may choose to use either form.
-        vector&lt;string&gt; v = {"foo", "bar"};
+        std::vector&lt;std::string&gt; v = {"foo", "bar"};
 
         // Maps take lists of pairs. Nested braced-init-lists work.
-        map&lt;int, string&gt; m = {{1, "one"}, {2, "2"}};
+        map&lt;int, std::string&gt; m = {{1, "one"}, {2, "2"}};
 
         // braced-init-lists can be implicitly converted to return types.
-        vector&lt;int&gt; test_function() {
+        std::vector&lt;int&gt; test_function() {
           return {1, 2, 3};
         }
 
@@ -3312,7 +3283,7 @@ Krishna Kumar<br/>
         for (int i : {-1, -2, -3}) {}
 
         // Call a function using a braced-init-list.
-        void test_function2(vector&lt;int&gt; v) {}
+        void test_function2(std::vector&lt;int&gt; v) {}
         test_function2({1, 2, 3});
       </CODE_SNIPPET></p>
 
@@ -3320,31 +3291,31 @@ Krishna Kumar<br/>
     <code>initializer_list</code>, which is automatically created from
     <i>braced-init-list</i>:
       <CODE_SNIPPET>
-        class MyType {
+        class MpmType {
          public:
           // initializer_list is a reference to the underlying init list,
           // so it can be passed by value.
-          MyType(initializer_list&lt;int&gt; init_list) {
+          MpmType(initializer_list&lt;int&gt; init_list) {
             for (int element : init_list) {}
           }
         };
-        MyType m{2, 3, 5, 7};
+        MpmType m{2, 3, 5, 7};
       </CODE_SNIPPET></p>
 
     <p>Finally, brace initialization can also call ordinary constructors of
     data types that do not have <code>initializer_list</code> constructors.
       <CODE_SNIPPET>
         double d{1.23};
-        // Calls ordinary constructor as long as MyOtherType has no
+        // Calls ordinary constructor as long as MpmOtherType has no
         // initializer_list constructor.
-        class MyOtherType {
+        class MpmOtherType {
          public:
-          explicit MyOtherType(string);
-          MyOtherType(int, string);
+          explicit MpmOtherType(std::string);
+          MpmOtherType(int, std::string);
         };
-        MyOtherType m = {1, "b"};
+        MpmOtherType m = {1, "b"};
         // If the constructor is explicit, you can't use the "= {}" form.
-        MyOtherType m{"b"};
+        MpmOtherType m{"b"};
       </CODE_SNIPPET></p>
 
     <p>Never assign a <i>braced-init-list</i> to an auto local variable. In the
@@ -3369,7 +3340,7 @@ Krishna Kumar<br/>
         Lambda expressions are a concise way of creating anonymous function
         objects. They're often useful when passing functions as arguments.
         For example: <code>std::sort(v.begin(), v.end(),
-        [](string x, string y) { return x[1] &lt; y[1]; });</code> Lambdas were
+        [](std::string x, std::string y) { return x[1] &lt; y[1]; });</code> Lambdas were
         introduced in C++11 along with a set of utilities for working with
         function objects, such as the polymorphic wrapper
         <code>std::function</code>.
@@ -3440,15 +3411,15 @@ Krishna Kumar<br/>
         who might read and maintain code, we only allow an approved subset of
         Boost features.  Currently, the following libraries are permitted:
         <ul>
-          <li> <a href="http://www.boost.org/libs/utility/call_traits.hhtm">
-               Call Traits</a> from <code>boost/call_traits.hhpp</code>
+          <li> <a href="http://www.boost.org/libs/utility/call_traits.htm">
+               Call Traits</a> from <code>boost/call_traits.hpp</code>
                </li>
-          <li> <a href="http://www.boost.org/libs/utility/compressed_pair.hhtm">
-               Compressed Pair</a> from <code>boost/compressed_pair.hhpp</code>
+          <li> <a href="http://www.boost.org/libs/utility/compressed_pair.htm">
+               Compressed Pair</a> from <code>boost/compressed_pair.hpp</code>
                </li>
           <li> <a href="http://www.boost.org/libs/graph/">
                The Boost Graph Library (BGL)</a> from <code>boost/graph</code>,
-               except serialization (<code>adj_list_serialize.hhpp</code>) and
+               except serialization (<code>adj_list_serialize.hpp</code>) and
                parallel/distributed algorithms and data structures
                (<code>boost/graph/parallel/*</code> and
                <code>boost/graph/distributed/*</code>).
@@ -3461,20 +3432,20 @@ Krishna Kumar<br/>
           <li> The part of
                <a href="http://www.boost.org/libs/iterator/">
                Iterator</a> that deals with defining iterators:
-               <code>boost/iterator/iterator_adaptor.hhpp</code>,
-               <code>boost/iterator/iterator_facade.hhpp</code>, and
-               <code>boost/function_output_iterator.hhpp</code></li>
+               <code>boost/iterator/iterator_adaptor.hpp</code>,
+               <code>boost/iterator/iterator_facade.hpp</code>, and
+               <code>boost/function_output_iterator.hpp</code></li>
           <li> The part of
                <a href="http://www.boost.org/libs/polygon/">
                Polygon</a> that deals with Voronoi diagram construction and
                doesn't depend on the rest of Polygon:
-               <code>boost/polygon/voronoi_builder.hhpp</code>,
-               <code>boost/polygon/voronoi_diagram.hhpp</code>, and
-               <code>boost/polygon/voronoi_geometry_type.hhpp</code></li>
+               <code>boost/polygon/voronoi_builder.hpp</code>,
+               <code>boost/polygon/voronoi_diagram.hpp</code>, and
+               <code>boost/polygon/voronoi_geometry_type.hpp</code></li>
           <li> <a href="http://www.boost.org/libs/bimap/">
                Bimap</a> from <code>boost/bimap</code>
                </li>
-          <li> <a href="http://www.boost.org/libs/math/doc/html/dist.hhtml">
+          <li> <a href="http://www.boost.org/libs/math/doc/html/dist.html">
                Statistical Distributions and Functions</a> from
                <code>boost/math/distributions</code>
                </li>
@@ -3488,7 +3459,7 @@ Krishna Kumar<br/>
       because they've been superseded by standard libraries in C++11:
       <ul>
         <li> <a href="http://www.boost.org/libs/array/">
-             Array</a> from <code>boost/array.hhpp</code>: use
+             Array</a> from <code>boost/array.hpp</code>: use
              <a href="http://en.cppreference.com/w/cpp/container/array">
              <code>std::array</code></a> instead.
              </li>
@@ -3574,7 +3545,7 @@ Krishna Kumar<br/>
           interface style.
         </li>
         <li>
-          The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.hh&gt;</code>
+          The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.h&gt;</code>
           headers, because many compilers do not support those
           features reliably.
         </li>
@@ -3645,19 +3616,19 @@ Krishna Kumar<br/>
           Every file should have a comment at the top describing its contents.
         </p>
         <p>
-          Generally a <code>.hh</code> file will describe the classes
+          Generally a <code>.h</code> file will describe the classes
           that are declared in the file with an overview of what they
           are for and how they are used. A <code>.cc</code> file
           should contain more information about implementation details
           or discussions of tricky algorithms. If you feel the
           implementation details or a discussion of the algorithms
-          would be useful for someone reading the <code>.hh</code>,
+          would be useful for someone reading the <code>.h</code>,
           feel free to put it there instead, but mention in the
           <code>.cc</code> that the documentation is in the
-          <code>.hh</code> file.
+          <code>.h</code> file.
         </p>
         <p>
-          Do not duplicate comments in both the <code>.hh</code> and
+          Do not duplicate comments in both the <code>.h</code> and
           the <code>.cc</code>. Duplicated comments diverge.
         </p>
       </SUBSECTION>
@@ -3792,7 +3763,7 @@ Krishna Kumar<br/>
         </p>
         <p>
           Note you should <em>not</em> just repeat the comments given
-          with the function declaration, in the <code>.hh</code> file or
+          with the function declaration, in the <code>.h</code> file or
           wherever.  It's okay to recapitulate briefly what the function
           does, but the focus of the comments should be on how it does it.
         </p>
@@ -4370,7 +4341,7 @@ Krishna Kumar<br/>
                           some, other, values}};
         SomeType variable{
             "This is too long to fit all in one line"};
-        MyType m = {  // Here, you could also break before {.
+        MpmType m = {  // Here, you could also break before {.
             superlongvariablename1,
             superlongvariablename2,
             {short, interior, list},
@@ -4590,15 +4561,15 @@ Krishna Kumar<br/>
       <CODE_SNIPPET>
         // These are fine, space preceding.
         char *c;
-        const string &amp;str;
+        const std::string &amp;str;
 
         // These are fine, space following.
         char* c;    // but remember to do "char* c, *d, *e, ...;"!
-        const string&amp; str;
+        const std::string&amp; str;
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
         char * c;  // Bad - spaces on both sides of *
-        const string &amp; str;  // Bad - spaces on both sides of &amp;
+        const std::string &amp; str;  // Bad - spaces on both sides of &amp;
       </BAD_CODE_SNIPPET>
       <p>
         You should do this consistently within a single
@@ -4678,9 +4649,9 @@ Krishna Kumar<br/>
         int x = 3;
         int x(3);
         int x{3};
-        string name = "Some Name";
-        string name("Some Name");
-        string name{"Some Name"};
+        std::string name = "Some Name";
+        std::string name("Some Name");
+        std::string name{"Some Name"};
       </CODE_SNIPPET>
       <p>
         Be careful when using the <code>{}</code> on a type that takes an
@@ -4690,8 +4661,8 @@ Krishna Kumar<br/>
         <code>initializer_list</code> constructor, use <code>()</code>.
       </p>
       <CODE_SNIPPET>
-        vector&lt;int&gt; v(100, 1);  // A vector of 100 1s.
-        vector&lt;int&gt; v{100, 1};  // A vector of 100, 1.
+        std::vector&lt;int&gt; v(100, 1);  // A vector of 100 1s.
+        std::vector&lt;int&gt; v{100, 1};  // A vector of 100, 1.
       </CODE_SNIPPET>
       <p>
         Also, the brace form prevents narrowing of integral types. This can
@@ -4751,11 +4722,11 @@ Krishna Kumar<br/>
         a discussion of what comments are needed) is:
       </p>
       <CODE_SNIPPET>
-        class MyClass : public OtherClass {
+        class MpmClass : public OtherClass {
          public:      // Note the 1 space indent!
-          MyClass();  // Regular 2 space indent.
-          explicit MyClass(int var);
-          ~MyClass() {}
+          MpmClass();  // Regular 2 space indent.
+          explicit MpmClass(int var);
+          ~MpmClass() {}
 
           void SomeFunction();
           void SomeFunctionThatDoesNothing() {
@@ -4769,7 +4740,7 @@ Krishna Kumar<br/>
 
           int some_var_;
           int some_other_var_;
-          DISALLOW_COPY_AND_ASSIGN(MyClass);
+          DISALLOW_COPY_AND_ASSIGN(MpmClass);
         };
       </CODE_SNIPPET>
       <p>
@@ -4810,7 +4781,7 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         // When it all fits on one line:
-        MyClass::MyClass(int var) : some_var_(var), some_other_var_(var + 1) {}
+        MpmClass::MpmClass(int var) : some_var_(var), some_other_var_(var + 1) {}
       </CODE_SNIPPET>
       <p>
         or
@@ -4818,7 +4789,7 @@ Krishna Kumar<br/>
       <CODE_SNIPPET>
         // When it requires multiple lines, indent 4 spaces, putting the colon on
         // the first initializer line:
-        MyClass::MyClass(int var)
+        MpmClass::MpmClass(int var)
             : some_var_(var),             // 4 space indent
               some_other_var_(var + 1) {  // lined up
           ...
@@ -4941,14 +4912,14 @@ Krishna Kumar<br/>
       </SUBSECTION>
       <SUBSECTION title="Templates and Casts">
         <CODE_SNIPPET>
-        vector&lt;string&gt; x;           // No spaces inside the angle
+        std::vector&lt;std::string&gt; x;           // No spaces inside the angle
         y = static_cast&lt;char*&gt;(x);  // brackets (&lt; and &gt;), before
                                     // &lt;, or between &gt;( in a cast.
-        vector&lt;char *&gt; x;           // Spaces between type and pointer are
+        std::vector&lt;char *&gt; x;           // Spaces between type and pointer are
                                     // okay, but be consistent.
-        set&lt;list&lt;string&gt;&gt; x;        // Permitted in C++11 code.
-        set&lt;list&lt;string&gt; &gt; x;       // C++03 required a space in &gt; &gt;.
-        set&lt; list&lt;string&gt; &gt; x;      // You may optionally use
+        set&lt;list&lt;std::string&gt;&gt; x;        // Permitted in C++11 code.
+        set&lt;list&lt;std::string&gt; &gt; x;       // C++03 required a space in &gt; &gt;.
+        set&lt; list&lt;std::string&gt; &gt; x;      // You may optionally use
                                     // symmetric spacing in &lt; &lt;.
         </CODE_SNIPPET>
       </SUBSECTION>
@@ -5122,7 +5093,7 @@ Krishna Kumar<br/>
     <BODY>
       <p>
 	You can automatically format your code to confirm to this style guide by running 
-	<code>./astyle --style=stroustrup *.cc or *.hh </code>
+	<code>./astyle --style=stroustrup *.cc or *.h </code>
       </p>
     </BODY>
   </STYLEPOINT>
@@ -5184,8 +5155,11 @@ Krishna Kumar<br/>
 
 
 <address>
-Based on Google's Style Sheet Revision 3.274<br/>
-<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml</a>
+Based on <br/>
+<a href="http://www.stroustrup.com/bs_faq2.html">Bjarne Stroustrup's C++ Style and Technique FAQ</a><br/>
+<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google's Style Sheet Revision 3.274</a><br/>
+<a href="http://www.possibility.com/Cpp/CppCodingStandard.html">C++ Coding Standards</a><br/>
+<a href="http://www.cs.hmc.edu/~geoff/classes/hmc.cs070.200109/c++-style.html">C++ Style Tips</a>
 </address>
 
 </GUIDE>
