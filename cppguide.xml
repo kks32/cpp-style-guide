@@ -2447,88 +2447,27 @@ Krishna Kumar<br/>
         <CODE_SNIPPET>
           std::vector&lt;std::string&gt; v;
           ...
-          auto s1 = v[0];  // Makes a copy of v[0].
-          const auto&amp; s2 = v[0];  // s2 is a reference to v[0].
+          for (auto it = v.begin(); it != v.end(); ++it)
+          ...
         </CODE_SNIPPET>
     </DEFINITION>
-    <PROS>
-      <p>
-        C++ type names can sometimes be long and cumbersome,
-        especially when they involve templates or namespaces. In a statement like
-        <CODE_SNIPPET>
-          sparse_hash_map&lt;std::string, int&gt;::iterator iter = m.find(val);
-        </CODE_SNIPPET>
-        the return type is hard to read, and obscures the primary
-        purpose of the statement. Changing it to
-        <CODE_SNIPPET>
-          auto iter = m.find(val);
-        </CODE_SNIPPET>
-        makes it more readable.
-      </p>
-      <p>
-        Without <code>auto</code> we are sometimes forced to write a
-        type name twice in the same expression, adding no value
-        for the reader, as in
-        <CODE_SNIPPET>
-          diagnostics::ErrorStatus* status = new diagnostics::ErrorStatus("xyz");
-        </CODE_SNIPPET>
-      </p>
-      <p>
-        Using <code>auto</code> makes it easier to use intermediate
-        variables when appropriate, by reducing the burden of writing
-        their types explicitly.
-      </p>
-    </PROS>
-    <CONS>
-      <p>Sometimes code is clearer when types are manifest, especially when
-        a variable's initialization depends on things that were declared
-        far away. In an expression like
-        <CODE_SNIPPET>
-          auto i = x.Lookup(key);
-        </CODE_SNIPPET>
-        it may not be obvious what <code>i</code>'s type is, if <code>x</code>
-        was declared hundreds of lines earlier.
-      </p>
-
-      <p>Programmers have to understand the difference between <code>auto</code>
-        and <code>const auto&amp;</code> or they'll get copies when
-        they didn't mean to.
-      </p>
-
-      <p>The interaction between <code>auto</code> and C++11
-        brace-initialization can be confusing. The declarations
-        <CODE_SNIPPET>
-          auto x(3);  // Note: parentheses.
-          auto y{3};  // Note: curly braces.
-        </CODE_SNIPPET>
-        mean different things — <code>x</code> is
-        an <code>int</code>, while <code>y</code> is
-        an <code>initializer_list</code>. The same applies to other
-        normally-invisible proxy types.
-        
-      </p>
-
-      <p>If an <code>auto</code> variable is used as part of an
-        interface, e.g. as a constant in a header, then a programmer
-        might change its type while only intending to change its
-        value, leading to a more radical API change than intended.</p>
-    </CONS>
     <DECISION>
-      <p><code>auto</code> is permitted, for local variables only.
-        Do not use <code>auto</code> for file-scope or namespace-scope
-        variables, or for class members. Never assign a braced initializer list
-        to an <code>auto</code>-typed variable.</p>
-      <p>The <code>auto</code> keyword is also used in an unrelated
-        C++11 feature: it's part of the syntax for a new kind of
-        function declaration with a trailing return type. Function
-        declarations with trailing return types are not permitted.</p>
+      <p>
+	<code>auto</code> is permitted, for local variables only, preferably 
+	only foriterators. Do not use <code>auto</code> for file-scope or 
+	namespace-scope variables, or for class members. 
+	Never assign a braced initializer list to an <code>auto</code>-typed
+      variable.
+      </p>
     </DECISION>
   </BODY>
   </STYLEPOINT>
 
   <STYLEPOINT title="for loops">
     <SUMMARY>
-      Use iterators and range based for loops whenever possible.
+      Use range based for loops and <code>std::for_each</code> when
+      iterating through all the elements in a container, use these whenever
+      possible. You can also use itertor based for loop.
     </SUMMARY>
     <BODY>
       <p>
@@ -2539,6 +2478,15 @@ Krishna Kumar<br/>
         std::vector&lt;int&gt; material_ids;
         for (auto i : material_ids) {
             std::cout &lt;&lt; i;
+        }
+	</CODE_SNIPPET>
+      </p>
+      <p>
+	An example of <code>std::for_each</code>
+	<CODE_SNIPPET>
+        void increment_all(vector&lt;int&gt;&amp; v) 
+        {
+            for_each(v.begin(),v.end(), [](int&amp; x) {++x;});
         }
 	</CODE_SNIPPET>
       </p>
@@ -2621,13 +2569,38 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="C++11">
   <SUMMARY>
-    Use libraries and language extensions from C++11 (formerly
-    known as C++0x) when appropriate.
-    
-    Consider portability to other environments before
-    using C++11 features in your project.
-    
+    Use libraries and language extensions from C++11 when appropriate.
   </SUMMARY>
+  <BODY>  
+    <p>
+      C++11 is the latest ISO C++ standard. It contains significant 
+      changes both to the language and libraries.
+      Consider portability to other environments before using C++11
+      features in your project.  
+    </p>
+    <DECISION>
+      <p>
+       C++11 features may be used unless specified otherwise. In addition to
+       what's described in the rest of the style guide, the following C++11
+       features may not be used:
+      </p>
+      <ul>
+        <li>
+          Functions with trailing return types, e.g. writing
+          <code>auto foo()-&gt;int;</code> instead of
+          <code>int foo();</code>, because of a desire to preserve
+          stylistic consistency with the many existing function
+          declarations.
+        </li>       
+        <li>
+          The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.h&gt;</code>
+          headers, because many compilers do not support those
+          features reliably.
+        </li>
+      </ul>
+    </DECISION>
+
+  </BODY>
   </STYLEPOINT>
 
 </CATEGORY>
