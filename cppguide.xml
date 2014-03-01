@@ -2535,6 +2535,121 @@ Krishna Kumar<br/>
   </STYLEPOINT>
 
 
+  
+
+  <STYLEPOINT title="Ownership and Smart Pointers">
+    <SUMMARY>
+      Prefer to have single, fixed owners for dynamically allocated objects.
+      Prefer to transfer ownership with smart pointers.
+    </SUMMARY>
+    <BODY>
+      <DEFINITION>
+        <p>
+          "Ownership" is a bookkeeping technique for managing dynamically
+          allocated memory (and other resources). The owner of a dynamically
+          allocated object is an object or function that is responsible for
+          ensuring that it is deleted when no longer needed. Ownership can
+          sometimes be shared, in which case the last owner is typically
+          responsible for deleting it. Even when ownership is not shared,
+          it can be transferred from one piece of code to another.
+        </p>
+        <p>
+          "Smart" pointers are classes that act like pointers, e.g. by
+          overloading the <code>*</code> and <code>-&gt;</code> operators.
+          Some smart pointer types can be used to automate ownership
+          bookkeeping, to ensure these responsibilities are met.
+          <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr">
+          <code>std::unique_ptr</code></a> is a smart pointer type introduced
+          in C++11, which expresses exclusive ownership of a dynamically
+          allocated object; the object is deleted when the
+          <code>std::unique_ptr</code> goes out of scope. It cannot be copied,
+          but can be <em>moved</em> to represent ownership transfer. 
+          <code>shared_ptr</code> is a smart pointer type which expresses
+          shared ownership of a dynamically allocated object. 
+          <code>shared_ptr</code>s can be copied; ownership of the object is
+          shared among all copies, and the object is deleted when the last
+          <code>shared_ptr</code> is destroyed. 
+        </p>
+      </DEFINITION>
+      <PROS>
+        <ul>
+          <li>It's virtually impossible to manage dynamically allocated memory
+            without some sort of ownership logic.</li>
+          <li>Transferring ownership of an object can be cheaper than copying
+            it (if copying it is even possible).</li>
+          <li>Transferring ownership can be simpler than 'borrowing' a pointer
+            or reference, because it reduces the need to coordinate the
+            lifetime of the object between the two users.</li>
+          <li>Smart pointers can improve readability by making ownership logic
+            explicit, self-documenting, and unambiguous.</li>
+          <li>Smart pointers can eliminate manual ownership bookkeeping,
+            simplifying the code and ruling out large classes of errors.</li>
+          <li>For const objects, shared ownership can be a simple and efficient
+            alternative to deep copying.</li>
+        </ul>
+      </PROS>
+      <CONS>
+        <ul>
+          <li>Ownership must be represented and transferred via pointers
+            (whether smart or plain). Pointer semantics are more complicated
+            than value semantics, especially in APIs: you have to worry not
+            just about ownership, but also aliasing, lifetime, and mutability,
+            among other issues.</li>
+          <li>The performance costs of value semantics are often overestimated,
+            so the performance benefits of ownership transfer might not justify
+            the readability and complexity costs.</li>
+          <li>APIs that transfer ownership force their clients into a single
+            memory management model.</li>
+          <li>Code using smart pointers is less explicit about where the
+            resource releases take place.</li>
+          <li><code>std::unique_ptr</code> expresses ownership transfer
+            using C++11's move semantics, which are
+            <a href="#Rvalue_references">generally forbidden</a> in Google
+            code, and may confuse some programmers.</li>
+          <li>Shared ownership can be a tempting alternative to careful
+            ownership design, obfuscating the design of a system.</li>
+          <li>Shared ownership requires explicit bookkeeping at run-time,
+            which can be costly.</li>
+          <li>In some cases (e.g. cyclic references), objects with shared
+            ownership may never be deleted.</li>
+          <li>Smart pointers are not perfect substitutes for plain
+            pointers.</li>
+        </ul>
+      </CONS>
+      <DECISION>
+        <p>
+          If dynamic allocation is necessary, prefer to keep ownership with
+          the code that allocated it. If other code needs access to the object,
+          consider passing it a copy, or passing a pointer or reference
+          without transferring ownership. Prefer to use
+          <code>std::unique_ptr</code> to make ownership transfer explicit.
+          For example:
+            <CODE_SNIPPET>
+              std::unique_ptr&lt;Foo&gt; FooFactory();
+              void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);
+            </CODE_SNIPPET>
+          
+        </p>
+        <p>
+          Do not design your code to use shared ownership without a very good
+          reason. One such reason is to avoid expensive copy operations,
+          but you should only do this if the performance benefits are
+          significant, and the underlying object is immutable (i.e.
+          <code>shared_ptr&lt;const Foo&gt;</code>).  If you do use shared
+          ownership, prefer to use <code>shared_ptr</code>.
+          
+        </p>
+        <p>
+          Do not use <code>scoped_ptr</code> in new code unless you need to be
+          compatible with older versions of C++. Never use
+          <code>linked_ptr</code> or <code>std::auto_ptr</code>. In all three
+          cases, use <code>std::unique_ptr</code> instead.
+        </p>
+        
+      </DECISION>
+    </BODY>
+  </STYLEPOINT>
+
   <STYLEPOINT title="Boost">
   <SUMMARY>
     Use libraries from the Boost library collection.
@@ -3009,23 +3124,20 @@ Krishna Kumar<br/>
 
 <CATEGORY title="Formatting">
   <p>
-    Coding style and formatting are pretty arbitrary, but a
-    
-    project
+    Coding style and formatting are pretty arbitrary, but a project
     is much easier to follow if everyone uses the same style. Individuals
     may not agree with every aspect of the formatting rules, and some of
     the rules may take some getting used to, but it is important that all
-    
-    project contributors
-    follow the style rules so that
+    project contributors follow the style rules so that
     
     they
     can all read and understand everyone's code easily.
   </p>
   
   <p>
-    To help you format code correctly, we've created a <A href="./cam-c-style.el">settings
-    file for emacs</A>.
+    To help you format code correctly, there are some tools available. See
+    <a href="#Formatting_Tools">Formatting Tools</a> for more
+    information.
   </p>
 
   <STYLEPOINT title="Line Length">
@@ -3041,9 +3153,7 @@ Krishna Kumar<br/>
         important.
       </p>
       <PROS>
-          Those who favor
-          
-          this rule argue
+          Those who favor this rule argue
           that it is rude to force them to resize their windows and there
           is no need for anything longer.  Some folks are used to having
           several code windows side-by-side, and thus don't have room to
@@ -3054,14 +3164,11 @@ Krishna Kumar<br/>
       <CONS>
           Proponents of change argue that a wider line can make code
           more readable.  The 80-column limit is an hidebound
-          throwback to 1960s mainframes;
-          
-          modern equipment has
+          throwback to 1960s mainframes; modern equipment has
           wide screens that can easily show longer lines.
       </CONS>
       <DECISION>
         <p>
-          
           80 characters is the maximum.
         </p>
         <p>
@@ -3077,8 +3184,7 @@ Krishna Kumar<br/>
         <p>
           Exception:  you needn't be concerned about
           <a href="#The__define_Guard">header guards</a>
-          that exceed the maximum length.
-          
+          that exceed the maximum length.          
         </p>
       </DECISION>
     </BODY>
@@ -3966,151 +4072,33 @@ Krishna Kumar<br/>
     what you see elsewhere.
   </p>
 
-  
-
-  <STYLEPOINT title="Ownership and Smart Pointers">
-    <SUMMARY>
-      Prefer to have single, fixed owners for dynamically allocated objects.
-      Prefer to transfer ownership with smart pointers.
-    </SUMMARY>
-    <BODY>
-      <DEFINITION>
-        <p>
-          "Ownership" is a bookkeeping technique for managing dynamically
-          allocated memory (and other resources). The owner of a dynamically
-          allocated object is an object or function that is responsible for
-          ensuring that it is deleted when no longer needed. Ownership can
-          sometimes be shared, in which case the last owner is typically
-          responsible for deleting it. Even when ownership is not shared,
-          it can be transferred from one piece of code to another.
-        </p>
-        <p>
-          "Smart" pointers are classes that act like pointers, e.g. by
-          overloading the <code>*</code> and <code>-&gt;</code> operators.
-          Some smart pointer types can be used to automate ownership
-          bookkeeping, to ensure these responsibilities are met.
-          <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr">
-          <code>std::unique_ptr</code></a> is a smart pointer type introduced
-          in C++11, which expresses exclusive ownership of a dynamically
-          allocated object; the object is deleted when the
-          <code>std::unique_ptr</code> goes out of scope. It cannot be copied,
-          but can be <em>moved</em> to represent ownership transfer. 
-          <code>shared_ptr</code> is a smart pointer type which expresses
-          shared ownership of a dynamically allocated object. 
-          <code>shared_ptr</code>s can be copied; ownership of the object is
-          shared among all copies, and the object is deleted when the last
-          <code>shared_ptr</code> is destroyed. 
-        </p>
-      </DEFINITION>
-      <PROS>
-        <ul>
-          <li>It's virtually impossible to manage dynamically allocated memory
-            without some sort of ownership logic.</li>
-          <li>Transferring ownership of an object can be cheaper than copying
-            it (if copying it is even possible).</li>
-          <li>Transferring ownership can be simpler than 'borrowing' a pointer
-            or reference, because it reduces the need to coordinate the
-            lifetime of the object between the two users.</li>
-          <li>Smart pointers can improve readability by making ownership logic
-            explicit, self-documenting, and unambiguous.</li>
-          <li>Smart pointers can eliminate manual ownership bookkeeping,
-            simplifying the code and ruling out large classes of errors.</li>
-          <li>For const objects, shared ownership can be a simple and efficient
-            alternative to deep copying.</li>
-        </ul>
-      </PROS>
-      <CONS>
-        <ul>
-          <li>Ownership must be represented and transferred via pointers
-            (whether smart or plain). Pointer semantics are more complicated
-            than value semantics, especially in APIs: you have to worry not
-            just about ownership, but also aliasing, lifetime, and mutability,
-            among other issues.</li>
-          <li>The performance costs of value semantics are often overestimated,
-            so the performance benefits of ownership transfer might not justify
-            the readability and complexity costs.</li>
-          <li>APIs that transfer ownership force their clients into a single
-            memory management model.</li>
-          <li>Code using smart pointers is less explicit about where the
-            resource releases take place.</li>
-          <li><code>std::unique_ptr</code> expresses ownership transfer
-            using C++11's move semantics, which are
-            <a href="#Rvalue_references">generally forbidden</a> in Google
-            code, and may confuse some programmers.</li>
-          <li>Shared ownership can be a tempting alternative to careful
-            ownership design, obfuscating the design of a system.</li>
-          <li>Shared ownership requires explicit bookkeeping at run-time,
-            which can be costly.</li>
-          <li>In some cases (e.g. cyclic references), objects with shared
-            ownership may never be deleted.</li>
-          <li>Smart pointers are not perfect substitutes for plain
-            pointers.</li>
-        </ul>
-      </CONS>
-      <DECISION>
-        <p>
-          If dynamic allocation is necessary, prefer to keep ownership with
-          the code that allocated it. If other code needs access to the object,
-          consider passing it a copy, or passing a pointer or reference
-          without transferring ownership. Prefer to use
-          <code>std::unique_ptr</code> to make ownership transfer explicit.
-          For example:
-            <CODE_SNIPPET>
-              std::unique_ptr&lt;Foo&gt; FooFactory();
-              void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);
-            </CODE_SNIPPET>
-          
-        </p>
-        <p>
-          Do not design your code to use shared ownership without a very good
-          reason. One such reason is to avoid expensive copy operations,
-          but you should only do this if the performance benefits are
-          significant, and the underlying object is immutable (i.e.
-          <code>shared_ptr&lt;const Foo&gt;</code>).  If you do use shared
-          ownership, prefer to use <code>shared_ptr</code>.
-          
-        </p>
-        <p>
-          Do not use <code>scoped_ptr</code> in new code unless you need to be
-          compatible with older versions of C++. Never use
-          <code>linked_ptr</code> or <code>std::auto_ptr</code>. In all three
-          cases, use <code>std::unique_ptr</code> instead.
-        </p>
-        
-      </DECISION>
-    </BODY>
-  </STYLEPOINT>
   <STYLEPOINT title="astyle">
     <SUMMARY>
-      Use <code> <a href="http://sourceforge.net/projects/astyle/"> Artistic Style</a> </code> to auto-format your code.
+      Use 
+      <code> <a href="http://sourceforge.net/projects/astyle/"> 
+	Artistic Style</a> </code> to auto-format your code.
     </SUMMARY>
     <BODY>
       <p>
-	You can automatically format your code to confirm to this style guide by running 
+	You can automatically format your code to confirm to this
+	style guide by running 
 	<code>./astyle --style=stroustrup *.cc or *.h </code>
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="cpplint">
+  <STYLEPOINT title=".emacs">
     <SUMMARY>
-      Use
-      <code>cpplint.py</code>
-      to detect style errors.
+      Use the commands in
+      <a href="./cued.emacs"><code>cued.emacs</code></a>
+      to initialise emacs to confirm to this style guide.
     </SUMMARY>
     <BODY>
       <p>
-        <code>cpplint.py</code>
-        is a tool that reads a source file and
-        identifies many style errors.  It is not perfect, and has both false
-        positives and false negatives, but it is still a valuable tool.  False
-        positives can be ignored by putting <code>// NOLINT</code> at
-        the end of the line.
-      </p>
-      
-      <p>
-        Some projects have instructions on how to run <code>cpplint.py</code>
-        from their project tools. If the project you are contributing to does
-        not, you can download <A href="http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py"><code>cpplint.py</code></A> separately.
+	Copy the lisp commands from
+	<a href="./cued.emacs"><code>cued.emacs</code></a>
+	to your <code>.emacs</code> file to initialise emacs with
+	style settings described in this guide. This helps you write
+	your code in a consistent manner.
       </p>
     </BODY>
   </STYLEPOINT> 
@@ -4150,10 +4138,14 @@ Krishna Kumar<br/>
 
 <address>
 Based on <br/>
-<a href="http://www.stroustrup.com/bs_faq2.html">Bjarne Stroustrup's C++ Style and Technique FAQ</a><br/>
-<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google's Style Sheet Revision 3.274</a><br/>
-<a href="http://www.possibility.com/Cpp/CppCodingStandard.html">C++ Coding Standards</a><br/>
-<a href="http://www.cs.hmc.edu/~geoff/classes/hmc.cs070.200109/c++-style.html">C++ Style Tips</a>
+<a href="http://www.stroustrup.com/bs_faq2.html">
+  Bjarne Stroustrup's C++ Style and Technique FAQ</a><br/>
+<a href="http://www.possibility.com/Cpp/CppCodingStandard.html">
+  C++ Coding Standards</a><br/>
+<a href="http://www.cs.hmc.edu/~geoff/classes/hmc.cs070.200109/c++-style.html">
+C++ Style Tips</a><br/>
+<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">
+  Google's Style Sheet Revision 3.274</a>
 </address>
 
 </GUIDE>
