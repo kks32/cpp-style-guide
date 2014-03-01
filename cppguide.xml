@@ -2608,54 +2608,30 @@ Krishna Kumar<br/>
 <CATEGORY title="Comments">
   <p>
     Though a pain to write, comments are absolutely vital to keeping our
-    code readable.  The following rules describe what you should
-    comment and where.  But remember: while comments are very
-    important, the best code is self-documenting.  Giving sensible
+    code readable.  While comments are very important,
+    the best code is self-documenting.  Giving sensible
     names to types and variables is much better than using obscure
     names that you must then explain through comments.
-  </p>
-  <p>
-    When writing your comments, write for your audience: the next
-    
-    contributor
-    who will need to understand your code.  Be generous — the next
-    one may be you!
   </p>
 
   <STYLEPOINT title="Comment Style">
     <SUMMARY>
-      Use either the <code>//</code> or <code>/* */</code> syntax, as long
-      as you are consistent.
+      Use the <code>//</code> syntax for comments.
     </SUMMARY>
     <BODY>
       <p>
-        You can use either the <code>//</code> or the <code>/* */</code>
-        syntax; however, <code>//</code> is <em>much</em> more common.
-        Be consistent with how you comment and what style you use where.
+        Use the <code>//</code> syntax for comments, which is more common
+	than <code>/* ...  */</code>. Use <code>//</code> syntax even for
+	multi-line comments.
       </p>
     </BODY>
   </STYLEPOINT>
 
   <STYLEPOINT title="File Comments">
     <SUMMARY>
-      Start each file with license boilerplate,
-      followed by a description of its contents.
+      Start each file with the description of its contents.
     </SUMMARY>
     <BODY>
-      <SUBSECTION title="Legal Notice and Author Line">
-        
-        <p>
-          Every file should contain license boilerplate.
-          Choose the appropriate boilerplate for the license used by the project
-          (for example, Apache 2.0, BSD, LGPL, GPL).
-        </p>
-        <p>
-          If you make significant changes to a file with an author line,
-          consider deleting the author line.
-        </p>
-      </SUBSECTION>
-
-      <SUBSECTION title="File Contents">
         <p>
           Every file should have a comment at the top describing its contents.
         </p>
@@ -2675,7 +2651,16 @@ Krishna Kumar<br/>
           Do not duplicate comments in both the <code>.h</code> and
           the <code>.cc</code>. Duplicated comments diverge.
         </p>
-      </SUBSECTION>
+	<p>
+	  An example of file comment:
+	  <CODE_SNIPPET>
+          // File: ParticleCloudMpm.ipp
+          // Details: Implementation of container class for the MPM particles
+          // Dependency: MPM_ITEMS contains all template parameters
+          // Author: Krishna Kumar and Samila Bandara, University of Cambridge
+          // Version: 2.0 - 2014; 1.0 - 2011.
+	  </CODE_SNIPPET>
+	</p>
     </BODY>
   </STYLEPOINT>
 
@@ -2686,15 +2671,15 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <CODE_SNIPPET>
-        // Iterates over the contents of a GargantuanTable.  Sample usage:
-        //    GargantuanTableIterator* iter = table-&gt;NewIterator();
-        //    for (iter-&gt;Seek("foo"); !iter-&gt;done(); iter-&gt;Next()) {
-        //      process(iter-&gt;key(), iter-&gt;value());
-        //    }
-        //    delete iter;
-        class GargantuanTableIterator {
+      // \brief Base class container for the MPM particles
+      // \details Has containers with pointers to the particles
+      // \param MPM_ITEMS - the main template file which includes all the classes
+      // \param PARTICLE_TYPE - the type of particle (soil/water) to be used
+
+      template&lt;typename Mpm_Items, typename Particle_Type&gt;
+      class mpm::ParticleCloudMpm {
           ...
-        };
+      };
       </CODE_SNIPPET>
       <p>
         If you have already described a class in detail in the
@@ -2722,7 +2707,7 @@ Krishna Kumar<br/>
           Every function declaration should have comments immediately
           preceding it that describe what the function does and how to
           use it.  These comments should be descriptive ("Opens the
-          file") rather than imperative ("Open the file"); the comment
+          file ... ") rather than imperative ("Open the file"); the comment
           describes the function, it does not tell the function what
           to do.  In general, these comments do not describe how the
           function performs its task.  Instead, that should be left to
@@ -2756,21 +2741,14 @@ Krishna Kumar<br/>
           Here is an example:
         </p>
         <CODE_SNIPPET>
-          // Returns an iterator for this table.  It is the client's
-          // responsibility to delete the iterator when it is done with it,
-          // and it must not use the iterator once the GargantuanTable object
-          // on which the iterator was created has been deleted.
-          //
-          // The iterator is initially positioned at the beginning of the table.
-          //
-          // This method is equivalent to:
-          //    Iterator* iter = table-&gt;NewIterator();
-          //    iter-&gt;Seek("");
-          //    return iter;
-          // If you are going to immediately seek to another place in the
-          // returned iterator, it will be faster to use NewIterator()
-          // and avoid the extra seek.
-          Iterator* GetIterator() const;
+          // Apply a given functor to all particles making use of std::for_each
+          // \tparam OP         Type of the particle operation
+          // \param[in,out] op  Specific operation applied to all particles
+          // \retval OP         for_each returns the operator
+          template&lt;typename Op&gt;
+          Op mpm::iterateOverParticles(Op op) {
+              return std::for_each(particles_.begin(), particles_.end(), op);
+          }
         </CODE_SNIPPET>
         <p>
           However, do not be unnecessarily verbose or state the
@@ -2779,7 +2757,7 @@ Krishna Kumar<br/>
         </p>
         <CODE_SNIPPET>
           // Returns true if the table cannot hold any more entries.
-          bool IsTableFull();
+          bool is_table_full();
         </CODE_SNIPPET>
         <p>
           When commenting constructors and destructors, remember that
@@ -2832,10 +2810,10 @@ Krishna Kumar<br/>
         </p>
         <CODE_SNIPPET>
           private:
-           // Keeps track of the total number of entries in the table.
+           // Keeps track of the total number of materials in the model.
            // Used to ensure we do not go over the limit. -1 means
-           // that we don't yet know how many entries the table has.
-           int num_total_entries_;
+           // that we don't yet know how many materials the model has.
+           int num_total_materials_;
         </CODE_SNIPPET>
       </SUBSECTION>
 
@@ -2846,8 +2824,8 @@ Krishna Kumar<br/>
           For example:
         </p>
         <CODE_SNIPPET>
-          // The total number of tests cases that we run through in this regression test.
-          const int kNumTestCases = 6;
+          // The tolerance value for the Newton-Raphson approach.
+          const double tolerance = 1.0e-6;
         </CODE_SNIPPET>
       </SUBSECTION>
     </BODY>
@@ -2878,14 +2856,8 @@ Krishna Kumar<br/>
         <p>
           Also, lines that are non-obvious should get a comment at the
           end of the line. These end-of-line comments should be
-          separated from the code by 2 spaces.  Example:
+          separated from the code by 2 spaces.  
         </p>
-        <CODE_SNIPPET>
-          // If we have enough memory, mmap the data portion too.
-          mmap_budget = max&lt;int64&gt;(0, mmap_budget - index_-&gt;length());
-          if (mmap_budget &gt;= data_size_ &amp;&amp; !MmapData(mmap_chunk_bytes, mlock))
-            return;  // Error already logged.
-        </CODE_SNIPPET>
         <p>
           Note that there are both comments that describe what the
           code is doing, and comments that mention that an error has
@@ -2896,14 +2868,9 @@ Krishna Kumar<br/>
           often be more readable to line them up:
         </p>
         <CODE_SNIPPET>
-          DoSomething();                  // Comment here so the comments line up.
+          DoSomething();                  // Comments line up here.
           DoSomethingElseThatIsLonger();  // Comment here so there are two spaces between
                                           // the code and the comment.
-          { // One space before comment when opening a new scope is allowed,
-            // thus the comment lines up with the following comments and code.
-            DoSomethingElse();  // Two spaces before line comments normally.
-          }
-          DoSomething(); /* For trailing block comments, one space is fine. */
         </CODE_SNIPPET>
       </SUBSECTION>
       <SUBSECTION title="nullptr/NULL, true/false, 1, 2, 3...">
@@ -2914,7 +2881,7 @@ Krishna Kumar<br/>
           constants. For example, compare:
         </p>
         <BAD_CODE_SNIPPET>
-          bool success = CalculateSomething(interesting_value,
+          bool success = calculate_something(interesting_value,
                                             10,
                                             false,
                                             NULL);  // What are these arguments??
@@ -2923,22 +2890,10 @@ Krishna Kumar<br/>
           versus:
         </p>
         <CODE_SNIPPET>
-          bool success = CalculateSomething(interesting_value,
+          bool success = calculate_something(interesting_value,
                                             10,     // Default base value.
                                             false,  // Not the first time we're calling this.
                                             NULL);  // No callback.
-        </CODE_SNIPPET>
-        <p>
-          Or alternatively, constants or self-describing variables:
-        </p>
-        <CODE_SNIPPET>
-          const int kDefaultBaseValue = 10;
-          const bool kFirstTimeCalling = false;
-          Callback *null_callback = NULL;
-          bool success = CalculateSomething(interesting_value,
-                                            kDefaultBaseValue,
-                                            kFirstTimeCalling,
-                                            null_callback);
         </CODE_SNIPPET>
       </SUBSECTION>
 
@@ -2952,7 +2907,8 @@ Krishna Kumar<br/>
         <BAD_CODE_SNIPPET>
            // Now go through the b array and make sure that if i occurs,
            // the next element is i+1.
-           ...        // Geez.  What a useless comment.
+           ...        
+           // Geez.  What a useless comment.
         </BAD_CODE_SNIPPET>
       </SUBSECTION>
     </BODY>
@@ -2989,25 +2945,19 @@ Krishna Kumar<br/>
     <BODY>
       <p>
         <code>TODO</code>s should include the string <code>TODO</code> in
-        all caps, followed by the
-        
-        name, e-mail address, or other
-        identifier
+        all caps, followed by the name, e-mail address, or other identifier
         of the person who can best provide context about the problem
         referenced by the <code>TODO</code>.  A colon is optional.  The main
         purpose is to have a consistent <code>TODO</code> format that can be
         searched to find the person who can provide more details upon request.
         A <code>TODO</code> is not a commitment that the person referenced
         will fix the problem.  Thus when you create a <code>TODO</code>, it is
-        almost always your
-        
-        name
-        that is given.
+        almost always your name that is given.
       </p>
       
       <CODE_SNIPPET>
-        // TODO(kl@gmail.com): Use a "*" here for concatenation operator.
-        // TODO(Zeke) change this to use relations.
+        // TODO(kks32[at]cam.ac.uk): Use a "*" here for concatenation operator.
+        // TODO(ks207) change this to use relations.
       </CODE_SNIPPET>
       <p>
         If your <code>TODO</code> is of the form "At a future date do
@@ -3074,7 +3024,7 @@ Krishna Kumar<br/>
   </p>
   
   <p>
-    To help you format code correctly, we've created a <A href="http://google-styleguide.googlecode.com/svn/trunk/google-c-style.el">settings
+    To help you format code correctly, we've created a <A href="./cam-c-style.el">settings
     file for emacs</A>.
   </p>
 
