@@ -21,9 +21,9 @@ Krishna Kumar<br/>
      </SUMMARY>
      <BODY>
        <p>
-        Hooray!  Now you know you can expand points to get more
-        details.  Alternatively, there's an "expand all" at the
-        top of this document.
+       Hooray!  Now you know you can expand points to get more
+       details.  Alternatively, there's an "expand all" at the
+       top of this document.
        </p>
      </BODY>
   </STYLEPOINT>
@@ -33,14 +33,14 @@ Krishna Kumar<br/>
     C++ is the main development language for most of our projects.
     The goal of this guide is to manage this complexity by describing
     in detail the dos and don'ts of writing C++ code. These rules exist to
-    keep the code base manageable while still allowing coders to use 
+    keep the code base manageable while still allowing coders to use
     C++ language features productively. One way in which we keep the
-    code base manageable is by enforcing <em>consistency</em>. 
+    code base manageable is by enforcing <em>consistency</em>.
   </p>
   <p>
     Note that this guide is not a C++ tutorial.
   </p>
-  
+
 </CATEGORY>
 </OVERVIEW>
 
@@ -51,7 +51,7 @@ Krishna Kumar<br/>
     naming. The style of a name immediately informs us what sort of
     thing the named entity is: a type, a variable, a function, a
     constant, a macro, etc., without requiring us to search for the
-    declaration of that entity.     
+    declaration of that entity.
   </p>
   <p>
     Remember that a maintaining a consistent style is often more important
@@ -65,31 +65,31 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-        Give as descriptive a name as possible, within reason. Do
-        not worry about saving horizontal space as it is far more
-        important to make your code immediately understandable by a
-        new reader. Do not use abbreviations that are ambiguous or
-        unfamiliar to readers outside your project, and do not
-        abbreviate by deleting letters within a word. Short names,
-	such as x and i, are meaningful when used conventionally; 
-	that is, x should be a local variable or a parameter and 
-	i should be a loop index. 
+       Give as descriptive a name as possible, within reason. Do
+       not worry about saving horizontal space as it is far more
+       important to make your code immediately understandable by a
+       new reader. Do not use abbreviations that are ambiguous or
+       unfamiliar to readers outside your project, and do not
+       abbreviate by deleting letters within a word. Short names,
+       such as x and i, are meaningful when used conventionally;
+       that is, x should be a local variable or a parameter and
+       i should be a loop index.
       </p>
       <CODE_SNIPPET>
-        int number_particles_;   // No abbreviation.
-        int num_errors;          // "num" is a widespread convention.
-        int num_mpm_point;       // Most people know what "mpm" stands for.
-        for (int i = 0; ...      // Used conventionally as a loop index.
+      int number_particles_;   // No abbreviation.
+      int num_errors;          // "num" is a widespread convention.
+      int num_mpm_point;       // Most people know what "mpm" stands for.
+      for (int i = 0; ...      // Used conventionally as a loop index.
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
-        int n;                   // Meaningless.
-        int nerr;                // Ambiguous abbreviation.
-        int n_comp_conns;        // Ambiguous abbreviation.
-        int lem_connections;     // Only your group knows what this stands for.
-        int pc_reader;           // Lots of things can be abbreviated "pc".
-        int prtcl_id;            // Deletes internal letters.
-        int the_number_of_elements_in_a_cell 
-                                 // A bit too long.
+      int n;                   // Meaningless.
+      int nerr;                // Ambiguous abbreviation.
+      int n_comp_conns;        // Ambiguous abbreviation.
+      int lem_connections;     // Only your group knows what this stands for.
+      int pc_reader;           // Lots of things can be abbreviated "pc".
+      int prtcl_id;            // Deletes internal letters.
+      int the_number_of_elements_in_a_cell
+                               // A bit too long.
       </BAD_CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -98,24 +98,24 @@ Krishna Kumar<br/>
     <SUMMARY>
       Filenames should be all lowercase and can include underscores
       (<code>_</code>). C++ files should end in <code>.cc</code> and
-      header files should end in <code>.h</code>. Follow the conventions 
+      header files should end in <code>.h</code>. Follow the conventions
       of your project.
     </SUMMARY>
     <BODY>
       <p>
-        Examples of acceptable file names:
+	Examples of acceptable file names:
       </p>
       <p>
-        <code>
+	<code>
           particle_soil_mpm.cc<br/>
           particlesoilmpm.cc<br/>
-          particlesoilmpm_test.cc  // _unittest and _regtest are deprecated.<br/>
+          particlesoilmpm_test.cc  // _unittest/_regtest are deprecated.<br/>
         </code>
       </p>
       <p>
         Do not use filenames that already exist
         in <code>/usr/include</code>, such as <code>error.h</code>.
-      </p>      
+      </p>
       <p>
         In general, make your filenames very specific.  For example,
         use <code>particle_soil_mpm.h</code> rather
@@ -125,17 +125,18 @@ Krishna Kumar<br/>
         called <code>FooBar</code>.
       </p>
       <p>
-        Inline functions must be in a <code>.h</code> file. 
+        Inline functions must be in a <code>.h</code> file.
 	However, for shared template code the class definitions
-	may go into a third file that ends in <code>.tcc</code>.  
+	may go into a third file that ends in <code>.tcc</code>.
       </p>
       <CODE_SNIPPET>
-        particle_soil_mpm.h      // The class declaration.
-        particle_soil_mpm.cc      // The class definition.
-        particle_soil_mpm.tcc     // Templatised class definitions.
+      particle_soil_mpm.h       // The class declaration.
+      particle_soil_mpm.cc      // The class definition.
+      particle_soil_mpm.tcc     // Templatised class definitions.
       </CODE_SNIPPET>
       <p>
-	Don't forget that header files require <a href="#The__define_Guard"><code>#define guard</code></a>. 
+	Don't forget that header files require
+	<a href="#The__define_Guard"><code>#define guard</code></a>.
       </p>
       <p>
 	See <a href="#The_.tcc_Files"><code>.tcc</code> files</a> 
@@ -190,7 +191,7 @@ Krishna Kumar<br/>
 	Don't use names beginning with "my". The word "my" isn't generally
 	meaningful, since it can refer to any human in the world.
 	If you want to personalize a class or variable name, give your class
-	or variable a name that describes its function, not its authorship. 
+	or variable a name that describes its function, not its authorship.
       </p>
       <SUBSECTION title="Common Variable names">
         <p>
@@ -235,7 +236,7 @@ Krishna Kumar<br/>
           discussion of when to use a struct versus a class.
         </p>
       </SUBSECTION>
-      
+
       <SUBSECTION title="Enumerator Variables">
 	<p>
 	  Enumerator variables in <code>enum</code> should be named like
@@ -249,7 +250,7 @@ Krishna Kumar<br/>
       <SUBSECTION title="Global Variables">
         <p>
           Really? are you going to use global variables in your code?
-	  If your code requires global variables, think again, and 
+	  If your code requires global variables, think again, and
 	  restructure your code. In worst case, define your
 	  global variables as <code>const</code>inside a namespace.
         </p>
@@ -294,15 +295,15 @@ Krishna Kumar<br/>
         class MpmMaterials {
         public:
         ...
-        int num_materials() const 
+        int num_materials() const
         {
-            return num_materials_; 
+            return num_materials_;
         }
-        void set_num_materials(int num_materials) 
+        void set_num_materials(int num_materials)
         {
           num_materials_ = num_materials;
         }
-        
+
         private:
         int num_materials_;
         };
@@ -319,7 +320,7 @@ Krishna Kumar<br/>
   </STYLEPOINT>
 
   <STYLEPOINT title="Namespace Names">
-    
+
     <SUMMARY>
       Namespace names are all lower-case, and keep it meaningful
       <code>mpm_material</code>.
@@ -335,7 +336,7 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Macro Names">
     <SUMMARY>
       You're not really going to <A href="#Preprocessor_Macros">define
-      a macro</A>, are you? 
+      a macro</A>, are you?
     </SUMMARY>
     <BODY>
       <p>
@@ -346,7 +347,7 @@ Krishna Kumar<br/>
 	Macros should not be used for any other purpose.
       </p>
       <p>
-	Use facilities from the C++ language proper, such as inline 
+	Use facilities from the C++ language proper, such as inline
 	functions, templates, constructors (for initialization),
 	destructors (for cleanup), exceptions (for exiting contexts), etc
 	instead of using Macros.
@@ -388,9 +389,7 @@ Krishna Kumar<br/>
 <CATEGORY title="Header Files">
   <p>
     In general, every <code>.cc</code> file should have an associated
-    <code>.h</code> file. There are some common exceptions, such as
-    
-    unittests
+    <code>.h</code> file. There are some common exceptions, such as unittests
     and small <code>.cc</code> files containing just a <code>main()</code>
     function.
   </p>
@@ -408,10 +407,12 @@ Krishna Kumar<br/>
       All header files should have <code>#define</code> guards to
       prevent multiple inclusion.  The format of the symbol name
       should be
-      <code><i>&lt;PROJECT&gt;</i>_<i>&lt;PATH&gt;</i>_<i>&lt;FILE&gt;</i>_H_</code>.
+      <code>
+	<i>&lt;PROJECT&gt;</i>_<i>&lt;PATH&gt;</i>_<i>&lt;FILE&gt;</i>_H_
+      </code>.
+
     </SUMMARY>
     <BODY>
-      
       <p>
         To guarantee uniqueness, they should be based on the full path
         in a project's source tree.  For example, the file
@@ -426,7 +427,7 @@ Krishna Kumar<br/>
 
          #endif  // MPM_SRC_MATERIAL_BINGHAM_H_
       </CODE_SNIPPET>
-      
+
     </BODY>
   </STYLEPOINT>
 
@@ -532,7 +533,7 @@ Krishna Kumar<br/>
           properly belongs in <code>.cc</code> files, and we do not like
           to have much actual code in <code>.h</code> files unless there
           is a readability or performance advantage. For example,
-	  accessors and mutators should certainly be inside 
+	  accessors and mutators should certainly be inside
 	  a class definition.
 	</p>
         <p>
@@ -572,16 +573,16 @@ Krishna Kumar<br/>
 	classes or functions.
       </p>
       <p>
-	In order for the compiler to generate the code, it must 
+	In order for the compiler to generate the code, it must
 	see both the template definition (not just declaration) and
 	the specific types/whatever used to "fill in" the template.
 	For example, if you're trying to use a <code>Foo&lt;int&gt;</code>,
-	the compiler must see both the Foo template and the fact that 
+	the compiler must see both the Foo template and the fact that
 	you're trying to make a specific <code>Foo&lt;int&gt;</code>.
       </p>
       <p>
-	A common solution to this is to write the template declaration 
-	in a header file, then implement the class in an implementation 
+	A common solution to this is to write the template declaration
+	in a header file, then implement the class in an implementation
 	file (for example .tcc), and include this implementation file
 	at the end of the header.
       </p>
@@ -599,8 +600,8 @@ Krishna Kumar<br/>
       <p>
         <CODE_SNIPPET>
         // foo.tcc
-        template &lt;typename T&gt; 
-        void Foo&lt;T&gt;::do_something(T param) 
+        template &lt;typename T&gt;
+        void Foo&lt;T&gt;::do_something(T param)
         {
             //implementation
         }
@@ -643,20 +644,20 @@ Krishna Kumar<br/>
     <SUMMARY>
       Use standard order for readability and to avoid hidden
       dependencies: C library, C++ library,
-      
+
       other libraries' <code>.h</code>, your
       project's
       <code>.h</code>.
     </SUMMARY>
     <BODY>
       <p>
-        
+
         All of a project's header files should be
         listed as descendants of the project's source directory
         without use of UNIX directory shortcuts <code>.</code> (the current
         directory) or <code>..</code> (the parent directory).  For
         example,
-        
+
         <code>mpm/src/material/bingham.h</code>
         should be included as
       </p>
@@ -664,7 +665,8 @@ Krishna Kumar<br/>
         #include "material/bingham.h"
       </CODE_SNIPPET>
       <p>
-        In <code><var>dir/foo</var>.cc</code> or <code><var>dir/foo_test</var>.cc</code>,
+        In <code><var>dir/foo</var>.cc</code> or
+	<code><var>dir/foo_test</var>.cc</code>,
         whose main purpose is to implement or test the stuff in
         <code><var>dir2/foo2</var>.h</code>, order your includes as
         follows:
@@ -675,7 +677,7 @@ Krishna Kumar<br/>
         <li> C system files.</li>
         <li> C++ system files.</li>
         <li> Other libraries' <code>.h</code> files.</li>
-        <li> 
+        <li>
              Your project's
              <code>.h</code> files.</li>
       </ol>
@@ -695,7 +697,7 @@ Krishna Kumar<br/>
         <code>base/basictypes.h</code>), but can be in different
         directories too.
       </p>
-      
+
       <p>
         Within each section the includes should be ordered alphabetically.
         Note that older code might not conform to this rule and should be
@@ -703,7 +705,7 @@ Krishna Kumar<br/>
       </p>
       <p>
         For example, the includes in
-        
+
         <code>mpm/src/material/base/materialbase.cc</code>
         might look like this:
       </p>
@@ -729,9 +731,9 @@ Krishna Kumar<br/>
 <CATEGORY title="Scoping">
   <STYLEPOINT title="Namespaces">
     <SUMMARY>
-      Unnamed namespaces in <code>.cc</code> files are encouraged, 
-      especially when using static variables.  With named namespaces, choose the name based on the project, and possibly
-      its path.
+      Unnamed namespaces in <code>.cc</code> files are encouraged,
+      especially when using static variables.  With named namespaces,
+      choose the name based on the project, and possibly its path.
       Do <emph>not</emph> use a <SYNTAX>using-directive</SYNTAX>.
       Do <emph>not</emph> use inline namespaces.
     </SUMMARY>
@@ -801,11 +803,13 @@ Krishna Kumar<br/>
                  <code>.cc</code> files, to avoid runtime naming
                  conflicts:
                  <CODE_SNIPPET>
-                   namespace {                           // This is in a .cc file.
+                   namespace {                           // This is in .cc file.
 
                    // The content of a namespace is not indented
-                   enum { unused, eof, error };       // Commonly used tokens.
-                   bool AtEof() { return pos_ == eof; }  // Uses our namespace's EOF.
+                   enum { unused, eof, error };          // Commonly used
+                                                         // tokens.
+                   bool AtEof() { return pos_ == eof; }  // Uses our namespace's
+                                                         // EOF.
 
                    }  // namespace
                  </CODE_SNIPPET>
@@ -858,14 +862,15 @@ Krishna Kumar<br/>
                    }  // namespace material
                  </CODE_SNIPPET>
                  <p>
-                   The typical <code>.cc</code> file might have more
-                   complex detail, including the need to reference classes
+		   The typical <code>.cc</code> file might have more
+		   complex detail, including the need to reference classes
                    in other namespaces.
                  </p>
                  <CODE_SNIPPET>
                    #include "a.h"
 
-                   class C;  // Forward declaration of class C in the global namespace.
+                   class C;  // Forward declaration of class C
+                             // in the global namespace.
                    namespace a { class A; }  // Forward declaration of a::A.
 
                    namespace b {
@@ -986,7 +991,7 @@ Krishna Kumar<br/>
         Do not make nested classes public unless they are actually
         part of the interface, e.g., a class that holds a set of
         options for some method.
-        
+
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -1115,8 +1120,8 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-	Global variables are allowed, only when you declare them as <code>const</code>
-	and are defined inside a namespace.
+	Global variables are allowed, only when you declare them as
+        <code>const</code> and are defined inside a namespace.
       </p>
       <p>
         Objects with static storage duration, including global variables,
@@ -1161,10 +1166,10 @@ Krishna Kumar<br/>
       </p>
       <p>
         As a result we only allow static variables to contain POD data.  This
-        rule completely disallows <code>std::vector</code> (use C arrays instead), or
-        <code>std::string</code> (use <code>const char []</code>).
+        rule completely disallows <code>std::vector</code> (use C arrays
+        instead), or <code>std::string</code> (use <code>const char []</code>).
       </p>
-      
+
       <p>
         If you need a static or global variable of a class type, consider
         initializing a pointer (which will never be freed), from either your
@@ -1172,8 +1177,8 @@ Krishna Kumar<br/>
         pointer, not a "smart" pointer, since the smart pointer's destructor
         will have the order-of-destructor issue that we are trying to avoid.
       </p>
-      
-      
+
+
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
@@ -1218,14 +1223,15 @@ Krishna Kumar<br/>
                (which is against the rules, but still), the
                constructor code will be called before
                <code>main()</code>, possibly breaking some implicit
-               assumptions in the constructor code.  
+               assumptions in the constructor code.
                </li>
         </ul>
       </CONS>
       <DECISION>
         Constructors should never call virtual functions or attempt to raise
         non-fatal failures. If your object requires non-trivial
-        initialization, consider using  a factory function or <code>Init()</code> method.
+        initialization, consider using  a factory function or
+        <code>Init()</code> method.
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -1244,8 +1250,9 @@ Krishna Kumar<br/>
         The default constructor is called when we <code>new</code> a class
         object with no arguments.  It is always called when calling
         <code>new[]</code> (for arrays). In-class member initialization means
-        declaring a member variable using a construction like <code>int num_errors_
-        = 17;</code> or <code>std::string error_name_{"convergence"};</code>, as opposed to just
+        declaring a member variable using a construction like
+	<code>int num_errors_ = 17;</code> or
+	<code>std::string error_name_{"convergence"};</code>, as opposed to just
         <code>int count_;</code> or <code>std::string name_;</code>.
       </DEFINITION>
       <PROS>
@@ -1301,7 +1308,7 @@ Krishna Kumar<br/>
           If your class inherits from an existing class but you add no
           new member variables, you are not required to have a default
           constructor.
-          
+
         </p>
       </DECISION>
     </BODY>
@@ -1342,7 +1349,7 @@ Krishna Kumar<br/>
           The exception is copy constructors, which, in the rare
           cases when we allow them, should probably not be
           <code>explicit</code>.
-          
+
           Classes that are intended to be
           transparent wrappers around other classes are also
           exceptions.
@@ -1351,8 +1358,8 @@ Krishna Kumar<br/>
         <p>
           Finally, constructors that take only an initializer_list may be
           non-explicit. This is to permit construction of your type using the
-          assigment form for brace init lists (i.e. <code>MpmType materials = {1, 2}
-          </code>).
+          assigment form for brace init lists (i.e.
+	  <code>MpmType materials = {1, 2}</code>).
         </p>
       </DECISION>
     </BODY>
@@ -1403,12 +1410,12 @@ Krishna Kumar<br/>
         </p>
         <p>
           If your class does not need a copy constructor or assignment
-          operator, you must explicitly disable them.         
+          operator, you must explicitly disable them.
           To do so, add dummy declarations for the copy constructor and
           assignment operator in the <code>private:</code> section of your
           class, but do not provide any corresponding definition (so that
-          any attempt to use them results in a link error). 
-        </p>       
+          any attempt to use them results in a link error).
+        </p>
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -1416,7 +1423,7 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Delegating and inheriting constructors">
     <SUMMARY>
       Use delegating and inheriting constructors
-      when they reduce code duplication. 
+      when they reduce code duplication.
     </SUMMARY>
     <BODY>
       <DEFINITION>
@@ -1491,7 +1498,7 @@ Krishna Kumar<br/>
           Inheriting constructors may still be appropriate in that case
           if you can use in-class member initialization for the derived
           class's member variables.
-          
+
         </p>
       </DECISION>
     </BODY>
@@ -1546,7 +1553,8 @@ Krishna Kumar<br/>
         definitions of all the data and operations that the parent
         base class defines.  In practice, inheritance is used in two
         major ways in C++: implementation inheritance, in which
-        actual code is inherited by the child, and <A href="#Interfaces">interface inheritance</A>, in which only
+        actual code is inherited by the child, and
+	<A href="#Interfaces">interface inheritance</A>, in which only
         method names are inherited.
       </DEFINITION>
       <PROS>
@@ -1583,9 +1591,8 @@ Krishna Kumar<br/>
         </p>
         <p>
           Make your destructor <code>virtual</code> if necessary. If
-          your class has virtual methods, its destructor
-          
-          should be virtual.
+          your class has virtual methods, its destructor should be
+          virtual.
         </p>
         <p>
           Limit the use of <code>protected</code> to those member
@@ -1632,21 +1639,21 @@ Krishna Kumar<br/>
       </CONS>
       <DECISION>
         Multiple inheritance is allowed only when all superclasses, with the
-        possible exception of the first one, are <A href="#Abstract_Base_Class">pure
-        interfaces</A>. 
+        possible exception of the first one, are
+	<A href="#Abstract_Base_Class">pure interfaces</A>.
       </DECISION>
     </BODY>
   </STYLEPOINT>
 
   <STYLEPOINT title="Abstract Base Class">
     <SUMMARY>
-      Classes that provide an interface for creating families of related or dependent
-      objects without specifying their concrete class.
+      Classes that provide an interface for creating families of related or
+      dependent objects without specifying their concrete class.
     </SUMMARY>
     <BODY>
       <DEFINITION>
         <p>
-        A class is a interface or an abstract base class if it meets the 
+        A class is a interface or an abstract base class if it meets the
 	following requirements:
         </p>
         <ul>
@@ -1774,12 +1781,15 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Access Control">
     <SUMMARY>
       Make data members <code>private</code>, and provide
-      access to them through accessor functions as needed. Use <code>protected</code> 
-      only when using it as a common data for implementers of the base class. 
-      Typically a variable would be called <code>foo_</code> and the accessor function
-      <code>foo()</code>.  You may also want a mutator function
+      access to them through accessor functions as needed.
+      Use <code>protected</code> only when using it as a common data
+      for implementers of the base class.
+      Typically a variable would be called
+      <code>foo_</code> and the accessor function
+      <code>foo()</code>. You may also want a mutator function
       <code>set_foo()</code>.
-      Exception: <code>static const</code> data members need not be <code>private</code>.
+      Exception: <code>static const</code>
+      data members need not be <code>private</code>.
     </SUMMARY>
     <BODY>
       <p>
@@ -1787,7 +1797,7 @@ Krishna Kumar<br/>
         file.
       </p>
       <p>
-        See also <a href="#Inheritance">Inheritance</a> and 
+        See also <a href="#Inheritance">Inheritance</a> and
 	<a href="#Function_Names">Function Names</a>.
       </p>
     </BODY>
@@ -1830,7 +1840,7 @@ Krishna Kumar<br/>
       <p>
         Do not put large method definitions inline in the class
         definition.  Usually, only trivial or performance-critical,
-        and very short, methods may be defined inline. 
+        and very short, methods may be defined inline.
 	See <a href="#Inline_Functions">Inline Functions</a> for more
         details.
       </p>
@@ -1902,7 +1912,7 @@ Krishna Kumar<br/>
         <p>
           The input arguments are values or <code>const</code> references,
 	  while output arguments are pointers.  Input parameters may be
-          <code>const</code> pointers, but never use non-<code>const</code> 
+          <code>const</code> pointers, but never use non-<code>const</code>
 	  reference parameters except when required by convention,
 	  e.g., <code>swap()</code>.
         </p>
@@ -1915,7 +1925,7 @@ Krishna Kumar<br/>
            <li>You want to pass in a null pointer.</li>
            <li>The function saves a pointer or reference to the input.</li>
          </ul>
-         
+
 
          Remember that most of the time input parameters are going to be
          specified as <code>const T&amp;</code>.  Using <code>const T*</code>
@@ -1978,19 +1988,19 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Arrays">
     <SUMMARY>
-      Do not use <code>arrays</code>, instead use 
+      Do not use <code>arrays</code>, instead use
       <code>std::vectors&lt;T&gt;</code>.
     </SUMMARY>
     <BODY>
       <p>
 	In terms of time and space, an array is just about the optimal
-	construct for accessing a sequence of objects in memory. 
-	It is, however, also a very low level data structure with a vast 
+	construct for accessing a sequence of objects in memory.
+	It is, however, also a very low level data structure with a vast
 	potential for misuse and errors and in essentially all cases there
 	are better alternatives, such as vectors.
       </p>
       <CONS>
-	The two fundamental problems with arrays are that 
+	The two fundamental problems with arrays are that
 	<ul>
 	  <li>An array doesn't know its own size.</li>
 	  <li>The name of an array converts to a pointer to its
@@ -2002,7 +2012,7 @@ Krishna Kumar<br/>
       </DECISION>
     </BODY>
   </STYLEPOINT>
-  
+
 
   <STYLEPOINT title="Friends">
     <SUMMARY>
@@ -2040,7 +2050,7 @@ Krishna Kumar<br/>
           <li>Exceptions allow higher levels of an application to
           decide how to handle "can't happen" failures in deeply
           nested functions, without the obscuring and error-prone
-          bookkeeping of error codes.</li>         
+          bookkeeping of error codes.</li>
 
           <li>Exceptions are the only way for a constructor to fail.
           We can simulate this with a factory function or an
@@ -2061,8 +2071,8 @@ Krishna Kumar<br/>
       </CONS>
       <DECISION>
         <p>
-	  Try to use C++ exceptions whenever possible, especially when parsing user 
-	  inputs and validating those input parameters.
+	  Try to use C++ exceptions whenever possible, especially
+	  when parsing user inputs and validating those input parameters.
         </p>
       </DECISION>
     </BODY>
@@ -2072,17 +2082,17 @@ Krishna Kumar<br/>
   <STYLEPOINT title="Casting">
     <SUMMARY>
       Casts are generally best avoided. In worst case, use C++ casts like
-      <code>static_cast&lt;&gt;()</code>. Do not use other cast formats 
+      <code>static_cast&lt;&gt;()</code>. Do not use other cast formats
       like <code>int y = (int)x;</code> or <code>int y = int(x);</code>.
     </SUMMARY>
     <BODY>
       <DEFINITION>
-        With the exception of dynamic_cast, the use of cast implies the possibility 
-	of a type error or the truncation of a numeric value.  Even an innocent-looking 
-	cast can become a serious problem if,
+        With the exception of dynamic_cast, the use of cast implies the
+	possibility o a type error or the truncation of a numeric value.
+	Even an innocent-looking cast can become a serious problem if,
 	during development or maintenance, one of the types involved is changed.
-	C++ introduced a different cast system from C that distinguishes the types of 
-	cast operations.
+	C++ introduced a different cast system from C that distinguishes
+	the types of cast operations.
       </DEFINITION>
       <DECISION>
         <p>
@@ -2090,10 +2100,9 @@ Krishna Kumar<br/>
           casts. Limit your usage to the following.
         </p>
         <ul>
-          
           <li> Use <code>static_cast</code> as the equivalent of a
-               C-style cast that does value conversion, or when you need to explicitly 
-	       up-cast a pointer from a class to its superclass.
+               C-style cast that does value conversion, or when you need to
+	       explicitly up-cast a pointer from a class to its superclass.
                </li>
           <li> Use <code>const_cast</code> to remove the <code>const</code>
                qualifier (see <a href="#Use_of_const">const</a>).
@@ -2101,7 +2110,7 @@ Krishna Kumar<br/>
 
         </ul>
 	<p>
-	Casts really are mostly avoidable in modern C++. 
+	Casts really are mostly avoidable in modern C++.
 	</p>
       </DECISION>
     </BODY>
@@ -2317,7 +2326,7 @@ Krishna Kumar<br/>
         <p>
           Do not use unsigned types to say a number will never
           be negative. Instead, use assertions for this.
-        </p>    
+        </p>
         <p>
           When in doubt, use a larger type rather than a smaller type.
         </p>
@@ -2325,8 +2334,8 @@ Krishna Kumar<br/>
 
       <SUBSECTION title="On Unsigned Integers">
         <p>
-          Some textbook authors, recommend using unsigned types to 
-	  represent numbers that are never negative.  
+          Some textbook authors, recommend using unsigned types to
+	  represent numbers that are never negative.
 	  This is intended as a form of self-documentation. Consider:
         </p>
         <CODE_SNIPPET>
@@ -2336,7 +2345,7 @@ Krishna Kumar<br/>
           This code will never terminate!  Sometimes gcc will notice
           this bug and warn you, but often it will not.  Equally bad
           bugs can occur when comparing signed and unsigned
-          variables.  
+          variables.
         </p>
         <p>
           So, document that a variable is non-negative using
@@ -2349,25 +2358,25 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Preprocessor Macros">
     <SUMMARY>
-      Never use Macros. Prefer inline functions, enums, 
+      Never use Macros. Prefer inline functions, enums,
       and <code>const</code> variables to macros.
     </SUMMARY>
     <BODY>
       <p>
         Macros mean that the code you see is not the same as the code
         the compiler sees.  This can introduce unexpected behavior,
-        especially since macros have global scope. Macros do not obey 
+        especially since macros have global scope. Macros do not obey
 	the C++ scope and type rules. Consequently, C++ provides
-	alternatives that fit better with the rest of C++, 
-	such as inline functions, templates, and namespaces. 
+	alternatives that fit better with the rest of C++,
+	such as inline functions, templates, and namespaces.
       </p>
       <p>
 	<ul>
-	  <li> 	Instead of using a macro to store a constant,
+	  <li>	Instead of using a macro to store a constant,
           use a <code>const</code> variable.
 	  </li>
-	  <li> 	Instead of   using a macro to "abbreviate" a long
-	  variable name, use a reference. 
+	  <li>	Instead of using a macro to "abbreviate" a long
+	  variable name, use a reference.
 	  </li>
 	  <li>
 	    Instead of using a macro to conditionally compile code
@@ -2390,7 +2399,7 @@ Krishna Kumar<br/>
     <p>
       For pointers, when using C++11, use <code>nullptr</code>.
       For C++0x projects, use <code>NULL</code> because it looks like a
-      pointer.   
+      pointer.
     </p>
   </BODY>
   </STYLEPOINT>
@@ -2438,11 +2447,12 @@ Krishna Kumar<br/>
     Use <code>auto</code> to avoid type names that are just clutter.
     Continue to use manifest type declarations when it helps readability,
     and never use <code>auto</code> for anything but local variables.
-    
+
   </SUMMARY>
   <BODY>
     <DEFINITION>
-      In C++11, a variable whose type is given as <code>auto</code> will be given
+      In C++11, a variable whose type is given as
+      <code>auto</code> will be given
       a type that matches that of the expression used to initialize
       it. You can use <code>auto</code> either to initialize a
       variable by copying, or to bind a reference.
@@ -2455,9 +2465,9 @@ Krishna Kumar<br/>
     </DEFINITION>
     <DECISION>
       <p>
-	<code>auto</code> is permitted, for local variables only, preferably 
-	only foriterators. Do not use <code>auto</code> for file-scope or 
-	namespace-scope variables, or for class members. 
+	<code>auto</code> is permitted, for local variables only, preferably
+	only foriterators. Do not use <code>auto</code> for file-scope or
+	namespace-scope variables, or for class members.
 	Never assign a braced initializer list to an <code>auto</code>-typed
       variable.
       </p>
@@ -2474,7 +2484,7 @@ Krishna Kumar<br/>
     <BODY>
       <p>
 	In C++11, we now have range-based for loops.
-	If you are iterating through all the elements try to use a 
+	If you are iterating through all the elements try to use a
 	range based for loop, if possible. For example:
 	<CODE_SNIPPET>
         std::vector&lt;int&gt; material_ids;
@@ -2486,7 +2496,7 @@ Krishna Kumar<br/>
       <p>
 	An example of <code>std::for_each</code>
 	<CODE_SNIPPET>
-        void increment_all(vector&lt;int&gt;&amp; v) 
+        void increment_all(vector&lt;int&gt;&amp; v)
         {
             for_each(v.begin(),v.end(), [](int&amp; x) {++x;});
         }
@@ -2507,7 +2517,7 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Brace Initialization">
   <SUMMARY>
-    You may use brace initialization. 
+    You may use brace initialization.
   </SUMMARY>
   <BODY>
     <p>In C++0x, aggregate types (arrays and structs with no constructor) could
@@ -2518,7 +2528,8 @@ Krishna Kumar<br/>
       </CODE_SNIPPET></p>
 
     <p>In C++11, this syntax has been expanded for use with all other datatypes.
-    The brace initialization form is called <i>braced-init-list</i>. For example:
+    The brace initialization form is called <i>braced-init-list</i>.
+    For example:
       <CODE_SNIPPET>
         // Vector takes lists of elements.
         std::vector&lt;std::string&gt; v{"foo", "bar"};
@@ -2530,7 +2541,7 @@ Krishna Kumar<br/>
         auto d = {1.23};        // d is an initializer_list&lt;double&gt;
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        auto d = double{1.23};  // Good -- d is a double, not an initializer_list.
+        auto d = double{1.23};  // Good: d is a double, not an initializer_list.
       </CODE_SNIPPET>
     </p>
   </BODY>
@@ -2563,12 +2574,12 @@ Krishna Kumar<br/>
           in C++11, which expresses exclusive ownership of a dynamically
           allocated object; the object is deleted when the
           <code>std::unique_ptr</code> goes out of scope. It cannot be copied,
-          but can be <em>moved</em> to represent ownership transfer. 
+          but can be <em>moved</em> to represent ownership transfer.
           <code>shared_ptr</code> is a smart pointer type which expresses
-          shared ownership of a dynamically allocated object. 
+          shared ownership of a dynamically allocated object.
           <code>shared_ptr</code>s can be copied; ownership of the object is
           shared among all copies, and the object is deleted when the last
-          <code>shared_ptr</code> is destroyed. 
+          <code>shared_ptr</code> is destroyed.
         </p>
       </DEFINITION>
       <PROS>
@@ -2628,7 +2639,7 @@ Krishna Kumar<br/>
               std::unique_ptr&lt;Foo&gt; FooFactory();
               void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);
             </CODE_SNIPPET>
-          
+
         </p>
         <p>
           Do not design your code to use shared ownership without a very good
@@ -2637,7 +2648,7 @@ Krishna Kumar<br/>
           significant, and the underlying object is immutable (i.e.
           <code>shared_ptr&lt;const Foo&gt;</code>).  If you do use shared
           ownership, prefer to use <code>shared_ptr</code>.
-          
+
         </p>
         <p>
           Do not use <code>scoped_ptr</code> in new code unless you need to be
@@ -2645,7 +2656,6 @@ Krishna Kumar<br/>
           <code>linked_ptr</code> or <code>std::auto_ptr</code>. In all three
           cases, use <code>std::unique_ptr</code> instead.
         </p>
-        
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -2661,8 +2671,8 @@ Krishna Kumar<br/>
     </DEFINITION>
      <DECISION>
       <p>
-      The following libraries are discouraged because they've been superseded by 
-      standard libraries in C++11:
+      The following libraries are discouraged because they've been superseded
+      by the standard libraries in C++11:
       <ul>
         <li> <a href="http://www.boost.org/libs/array/">
              Array</a> from <code>boost/array.hpp</code>: use
@@ -2671,7 +2681,8 @@ Krishna Kumar<br/>
              </li>
         <li> <a href="http://www.boost.org/libs/ptr_container/">
              Pointer Container</a> from <code>boost/ptr_container</code>:
-             use containers of <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr">
+             use containers of
+	     <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr">
              <code>std::unique_ptr</code></a> instead.
              </li>
       </ul>
@@ -2680,18 +2691,17 @@ Krishna Kumar<br/>
   </BODY>
   </STYLEPOINT>
 
-  
 
   <STYLEPOINT title="C++11">
   <SUMMARY>
     Use libraries and language extensions from C++11 when appropriate.
   </SUMMARY>
-  <BODY>  
+  <BODY>
     <p>
-      C++11 is the latest ISO C++ standard. It contains significant 
+      C++11 is the latest ISO C++ standard. It contains significant
       changes both to the language and libraries.
       Consider portability to other environments before using C++11
-      features in your project.  
+      features in your project.
     </p>
     <DECISION>
       <p>
@@ -2706,7 +2716,7 @@ Krishna Kumar<br/>
           <code>int foo();</code>, because of a desire to preserve
           stylistic consistency with the many existing function
           declarations.
-        </li>       
+        </li>
         <li>
           The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.h&gt;</code>
           headers, because many compilers do not support those
@@ -2788,7 +2798,7 @@ Krishna Kumar<br/>
       <CODE_SNIPPET>
       // \brief Base class container for the MPM particles
       // \details Has containers with pointers to the particles
-      // \param MPM_ITEMS - the main template file which includes all the classes
+      // \param MPM_ITEMS: the main template file which includes all the classes
       // \param PARTICLE_TYPE - the type of particle (soil/water) to be used
 
       template&lt;typename Mpm_Items, typename Particle_Type&gt;
@@ -2971,7 +2981,7 @@ Krishna Kumar<br/>
         <p>
           Also, lines that are non-obvious should get a comment at the
           end of the line. These end-of-line comments should be
-          separated from the code by 2 spaces.  
+          separated from the code by 2 spaces.
         </p>
         <p>
           Note that there are both comments that describe what the
@@ -2984,8 +2994,8 @@ Krishna Kumar<br/>
         </p>
         <CODE_SNIPPET>
           do_something();                  // Comments line up here.
-          do_somethingElseThatIsLonger();  // Comment here so there are two spaces between
-                                          // the code and the comment.
+          do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
+                                           // between the code and the comment.
         </CODE_SNIPPET>
       </SUBSECTION>
       <SUBSECTION title="nullptr/NULL, true/false, 1, 2, 3...">
@@ -3022,7 +3032,6 @@ Krishna Kumar<br/>
         <BAD_CODE_SNIPPET>
            // Now go through the b array and make sure that if i occurs,
            // the next element is i+1.
-           ...        
            // Geez.  What a useless comment.
         </BAD_CODE_SNIPPET>
       </SUBSECTION>
@@ -3069,7 +3078,7 @@ Krishna Kumar<br/>
         will fix the problem.  Thus when you create a <code>TODO</code>, it is
         almost always your name that is given.
       </p>
-      
+
       <CODE_SNIPPET>
         // TODO(kks32[at]cam.ac.uk): Use a "*" here for concatenation operator.
         // TODO(ks207) change this to use relations.
@@ -3094,7 +3103,7 @@ Krishna Kumar<br/>
       before the declaration of the interface or on the same line as the
       declaration.
       </p>
-      
+
       <p>
       After the word <code>DEPRECATED</code>, write your name, e-mail address,
       or other identifier in parentheses.
@@ -3116,7 +3125,6 @@ Krishna Kumar<br/>
       directions, find the person who created the deprecation and ask them for
       help using the new interface point.
       </p>
-      
     </BODY>
   </STYLEPOINT>
 
@@ -3129,11 +3137,9 @@ Krishna Kumar<br/>
     may not agree with every aspect of the formatting rules, and some of
     the rules may take some getting used to, but it is important that all
     project contributors follow the style rules so that
-    
-    they
-    can all read and understand everyone's code easily.
+    they can all read and understand everyone's code easily.
   </p>
-  
+
   <p>
     To help you format code correctly, there are some tools available. See
     <a href="#Formatting_Tools">Formatting Tools</a> for more
@@ -3146,7 +3152,6 @@ Krishna Kumar<br/>
       long.
     </SUMMARY>
     <BODY>
-      
       <p>
         We recognize that this rule is controversial, but so much existing
         code already adheres to it, and we feel that consistency is
@@ -3184,7 +3189,7 @@ Krishna Kumar<br/>
         <p>
           Exception:  you needn't be concerned about
           <a href="#The__define_Guard">header guards</a>
-          that exceed the maximum length.          
+          that exceed the maximum length.
         </p>
       </DECISION>
     </BODY>
@@ -3196,7 +3201,7 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-        You should use UTF-8, since that is  
+        You should use UTF-8, since that is
         an encoding understood by most tools able
         to handle more than just ASCII.
       </p>
@@ -3253,9 +3258,9 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         ReturnType LongClassName::really_really_long_function_name(
-                                      Type par_name1,  // 4 space indent from scope
-                                      Type par_name2,
-                                      Type par_name3) {
+                                      Type var1,  // 4 space indent from scope
+                                      Type var2,
+                                      Type var3) {
              do_something();  // 4 space indent
              ...
         }
@@ -3433,12 +3438,12 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-        The most common form is without spaces. 
+        The most common form is without spaces.
       </p>
       <CODE_SNIPPET>
         if (condition) {  // no spaces inside parentheses
             ...  // 4 space indent.
-        } 
+        }
         else if (...) {  // The else goes on the same line as the closing brace.
             ...
         }
@@ -3447,7 +3452,7 @@ Krishna Kumar<br/>
         }
       </CODE_SNIPPET>
       <p>
-        Note: you must have a space between the <code>if</code> 
+        Note: you must have a space between the <code>if</code>
 	and the open parenthesis.  You must also have
         a space between the close parenthesis and the curly brace, if
         you're using one.
@@ -3483,9 +3488,7 @@ Krishna Kumar<br/>
         In general, curly braces are not required for single-line
         statements, but they are allowed if you like them;
         conditional or loop statements with complex conditions or
-        statements may be more readable with curly braces. Some
-        
-        projects
+        statements may be more readable with curly braces. Some projects
         require that an <CODE>if</CODE> must always always have an
         accompanying brace.
       </p>
@@ -3505,7 +3508,7 @@ Krishna Kumar<br/>
         // Not allowed - curly on IF but not ELSE
         if (condition) {
             foo;
-        } 
+        }
         else
             bar;
 
@@ -3521,7 +3524,7 @@ Krishna Kumar<br/>
         // one of the clauses used braces.
         if (condition) {
             foo;
-        } 
+        }
         else {
             bar;
         }
@@ -3549,7 +3552,7 @@ Krishna Kumar<br/>
         simply
         <code>assert</code>:
       </p>
-      
+
       <CODE_SNIPPET>
         switch (var) {
         case 0: {    // no indent
@@ -3565,8 +3568,7 @@ Krishna Kumar<br/>
         }
         }
       </CODE_SNIPPET>
-      
-      
+
       <p>
         Empty loop bodies should use <code>{}</code> or
         <code>continue</code>, but not a single semicolon.
@@ -3583,6 +3585,7 @@ Krishna Kumar<br/>
       </BAD_CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
+
 
   <STYLEPOINT title="Pointer and Reference Expressions">
     <SUMMARY>
@@ -3640,7 +3643,8 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Boolean Expressions">
     <SUMMARY>
-      When you have a boolean expression that is longer than the <a href="#Line_Length">standard line length</a>, be consistent in
+      When you have a boolean expression that is longer than the
+      <a href="#Line_Length">standard line length</a>, be consistent in
       how you break up the lines.
     </SUMMARY>
     <BODY>
@@ -3682,7 +3686,7 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         return result;                  // No parentheses in the simple case.
-        return (some_long_condition &amp;&amp;  // Parentheses ok to make a complex
+        return (some_long_condition &amp;&amp;  // Parentheses ok - complex
                 another_condition);     //     expression more readable.
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
@@ -3692,7 +3696,6 @@ Krishna Kumar<br/>
     </BODY>
   </STYLEPOINT>
 
-  
 
   <STYLEPOINT title="Variable and Array Initialization">
     <SUMMARY>
@@ -3749,7 +3752,7 @@ Krishna Kumar<br/>
         if (lopsided_score) {
         #if DISASTER_PENDING      // Correct -- Starts at beginning of line
             drop_everything();
-        #if NOTIFY               
+        #if NOTIFY
             notify_client();
         #endif
         #endif
@@ -3759,7 +3762,7 @@ Krishna Kumar<br/>
       <BAD_CODE_SNIPPET>
         // Bad - indented directives
         if (lopsided_score) {
-            #if DISASTER_PENDING  // Wrong!  The "#if" should be at beginning of line
+            #if DISASTER_PENDING  // Wrong! "#if" should be at beginning of line
             drop_everything();
             #endif                // Wrong!  Do not indent "#endif"
             back_to_normal();
@@ -3839,14 +3842,15 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         // When it all fits on one line:
-        MpmClass::MpmClass(int var) : some_var_(var), some_other_var_(var + 1) {}
+        MpmClass::MpmClass(int var) : some_var_(var),
+                                      some_other_var_(var + 1) {}
       </CODE_SNIPPET>
       <p>
         or
       </p>
       <CODE_SNIPPET>
-        // When it requires multiple lines, indent 4 spaces, putting the colon on
-        // the first initializer line:
+        // When it requires multiple lines, indent 4 spaces,
+        // putting the colon on the first initializer line:
         MpmClass::MpmClass(int var)
             : some_var_(var),             // 4 space indent
               some_other_var_(var + 1) {  // lined up
@@ -3912,15 +3916,16 @@ Krishna Kumar<br/>
         int i = 0;        // Semicolons usually have no space before them.
         int x[] = { 0 };  // Spaces inside braces for braced-init-list are
         int x[] = {0};    // optional.  If you use them, put them on both sides!
-        
+
         // Spaces around the colon in inheritance and initializer lists.
         class Foo : public Bar {
         public:
 
-            // For inline function implementations, put spaces between the braces
-            // and the implementation itself.
+            // For inline function implementations, put spaces
+            //  between the braces and the implementation itself.
             foo(int b) : Bar(), baz_(b) {}  // No spaces inside empty braces.
-            void reset() { baz_ = 0; }      // Spaces separating braces from implementation.
+            void reset() { baz_ = 0; }      // Spaces separating braces
+                                            // from implementation.
             ...
         </CODE_SNIPPET>
         <p>
@@ -3928,22 +3933,20 @@ Krishna Kumar<br/>
           the same file, when they merge, as can removing existing trailing
           whitespace.  So:  Don't introduce trailing whitespace.  Remove it
           if you're already changing that line, or do it in a separate
-          clean-up
-          
-          operation (preferably when no-one else
+          clean-up operation (preferably when no-one else
           is working on the file).
         </p>
       </SUBSECTION>
       <SUBSECTION title="Loops and Conditionals">
         <CODE_SNIPPET>
         if (b) {          // Space after the keyword in conditions and loops.
-        } 
+        }
 	else {            // Spaces around else.
         }
         while (test) {}   // There is usually no space inside parentheses.
         switch (i) {
         for (int i = 0; i &lt; 5; ++i) { //space after a semicolon
-            ...                   
+            ...
         for (auto x : counts) {          // Range-based for loops always have a
             ...                          // space before and after the colon.
         }
@@ -3968,14 +3971,16 @@ Krishna Kumar<br/>
       </SUBSECTION>
       <SUBSECTION title="Templates and Casts">
         <CODE_SNIPPET>
-        std::vector&lt;std::string&gt; x;           // No spaces inside the angle
-        y = static_cast&lt;char*&gt;(x);            // brackets (&lt; and &gt;), before
-                                                    // &lt;, or between &gt;( in a cast.
+        std::vector&lt;std::string&gt; x;   // No spaces inside the angle
+        y = static_cast&lt;char*&gt;(x);    // brackets (&lt; and &gt;), before
+                                            // &lt;, or between &gt;( in a cast.
 
-        set&lt;list&lt;std::string&gt;&gt; x;       // Permitted in C++11 code.
-        set&lt;list&lt;std::string&gt; &gt; x;      // C++03 required a space in &gt; &gt;.
-        set&lt; list&lt;std::string&gt; &gt; x;     // You may optionally use
-                                                    // symmetric spacing in &lt; &lt;.
+        set&lt;list&lt;std::string&gt;&gt; x;    // Permitted in C++11 code.
+        set&lt;list&lt;std::string&gt; &gt; x;   // C++03 required a space
+                                                 // in &gt; &gt;.
+        set&lt; list&lt;std::string&gt; &gt; x;  // You may optionally use
+                                                 // symmetric spacing
+                                                 // in &lt; &lt;.
         </CODE_SNIPPET>
       </SUBSECTION>
     </BODY>
@@ -4022,7 +4027,7 @@ Krishna Kumar<br/>
 
 
 <CATEGORY title="Formatting Tools">
-  
+
   <p>
     There are various tricks and utilities that we use to make C++
     code more robust, and various ways we use C++ that may differ from
@@ -4031,14 +4036,14 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="astyle">
     <SUMMARY>
-      Use 
-      <code> <a href="http://sourceforge.net/projects/astyle/"> 
+      Use
+      <code> <a href="http://sourceforge.net/projects/astyle/">
 	Artistic Style</a> </code> to auto-format your code.
     </SUMMARY>
     <BODY>
       <p>
 	You can automatically format your code to confirm to this
-	style guide by running 
+	style guide by running
 	<code>./astyle --style=stroustrup --break-closing-brackets  *.cc</code>
 	<code>./astyle --style=stroustrup --break-closing-brackets  *.h</code>
 	or
@@ -4062,7 +4067,7 @@ Krishna Kumar<br/>
 	your code in a consistent manner.
       </p>
     </BODY>
-  </STYLEPOINT> 
+  </STYLEPOINT>
 </CATEGORY>
 
 
@@ -4087,7 +4092,7 @@ Krishna Kumar<br/>
     the discontinuity throws readers out of their rhythm when they
     go to read it. Try to avoid this.
   </p>
-  
+
   <p>
     OK, enough writing about writing code; the code itself is much
     more interesting. Have fun!
