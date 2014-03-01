@@ -1089,7 +1089,7 @@ Krishna Kumar<br/>
         // Inefficient implementation:
         for (int i = 0; i &lt; 1000000; ++i) {
           Foo f;  // Constructor &amp; Destructor get called 1000000 times each.
-          f.DoSomething(i);
+          f.do_something(i);
         }
       </BAD_CODE_SNIPPET>
       <p>
@@ -1099,7 +1099,7 @@ Krishna Kumar<br/>
       <CODE_SNIPPET>
         Foo f;  // ctor and dtor get called once each.
         for (int i = 0; i &lt; 1000000; ++i) {
-          f.DoSomething(i);
+          f.do_something(i);
         }
       </CODE_SNIPPET>
     </BODY>
@@ -2535,8 +2535,6 @@ Krishna Kumar<br/>
   </STYLEPOINT>
 
 
-  
-
   <STYLEPOINT title="Ownership and Smart Pointers">
     <SUMMARY>
       Prefer to have single, fixed owners for dynamically allocated objects.
@@ -2983,8 +2981,8 @@ Krishna Kumar<br/>
           often be more readable to line them up:
         </p>
         <CODE_SNIPPET>
-          DoSomething();                  // Comments line up here.
-          DoSomethingElseThatIsLonger();  // Comment here so there are two spaces between
+          do_something();                  // Comments line up here.
+          do_somethingElseThatIsLonger();  // Comment here so there are two spaces between
                                           // the code and the comment.
         </CODE_SNIPPET>
       </SUBSECTION>
@@ -3196,50 +3194,22 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-        You shouldn't hard-code user-facing text in source, even English,
-        so use of non-ASCII characters should be rare.  However, in certain
-        cases it is appropriate to include such words in your code.  For
-        example, if your code parses data files from foreign sources,
-        it may be appropriate to hard-code the non-ASCII string(s) used in
-        those data files as delimiters.  More commonly, unittest code
-        (which does not
-        
-        need to be localized) might contain non-ASCII strings.  In such
-        cases, you should use UTF-8, since that is
-        
+        You should use UTF-8, since that is  
         an encoding understood by most tools able
         to handle more than just ASCII.
-      </p>
-      <p>
-        Hex encoding is also OK, and encouraged where it enhances
-        readability — for example, <code>"\xEF\xBB\xBF"</code>,
-        or, even more simply, <code>u8"\uFEFF"</code>, is the
-        Unicode zero-width no-break space character, which would be
-        invisible if included in the source as straight UTF-8.
-      </p>
-      <p>
-        Use the <code>u8</code> prefix to guarantee
-        that a string literal containing <code>\uXXXX</code> escape
-        sequences is encoded as UTF-8. Do not use it for strings containing
-        non-ASCII characters encoded as UTF-8, because that will produce
-        incorrect output if the compiler does not interpret the source file
-        as UTF-8.
-        
       </p>
       <p>
         You shouldn't use the C++11 <code>char16_t</code> and
         <code>char32_t</code> character types, since they're for
         non-UTF-8 text. For similar reasons you also shouldn't use
-        <code>wchar_t</code> (unless you're writing code that
-        interacts with the Windows API, which uses <code>wchar_t</code>
-        extensively).
+        <code>wchar_t</code>.
       </p>
     </BODY>
   </STYLEPOINT>
 
   <STYLEPOINT title="Spaces vs. Tabs">
     <SUMMARY>
-      Use only spaces, and indent 2 spaces at a time.
+      Use only spaces, and indent 4 spaces at a time.
     </SUMMARY>
     <BODY>
       <p>
@@ -3260,31 +3230,32 @@ Krishna Kumar<br/>
         Functions look like this:
       </p>
       <CODE_SNIPPET>
-        ReturnType ClassName::FunctionName(Type par_name1, Type par_name2) {
-          DoSomething();
-          ...
+        ReturnType ClassName::function_name(Type par_name1, Type par_name2) {
+            do_something();  // 4 space indent
+            ...
         }
       </CODE_SNIPPET>
       <p>
         If you have too much text to fit on one line:
       </p>
       <CODE_SNIPPET>
-        ReturnType ClassName::ReallyLongFunctionName(Type par_name1, Type par_name2,
-                                                     Type par_name3) {
-          DoSomething();
-          ...
+        ReturnType ClassName::really_long_function(Type par_name1,
+                                                   Type par_name2,
+                                                   Type par_name3) {
+            do_something();
+            ...
         }
       </CODE_SNIPPET>
       <p>
         or if you cannot fit even the first parameter:
       </p>
       <CODE_SNIPPET>
-        ReturnType LongClassName::ReallyReallyReallyLongFunctionName(
-            Type par_name1,  // 4 space indent
-            Type par_name2,
-            Type par_name3) {
-          DoSomething();  // 2 space indent
-          ...
+        ReturnType LongClassName::really_really_long_function_name(
+                                      Type par_name1,  // 4 space indent from scope
+                                      Type par_name2,
+                                      Type par_name3) {
+             do_something();  // 4 space indent
+             ...
         }
       </CODE_SNIPPET>
       <p>
@@ -3334,22 +3305,22 @@ Krishna Kumar<br/>
         // Always have named parameters in interfaces.
         class Shape {
          public:
-          virtual void Rotate(double radians) = 0;
+          virtual void rotate(double radians) = 0;
         }
 
         // Always have named parameters in the declaration.
         class Circle : public Shape {
          public:
-          virtual void Rotate(double radians);
+          virtual void rotate(double radians);
         }
 
         // Comment out unused named parameters in definitions.
-        void Circle::Rotate(double /*radians*/) {}
+        void Circle::rotate(double /*radians*/) {}
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
         // Bad - if someone wants to implement later, it's not clear what the
         // variable means.
-        void Circle::Rotate(double) {}
+        void Circle::rotate(double) {}
       </BAD_CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -3364,7 +3335,7 @@ Krishna Kumar<br/>
         Function calls have the following format:
       </p>
       <CODE_SNIPPET>
-        bool retval = DoSomething(argument1, argument2, argument3);
+        bool retval = do_something(argument1, argument2, argument3);
       </CODE_SNIPPET>
       <p>
         If the arguments do not all fit on one line, they should be
@@ -3373,18 +3344,18 @@ Krishna Kumar<br/>
         open paren or before the close paren:
       </p>
       <CODE_SNIPPET>
-        bool retval = DoSomething(averyveryveryverylongargument1,
-                                  argument2, argument3);
+        bool retval = do_something(averyveryveryverylongargument1,
+                                   argument2, argument3);
       </CODE_SNIPPET>
       <p>
         If the function has many arguments, consider having one per
         line if this makes the code more readable:
       </p>
       <CODE_SNIPPET>
-        bool retval = DoSomething(argument1,
-                                  argument2,
-                                  argument3,
-                                  argument4);
+        bool retval = do_something(argument1,
+                                   argument2,
+                                   argument3,
+                                   argument4);
       </CODE_SNIPPET>
       <p>
         Arguments may optionally all be placed on subsequent lines, with one
@@ -3392,15 +3363,17 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         if (...) {
-          ...
-          ...
-          if (...) {
-            DoSomething(
-                argument1,  // 4 space indent
-                argument2,
-                argument3,
-                argument4);
-          }
+            ...
+            ...
+            if (...) {
+                do_something(
+                    argument1,  // 4 space indent
+                    argument2,
+                    argument3,
+                    argument4);
+            }
+            ...
+        }
       </CODE_SNIPPET>
       <p>
         In particular, this should be done if the function signature is so long
@@ -3428,7 +3401,7 @@ Krishna Kumar<br/>
         pair&lt;int, int&gt; p{foo, bar};
 
         // When you have to wrap.
-        SomeFunction(
+        some_function(
             {"assume a zero-length name before {"},
             some_other_function_parameter);
         SomeType variable{
@@ -3441,7 +3414,7 @@ Krishna Kumar<br/>
                           some, other, values}};
         SomeType variable{
             "This is too long to fit all in one line"};
-        MpmType m = {  // Here, you could also break before {.
+        SomeType m = {  // Here, you could also break before {.
             superlongvariablename1,
             superlongvariablename2,
             {short, interior, list},
@@ -3458,21 +3431,11 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <p>
-        There are two acceptable formats for a basic conditional
-        statement. One includes spaces between the parentheses and the
-        condition, and one does not.
-      </p>
-      <p>
-        The most common form is without spaces.  Either is fine, but
-        <em>be consistent</em>. If you are modifying a file, use the
-        format that is already present. If you are writing new code,
-        use the format that the other files in that directory or
-        project use. If in doubt and you have no personal preference,
-        do not add the spaces.
+        The most common form is without spaces. 
       </p>
       <CODE_SNIPPET>
         if (condition) {  // no spaces inside parentheses
-          ...  // 2 space indent.
+            ...  // 4 space indent.
         } else if (...) {  // The else goes on the same line as the closing brace.
           ...
         } else {
@@ -3480,19 +3443,8 @@ Krishna Kumar<br/>
         }
       </CODE_SNIPPET>
       <p>
-        If you prefer you may add spaces inside the
-        parentheses:
-      </p>
-      <CODE_SNIPPET>
-        if ( condition ) {  // spaces inside parentheses - rare
-          ...  // 2 space indent.
-        } else {  // The else goes on the same line as the closing brace.
-          ...
-        }
-      </CODE_SNIPPET>
-      <p>
-        Note that in all cases you must have a space between the
-        <code>if</code> and the open parenthesis.  You must also have
+        Note: you must have a space between the <code>if</code> 
+	and the open parenthesis.  You must also have
         a space between the close parenthesis and the curly brace, if
         you're using one.
       </p>
@@ -3535,10 +3487,10 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         if (condition)
-          DoSomething();  // 2 space indent.
+          do_something();  // 2 space indent.
 
         if (condition) {
-          DoSomething();  // 2 space indent.
+          do_something();  // 2 space indent.
         }
       </CODE_SNIPPET>
       <p>
@@ -3893,7 +3845,7 @@ Krishna Kumar<br/>
             : some_var_(var),             // 4 space indent
               some_other_var_(var + 1) {  // lined up
           ...
-          DoSomething();
+          do_something();
           ...
         }
       </CODE_SNIPPET>
@@ -4143,9 +4095,11 @@ Based on <br/>
 <a href="http://www.possibility.com/Cpp/CppCodingStandard.html">
   C++ Coding Standards</a><br/>
 <a href="http://www.cs.hmc.edu/~geoff/classes/hmc.cs070.200109/c++-style.html">
-C++ Style Tips</a><br/>
+  C++ Style Tips</a><br/>
 <a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">
-  Google's Style Sheet Revision 3.274</a>
+  Google's Style Sheet Revision 3.274</a><br/>
+<a href="http://geosoft.no/development/cppstyle.html">
+  C++ Programming Style Guidelines</a>
 </address>
 
 </GUIDE>
