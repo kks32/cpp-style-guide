@@ -2077,10 +2077,12 @@ Krishna Kumar<br/>
     </SUMMARY>
     <BODY>
       <DEFINITION>
-        With the exception of dynamic_cast, the use of cast implies the possibility of a type error or 
-	the truncation of a numeric value.  Even an innocent-looking cast can become a serious problem if,
+        With the exception of dynamic_cast, the use of cast implies the possibility 
+	of a type error or the truncation of a numeric value.  Even an innocent-looking 
+	cast can become a serious problem if,
 	during development or maintenance, one of the types involved is changed.
-	C++ introduced a different cast system from C that distinguishes the types of cast operations.
+	C++ introduced a different cast system from C that distinguishes the types of 
+	cast operations.
       </DEFINITION>
       <DECISION>
         <p>
@@ -2090,8 +2092,8 @@ Krishna Kumar<br/>
         <ul>
           
           <li> Use <code>static_cast</code> as the equivalent of a
-               C-style cast that does value conversion, or when you need to explicitly up-cast
-               a pointer from a class to its superclass.
+               C-style cast that does value conversion, or when you need to explicitly 
+	       up-cast a pointer from a class to its superclass.
                </li>
           <li> Use <code>const_cast</code> to remove the <code>const</code>
                qualifier (see <a href="#Use_of_const">const</a>).
@@ -3436,10 +3438,12 @@ Krishna Kumar<br/>
       <CODE_SNIPPET>
         if (condition) {  // no spaces inside parentheses
             ...  // 4 space indent.
-        } else if (...) {  // The else goes on the same line as the closing brace.
-          ...
-        } else {
-          ...
+        } 
+        else if (...) {  // The else goes on the same line as the closing brace.
+            ...
+        }
+        else {
+            ...
         }
       </CODE_SNIPPET>
       <p>
@@ -3487,10 +3491,10 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         if (condition)
-          do_something();  // 2 space indent.
+            do_something();  // 4 space indent.
 
         if (condition) {
-          do_something();  // 2 space indent.
+            do_something();  // 4 space indent.
         }
       </CODE_SNIPPET>
       <p>
@@ -3500,24 +3504,26 @@ Krishna Kumar<br/>
       <BAD_CODE_SNIPPET>
         // Not allowed - curly on IF but not ELSE
         if (condition) {
-          foo;
-        } else
-          bar;
+            foo;
+        } 
+        else
+            bar;
 
         // Not allowed - curly on ELSE but not IF
         if (condition)
-          foo;
+            foo;
         else {
-          bar;
+            bar;
         }
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
         // Curly braces around both IF and ELSE required because
         // one of the clauses used braces.
         if (condition) {
-          foo;
-        } else {
-          bar;
+            foo;
+        } 
+        else {
+            bar;
         }
       </CODE_SNIPPET>
     </BODY>
@@ -3546,17 +3552,17 @@ Krishna Kumar<br/>
       
       <CODE_SNIPPET>
         switch (var) {
-          case 0: {  // 2 space indent
+        case 0: {    // no indent
             ...      // 4 space indent
             break;
-          }
-          case 1: {
+        }
+        case 1: {
             ...
             break;
-          }
-          default: {
+        }
+        default: {
             assert(false);
-          }
+        }
         }
       </CODE_SNIPPET>
       
@@ -3646,7 +3652,7 @@ Krishna Kumar<br/>
         if (this_one_thing &gt; this_other_thing &amp;&amp;
             a_third_thing == a_fourth_thing &amp;&amp;
             yet_another &amp;&amp; last_one) {
-          ...
+            ...
         }
       </CODE_SNIPPET>
       <p>
@@ -3740,24 +3746,24 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         // Good - directives at beginning of line
-          if (lopsided_score) {
+        if (lopsided_score) {
         #if DISASTER_PENDING      // Correct -- Starts at beginning of line
-            DropEverything();
-        # if NOTIFY               // OK but not required -- Spaces after #
-            NotifyClient();
-        # endif
+            drop_everything();
+        #if NOTIFY               
+            notify_client();
         #endif
-            BackToNormal();
-          }
+        #endif
+            back_to_normal();
+        }
       </CODE_SNIPPET>
       <BAD_CODE_SNIPPET>
         // Bad - indented directives
-          if (lopsided_score) {
+        if (lopsided_score) {
             #if DISASTER_PENDING  // Wrong!  The "#if" should be at beginning of line
-            DropEverything();
+            drop_everything();
             #endif                // Wrong!  Do not indent "#endif"
-            BackToNormal();
-          }
+            back_to_normal();
+        }
       </BAD_CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
@@ -3775,24 +3781,24 @@ Krishna Kumar<br/>
       </p>
       <CODE_SNIPPET>
         class MpmClass : public OtherClass {
-         public:      // Note the 1 space indent!
-          MpmClass();  // Regular 2 space indent.
-          explicit MpmClass(int var);
-          ~MpmClass() {}
+        public:      // Note no indent!
+            MpmClass();  // Regular 4 space indent.
+            explicit MpmClass(int var);
+            ~MpmClass() {}
 
-          void SomeFunction();
-          void SomeFunctionThatDoesNothing() {
-          }
+            void some_function();
+            void some_function_that_does_nothing() {
+                ...
+	    }
 
-          void set_some_var(int var) { some_var_ = var; }
-          int some_var() const { return some_var_; }
+            void set_some_var(int var) { some_var_ = var; }
+            int some_var() const { return some_var_; }
 
-         private:
-          bool SomeInternalFunction();
+       private:
+            bool some_internal_function();
 
-          int some_var_;
-          int some_other_var_;
-          DISALLOW_COPY_AND_ASSIGN(MpmClass);
+            int some_var_;
+           int some_other_var_;
         };
       </CODE_SNIPPET>
       <p>
@@ -3844,9 +3850,9 @@ Krishna Kumar<br/>
         MpmClass::MpmClass(int var)
             : some_var_(var),             // 4 space indent
               some_other_var_(var + 1) {  // lined up
-          ...
-          do_something();
-          ...
+            ...
+            do_something();
+            ...
         }
       </CODE_SNIPPET>
     </BODY>
@@ -3865,7 +3871,7 @@ Krishna Kumar<br/>
         namespace {
 
         void foo() {  // Correct.  No extra indentation within namespace.
-          ...
+            ...
         }
 
         }  // namespace
@@ -3878,7 +3884,7 @@ Krishna Kumar<br/>
 
           // Wrong.  Indented when it should not be.
           void foo() {
-            ...
+              ...
           }
 
         }  // namespace
@@ -3902,18 +3908,20 @@ Krishna Kumar<br/>
       <SUBSECTION title="General">
         <CODE_SNIPPET>
         void f(bool b) {  // Open braces should always have a space before them.
-          ...
-        int i = 0;  // Semicolons usually have no space before them.
+            ...
+        int i = 0;        // Semicolons usually have no space before them.
         int x[] = { 0 };  // Spaces inside braces for braced-init-list are
         int x[] = {0};    // optional.  If you use them, put them on both sides!
+        
         // Spaces around the colon in inheritance and initializer lists.
         class Foo : public Bar {
-         public:
-          // For inline function implementations, put spaces between the braces
-          // and the implementation itself.
-          Foo(int b) : Bar(), baz_(b) {}  // No spaces inside empty braces.
-          void Reset() { baz_ = 0; }  // Spaces separating braces from implementation.
-          ...
+        public:
+
+            // For inline function implementations, put spaces between the braces
+            // and the implementation itself.
+            foo(int b) : Bar(), baz_(b) {}  // No spaces inside empty braces.
+            void reset() { baz_ = 0; }      // Spaces separating braces from implementation.
+            ...
         </CODE_SNIPPET>
         <p>
           Adding trailing whitespace can cause extra work for others editing
@@ -3929,24 +3937,20 @@ Krishna Kumar<br/>
       <SUBSECTION title="Loops and Conditionals">
         <CODE_SNIPPET>
         if (b) {          // Space after the keyword in conditions and loops.
-        } else {          // Spaces around else.
+        } 
+	else {            // Spaces around else.
         }
         while (test) {}   // There is usually no space inside parentheses.
         switch (i) {
-        for (int i = 0; i &lt; 5; ++i) {
-        switch ( i ) {    // Loops and conditions may have spaces inside
-        if ( test ) {     // parentheses, but this is rare.  Be consistent.
-        for ( int i = 0; i &lt; 5; ++i ) {
-        for ( ; i &lt; 5 ; ++i) {  // For loops always have a space after the
-          ...                   // semicolon, and may have a space before the
-                                // semicolon.
-        for (auto x : counts) {  // Range-based for loops always have a
-          ...                    // space before and after the colon.
+        for (int i = 0; i &lt; 5; ++i) { //space after a semicolon
+            ...                   
+        for (auto x : counts) {          // Range-based for loops always have a
+            ...                          // space before and after the colon.
         }
         switch (i) {
-          case 1:         // No space before colon in a switch case.
+        case 1:          // No space before colon in a switch case.
             ...
-          case 2: break;  // Use a space after a colon if there's code after it.
+        case 2: break;   // Use a space after a colon if there's code after it.
         </CODE_SNIPPET>
       </SUBSECTION>
       <SUBSECTION title="Operators">
@@ -3965,14 +3969,13 @@ Krishna Kumar<br/>
       <SUBSECTION title="Templates and Casts">
         <CODE_SNIPPET>
         std::vector&lt;std::string&gt; x;           // No spaces inside the angle
-        y = static_cast&lt;char*&gt;(x);  // brackets (&lt; and &gt;), before
-                                    // &lt;, or between &gt;( in a cast.
-        std::vector&lt;char *&gt; x;           // Spaces between type and pointer are
-                                    // okay, but be consistent.
-        set&lt;list&lt;std::string&gt;&gt; x;        // Permitted in C++11 code.
-        set&lt;list&lt;std::string&gt; &gt; x;       // C++03 required a space in &gt; &gt;.
-        set&lt; list&lt;std::string&gt; &gt; x;      // You may optionally use
-                                    // symmetric spacing in &lt; &lt;.
+        y = static_cast&lt;char*&gt;(x);            // brackets (&lt; and &gt;), before
+                                                    // &lt;, or between &gt;( in a cast.
+
+        set&lt;list&lt;std::string&gt;&gt; x;       // Permitted in C++11 code.
+        set&lt;list&lt;std::string&gt; &gt; x;      // C++03 required a space in &gt; &gt;.
+        set&lt; list&lt;std::string&gt; &gt; x;     // You may optionally use
+                                                    // symmetric spacing in &lt; &lt;.
         </CODE_SNIPPET>
       </SUBSECTION>
     </BODY>
@@ -4010,6 +4013,8 @@ Krishna Kumar<br/>
         <li> Blank lines inside a chain of if-else blocks may well
              help readability.
              </li>
+	<li> Two blank lines before you begin a function declaration.
+	     </li>
       </ul>
     </BODY>
   </STYLEPOINT>
@@ -4034,13 +4039,17 @@ Krishna Kumar<br/>
       <p>
 	You can automatically format your code to confirm to this
 	style guide by running 
-	<code>./astyle --style=stroustrup *.cc or *.h </code>
+	<code>./astyle --style=stroustrup --break-closing-brackets  *.cc</code>
+	<code>./astyle --style=stroustrup --break-closing-brackets  *.h</code>
+	or
+	<code>./astyle -A4 -y *.cc</code>
+	<code>./astyle -A4 -y *.h</code>
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title=".emacs">
     <SUMMARY>
-      Use the commands in
+      Use the lisp commands listed in
       <a href="./cued.emacs"><code>cued.emacs</code></a>
       to initialise emacs to confirm to this style guide.
     </SUMMARY>
