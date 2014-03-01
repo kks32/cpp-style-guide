@@ -2561,7 +2561,7 @@ Krishna Kumar<br/>
     You may use brace initialization. 
   </SUMMARY>
   <BODY>
-    <p>In C++03, aggregate types (arrays and structs with no constructor) could
+    <p>In C++0x, aggregate types (arrays and structs with no constructor) could
     be initialized using braces.
       <CODE_SNIPPET>
         struct Point { int x; int y; };
@@ -2569,61 +2569,10 @@ Krishna Kumar<br/>
       </CODE_SNIPPET></p>
 
     <p>In C++11, this syntax has been expanded for use with all other datatypes.
-    The brace initialization form is called <i>braced-init-list</i>. Here are
-    a few examples of its use.
+    The brace initialization form is called <i>braced-init-list</i>. For example:
       <CODE_SNIPPET>
         // Vector takes lists of elements.
         std::vector&lt;std::string&gt; v{"foo", "bar"};
-
-        // The same, except this form cannot be used if the initializer_list
-        // constructor is explicit. You may choose to use either form.
-        std::vector&lt;std::string&gt; v = {"foo", "bar"};
-
-        // Maps take lists of pairs. Nested braced-init-lists work.
-        map&lt;int, std::string&gt; m = {{1, "one"}, {2, "2"}};
-
-        // braced-init-lists can be implicitly converted to return types.
-        std::vector&lt;int&gt; test_function() {
-          return {1, 2, 3};
-        }
-
-        // Iterate over a braced-init-list.
-        for (int i : {-1, -2, -3}) {}
-
-        // Call a function using a braced-init-list.
-        void test_function2(std::vector&lt;int&gt; v) {}
-        test_function2({1, 2, 3});
-      </CODE_SNIPPET></p>
-
-    <p>User data types can also define constructors that take
-    <code>initializer_list</code>, which is automatically created from
-    <i>braced-init-list</i>:
-      <CODE_SNIPPET>
-        class MpmType {
-         public:
-          // initializer_list is a reference to the underlying init list,
-          // so it can be passed by value.
-          MpmType(initializer_list&lt;int&gt; init_list) {
-            for (int element : init_list) {}
-          }
-        };
-        MpmType m{2, 3, 5, 7};
-      </CODE_SNIPPET></p>
-
-    <p>Finally, brace initialization can also call ordinary constructors of
-    data types that do not have <code>initializer_list</code> constructors.
-      <CODE_SNIPPET>
-        double d{1.23};
-        // Calls ordinary constructor as long as MpmOtherType has no
-        // initializer_list constructor.
-        class MpmOtherType {
-         public:
-          explicit MpmOtherType(std::string);
-          MpmOtherType(int, std::string);
-        };
-        MpmOtherType m = {1, "b"};
-        // If the constructor is explicit, you can't use the "= {}" form.
-        MpmOtherType m{"b"};
       </CODE_SNIPPET></p>
 
     <p>Never assign a <i>braced-init-list</i> to an auto local variable. In the
@@ -2641,79 +2590,17 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Boost">
   <SUMMARY>
-    Use only approved libraries from the Boost library collection.
+    Use libraries from the Boost library collection.
   </SUMMARY>
   <BODY>
     <DEFINITION>
       The <a href="http://www.boost.org/">Boost library collection</a> is
       a popular collection of peer-reviewed, free, open-source C++ libraries.
     </DEFINITION>
-    <PROS>
-      Boost code is generally very high-quality, is widely portable, and fills
-      many important gaps in the C++ standard library, such as type traits,
-      better binders, and better smart pointers. It also provides an
-      implementation of the TR1 extension to the standard library.
-    </PROS>
-    <CONS>
-      Some Boost libraries encourage coding practices which can hamper
-      readability, such as metaprogramming and other advanced template
-      techniques, and an excessively "functional" style of programming.
-      
-    </CONS>
-    <DECISION>
-      
-      <div>
-        
-        In order to maintain a high level of readability for all contributors
-        who might read and maintain code, we only allow an approved subset of
-        Boost features.  Currently, the following libraries are permitted:
-        <ul>
-          <li> <a href="http://www.boost.org/libs/utility/call_traits.htm">
-               Call Traits</a> from <code>boost/call_traits.hpp</code>
-               </li>
-          <li> <a href="http://www.boost.org/libs/utility/compressed_pair.htm">
-               Compressed Pair</a> from <code>boost/compressed_pair.hpp</code>
-               </li>
-          <li> <a href="http://www.boost.org/libs/graph/">
-               The Boost Graph Library (BGL)</a> from <code>boost/graph</code>,
-               except serialization (<code>adj_list_serialize.hpp</code>) and
-               parallel/distributed algorithms and data structures
-               (<code>boost/graph/parallel/*</code> and
-               <code>boost/graph/distributed/*</code>).
-               </li>
-          <li> <a href="http://www.boost.org/libs/property_map/">
-               Property Map</a> from <code>boost/property_map</code>, except
-               parallel/distributed property maps
-               (<code>boost/property_map/parallel/*</code>).
-               </li>
-          <li> The part of
-               <a href="http://www.boost.org/libs/iterator/">
-               Iterator</a> that deals with defining iterators:
-               <code>boost/iterator/iterator_adaptor.hpp</code>,
-               <code>boost/iterator/iterator_facade.hpp</code>, and
-               <code>boost/function_output_iterator.hpp</code></li>
-          <li> The part of
-               <a href="http://www.boost.org/libs/polygon/">
-               Polygon</a> that deals with Voronoi diagram construction and
-               doesn't depend on the rest of Polygon:
-               <code>boost/polygon/voronoi_builder.hpp</code>,
-               <code>boost/polygon/voronoi_diagram.hpp</code>, and
-               <code>boost/polygon/voronoi_geometry_type.hpp</code></li>
-          <li> <a href="http://www.boost.org/libs/bimap/">
-               Bimap</a> from <code>boost/bimap</code>
-               </li>
-          <li> <a href="http://www.boost.org/libs/math/doc/html/dist.html">
-               Statistical Distributions and Functions</a> from
-               <code>boost/math/distributions</code>
-               </li>
-
-        </ul>
-        We are actively considering adding other Boost features to the list, so
-        this list may be expanded in the future.
-      </div>
+     <DECISION>
       <p>
-      The following libraries are permitted, but their use is discouraged
-      because they've been superseded by standard libraries in C++11:
+      The following libraries are discouraged because they've been superseded by 
+      standard libraries in C++11:
       <ul>
         <li> <a href="http://www.boost.org/libs/array/">
              Array</a> from <code>boost/array.hpp</code>: use
@@ -2742,78 +2629,6 @@ Krishna Kumar<br/>
     using C++11 features in your project.
     
   </SUMMARY>
-  <BODY>
-    <DEFINITION>
-      C++11 is the latest ISO C++ standard.
-      It contains
-      <a href="http://en.wikipedia.org/wiki/C%2B%2B11">significant
-      changes</a> both to the language and libraries.
-      
-    </DEFINITION>
-    <PROS>
-      C++11 has become the official standard, and eventually will
-      be supported by most C++ compilers.  It standardizes some common C++
-      extensions that we use already, allows shorthands for some operations,
-      and has some performance and safety improvements.
-    </PROS>
-    <CONS>
-      <p>
-        The C++11 standard is substantially more complex than its predecessor
-        (1,300 pages versus 800 pages), and is
-        unfamiliar to many developers.  The long-term effects of some
-        features on code readability and maintenance are unknown.  We cannot
-        predict when its various features will be implemented uniformly by
-        tools that may be of interest, particularly in the case of projects
-        that are forced to use older versions of tools.
-      </p>
-      <p>
-        As with <a href="#Boost">Boost</a>, some C++11 extensions encourage
-        coding practices that hamper readability—for example by removing
-        checked redundancy (such as type names) that may be helpful to readers,
-        or by encouraging template metaprogramming.  Other extensions
-        duplicate functionality available through existing
-        mechanisms, which may lead to
-        confusion and conversion costs.
-      </p>
-      
-    </CONS>
-    <DECISION>
-      <p>
-       C++11 features may be used unless specified otherwise. In addition to
-       what's described in the rest of the style guide, the following C++11
-       features may not be used:
-      </p>
-      <ul>
-        <li>
-          Functions with trailing return types, e.g. writing
-          <code>auto foo() -&gt; int;</code> instead of
-          <code>int foo();</code>, because of a desire to preserve
-          stylistic consistency with the many existing function
-          declarations.
-        </li>
-        
-        
-        
-        
-        
-        <li>
-          Compile-time rational numbers (<code>&lt;ratio&gt;</code>),
-          because of concerns that it's tied to a more template-heavy
-          interface style.
-        </li>
-        <li>
-          The <code>&lt;cfenv&gt;</code> and <code>&lt;fenv.h&gt;</code>
-          headers, because many compilers do not support those
-          features reliably.
-        </li>
-        
-        <li>
-          Lambda expressions, or the related <code>std::function</code> or
-          <code>std::bind</code> utilities.
-        </li>
-      </ul>
-    </DECISION>
-  </BODY>
   </STYLEPOINT>
 
 </CATEGORY>
