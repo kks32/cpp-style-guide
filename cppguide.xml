@@ -1930,15 +1930,14 @@ Krishna Kumar<br/>
           <code>const</code>:
         </p>
         <CODE_SNIPPET>
-          void Foo(const std::string &amp;in, std::string *out);
+          void foo(const std::string &amp;in, std::string *out);
         </CODE_SNIPPET>
         <p>
-          In fact it is a very strong convention in Google code that input
-          arguments are values or <code>const</code> references while
-          output arguments are pointers.  Input parameters may be
-          <code>const</code> pointers, but we never allow
-          non-<code>const</code> reference parameters
-          except when required by convention, e.g., <code>swap()</code>.
+          The input arguments are values or <code>const</code> references,
+	  while output arguments are pointers.  Input parameters may be
+          <code>const</code> pointers, but never use non-<code>const</code> 
+	  reference parameters except when required by convention,
+	  e.g., <code>swap()</code>.
         </p>
         <p>
 
@@ -1964,74 +1963,6 @@ Krishna Kumar<br/>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Rvalue references">
-    <SUMMARY>
-      Do not use rvalue references, <code>std::forward</code>,
-      <code>std::move_iterator</code>, or <code>std::move_if_noexcept</code>.
-      Use the single-argument form of <code>std::move</code> only with
-      non-copyable arguments.
-    </SUMMARY>
-    <BODY>
-      <DEFINITION>
-        Rvalue references are a type of reference that can only bind to temporary
-        objects. The syntax is similar to traditional reference syntax.
-        For example, <code>void f(std::string&amp;&amp; s);</code> declares a
-        function whose argument is an rvalue reference to a string.
-      </DEFINITION>
-      <PROS>
-        <ul>
-          <li>Defining a move constructor (a constructor taking an rvalue
-            reference to the class type) makes it possible to move a value instead
-            of copying it. If <code>v1</code> is a <code>std::vector&lt;std::string&gt;</code>,
-            for example, then <code>auto v2(std::move(v1))</code> will probably
-            just result in some simple pointer manipulation instead of copying a
-            large amount of data. In some cases this can result in a major
-            performance improvement.
-          </li>
-          <li>
-            Rvalue references make it possible to write a generic function
-            wrapper that forwards its arguments to another function, and works
-            whether or not its arguments are temporary objects.
-          </li>
-          <li>
-            Rvalue references make it possible to implement types that are
-            moveable but not copyable, which can be useful for types that have
-            no sensible definition of copying but where you might still want to
-            pass them as function arguments, put them in containers, etc.
-          </li>
-          <li>
-            <code>std::move</code> is necessary to make effective use of some
-            standard-library types, such as <code>std::unique_ptr</code>.
-          </li>
-        </ul>
-      </PROS>
-      <CONS>
-        <ul>
-          <li>Rvalue references are a relatively new feature (introduced as part
-            of C++11), and not yet widely understood. Rules like reference
-            collapsing, and automatic synthesis of move constructors, are
-            complicated.
-          </li>
-          <li>Rvalue references encourage a programming style that makes heavier
-            use of value semantics. This style is
-            unfamiliar to many developers, and its performance characteristics
-            can be hard to reason about.
-          </li>
-        </ul>
-      </CONS>
-      <DECISION>
-        <p>
-          Do not use rvalue references, and do not use the
-          <code>std::forward</code> or <code>std::move_if_noexcept</code>
-          utility functions (which are essentially just casts to rvalue
-          reference types), or <code>std::move_iterator</code>. Use
-          single-argument <code>std::move</code> only with objects that are
-          not copyable (e.g. <code>std::unique_ptr</code>), or in templated
-          code with objects that might not be copyable. 
-        </p>
-      </DECISION>
-    </BODY>
-  </STYLEPOINT>
 
   <STYLEPOINT title="Function Overloading">
     <SUMMARY>
@@ -2050,8 +1981,8 @@ Krishna Kumar<br/>
         <CODE_SNIPPET>
           class MpmClass {
            public:
-            void Analyze(const std::string &amp;text);
-            void Analyze(const char *text, size_t textlen);
+            void analyze(const std::string &amp;text);
+            void analyze(const char *text, size_t textlen);
           };
         </CODE_SNIPPET>
       </DEFINITION>
@@ -2071,96 +2002,44 @@ Krishna Kumar<br/>
       <DECISION>
         If you want to overload a function, consider qualifying the
         name with some information about the arguments, e.g.,
-        <code>AppendString()</code>, <code>AppendInt()</code> rather
-        than just <code>Append()</code>.
-        
+        <code>append_string()</code>, <code>append_int()</code> rather
+        than just <code>append()</code>.
       </DECISION>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Default Arguments">
-    <SUMMARY>
-      We do not allow default function parameters, except in limited
-      situations as explained below.  Simulate them with function
-      overloading instead, if appropriate.
-    </SUMMARY>
-    <BODY>
-      <PROS>
-        Often you have a function that uses default values, but
-        occasionally you want to override the defaults.  Default
-        parameters allow an easy way to do this without having to
-        define many functions for the rare exceptions.  Compared to
-        overloading the function, default arguments have a cleaner
-        syntax, with less boilerplate and a clearer distinction
-        between 'required' and 'optional' arguments.
-      </PROS>
-      <CONS>
-        Function pointers are confusing in the presence of default
-        arguments, since the function signature often doesn't match
-        the call signature.  Adding a default argument to an existing
-        function changes its type, which can cause problems with code
-        taking its address.  Adding function overloads avoids these
-        problems.  In addition, default parameters may result in
-        bulkier code since they are replicated at every call-site --
-        as opposed to overloaded functions, where "the default"
-        appears only in the function definition.
-      </CONS>
-      <DECISION>
-        <p>
-          While the cons above are not that onerous, they still
-          outweigh the (small) benefits of default arguments over
-          function overloading.  So except as described below, we
-          require all arguments to be explicitly specified.
-        </p>
-        <p>
-          One specific exception is when the function is a static
-          function (or in an unnamed namespace) in a .cc file.  In
-          this case, the cons don't apply since the function's use is
-          so localized.
-        </p>
-        <p>
-          Another specific exception is when default arguments are
-          used to simulate variable-length argument lists.
-        </p>
-        <CODE_SNIPPET>
-          // Support up to 4 params by using a default empty AlphaNum.
-          std::string StrCat(const AlphaNum &amp;a,
-                        const AlphaNum &amp;b = gEmptyAlphaNum,
-                        const AlphaNum &amp;c = gEmptyAlphaNum,
-                        const AlphaNum &amp;d = gEmptyAlphaNum);
-        </CODE_SNIPPET>
-      </DECISION>
-    </BODY>
-  </STYLEPOINT>
 
-  <STYLEPOINT title="Variable-Length Arrays and alloca()">
+  <STYLEPOINT title="Arrays">
     <SUMMARY>
-      We do not allow variable-length arrays or <code>alloca()</code>.
+      Do not use <code>arrays</code>, instead use 
+      <code>std::vectors&lt;T&gt;</code>.
     </SUMMARY>
     <BODY>
-      <PROS>
-        Variable-length arrays have natural-looking syntax.  Both
-        variable-length arrays and <code>alloca()</code> are very
-        efficient.
-      </PROS>
+      <p>
+	In terms of time and space, an array is just about the optimal
+	construct for accessing a sequence of objects in memory. 
+	It is, however, also a very low level data structure with a vast 
+	potential for misuse and errors and in essentially all cases there
+	are better alternatives, such as vectors.
+      </p>
       <CONS>
-        Variable-length arrays and alloca are not part of Standard
-        C++.  More importantly, they allocate a data-dependent amount
-        of stack space that can trigger difficult-to-find memory
-        overwriting bugs: "It ran fine on my machine, but dies
-        mysteriously in production".
+	The two fundamental problems with arrays are that 
+	<ul>
+	  <li>An array doesn't know its own size.</li>
+	  <li>The name of an array converts to a pointer to its
+	  first element at the slightest provocation.</li>
+	</ul>
       </CONS>
-      
       <DECISION>
-        Use a safe allocator instead, such as
-        <code>scoped_ptr</code>/<code>scoped_array</code>.
+	Do not use arrays, essentially in all cases use vectors.
       </DECISION>
     </BODY>
   </STYLEPOINT>
+  
 
   <STYLEPOINT title="Friends">
     <SUMMARY>
-      We allow use of <code>friend</code> classes and functions,
+      Use <code>friend</code> classes and functions,
       within reason.
     </SUMMARY>
     <BODY>
@@ -2186,7 +2065,7 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Exceptions">
     <SUMMARY>
-      We do not use C++ exceptions.
+      Use C++ exceptions, especially when parsing user inputs.
     </SUMMARY>
     <BODY>
       <PROS>
@@ -2194,17 +2073,7 @@ Krishna Kumar<br/>
           <li>Exceptions allow higher levels of an application to
           decide how to handle "can't happen" failures in deeply
           nested functions, without the obscuring and error-prone
-          bookkeeping of error codes.</li>
-
-          
-
-          <li>Exceptions are used by most other modern
-          languages.  Using them in C++ would make it more consistent with
-          Python, Java, and the C++ that others are familiar with.</li>
-
-          <li>Some third-party C++ libraries use exceptions, and turning
-          them off internally makes it harder to integrate with those
-          libraries.</li>
+          bookkeeping of error codes.</li>         
 
           <li>Exceptions are the only way for a constructor to fail.
           We can simulate this with a factory function or an
@@ -2217,228 +2086,39 @@ Krishna Kumar<br/>
       <CONS>
         <ul>
           <li>When you add a <code>throw</code> statement to an existing
-          function, you must examine all of its transitive callers. Either
-          they must make at least the basic exception safety guarantee, or
-          they must never catch the exception and be happy with the
-          program terminating as a result. For instance, if
-          <code>f()</code> calls <code>g()</code> calls
-          <code>h()</code>, and <code>h</code> throws an exception
-          that <code>f</code> catches, <code>g</code> has to be
-          careful or it may not clean up properly.</li>
+          function, you must examine all of its transitive callers.</li>
 
           <li>More generally, exceptions make the control flow of
-          programs difficult to evaluate by looking at code: functions
-          may return in places you don't expect. This causes
-          maintainability and debugging difficulties. You can minimize
-          this cost via some rules on how and where exceptions can be
-          used, but at the cost of more that a developer needs to know
-          and understand.</li>
-
-          <li>Exception safety requires both RAII and different coding
-          practices. Lots of supporting machinery is needed to make
-          writing correct exception-safe code easy. Further, to avoid
-          requiring readers to understand the entire call graph,
-          exception-safe code must isolate logic that writes to
-          persistent state into a "commit" phase. This will have both
-          benefits and costs (perhaps where you're forced to obfuscate
-          code to isolate the commit). Allowing exceptions would force
-          us to always pay those costs even when they're not worth
-          it.</li>
-
-          <li>Turning on exceptions adds data to each binary produced,
-          increasing compile time (probably slightly) and possibly
-          increasing address space pressure.
-          </li>
-
-          <li>The availability of exceptions may encourage developers
-          to throw them when they are not appropriate or recover from
-          them when it's not safe to do so. For example, invalid user
-          input should not cause exceptions to be thrown. We would
-          need to make the style guide even longer to document these
-          restrictions!</li>
+          programs difficult to evaluate by looking at code.</li>
         </ul>
       </CONS>
       <DECISION>
         <p>
-          On their face, the benefits of using exceptions outweigh the
-          costs, especially in new projects.  However, for existing code,
-          the introduction of exceptions has implications on all dependent
-          code.  If exceptions can be propagated beyond a new project, it
-          also becomes problematic to integrate the new project into
-          existing exception-free code.  Because most existing C++ code at
-          Google is not prepared to deal with exceptions, it is
-          comparatively difficult to adopt new code that generates
-          exceptions.
-        </p>
-        <p>
-          Given that Google's existing code is not exception-tolerant, the
-          costs of using exceptions are somewhat greater than the costs in
-          a new project.  The conversion process would be slow and
-          error-prone.  We don't believe that the available alternatives to
-          exceptions, such as error codes and assertions, introduce a
-          significant burden.
-          
-        </p>
-        <p>
-          Our advice against using exceptions is not predicated on
-          philosophical or moral grounds, but practical ones.
-          
-          Because we'd like to use our open-source
-          projects at Google and it's difficult to do so if those projects
-          use exceptions, we need to advise against exceptions in Google
-          open-source projects as well.
-          Things would probably be different if we had to do it all over
-          again from scratch.
-        </p>
-        <p>
-          This prohibition also applies to the exception-related
-          features added in C++11, such as <code>noexcept</code>,
-          <code>std::exception_ptr</code>, and
-          <code>std::nested_exception</code>.
-        </p>
-        <p>
-          There is an <a href="#Windows_Code">exception</a> to this
-          rule (no pun intended) for Windows code.
+	  Try to use C++ exceptions whenever possible, especially when parsing user 
+	  inputs and validating those input parameters.
         </p>
       </DECISION>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="Run-Time Type Information (RTTI)">
-    <SUMMARY>
-      Avoid using Run Time Type Information (RTTI).
-    </SUMMARY>
-    <BODY>
-      <DEFINITION>
-        RTTI allows a programmer to query the C++ class of an
-        object at run time.  This is done by use of <code>typeid</code> or
-        <code>dynamic_cast</code>.
-      </DEFINITION>
-      <CONS>
-        <p>
-         Querying the type of an object at run-time frequently means a
-         design problem.  Needing to know the type of an
-         object at runtime is often an indication that
-         the design of your class hierarchy is flawed.
-        </p>
-        <p>
-         Undisciplined use of RTTI makes code hard to maintain.  It can
-         lead to type-based decision trees or switch statements scattered
-         throughout the code, all of which must be examined when making
-         further changes.
-        </p>
-      </CONS>
-      <PROS>
-        <p>
-          The standard alternatives to RTTI (described below) require
-          modification or redesign of the class hierarchy in question.
-          Sometimes such modifications are infeasible or undesirable,
-          particularly in widely-used or mature code.
-        </p>
-        <p>
-          RTTI can be useful in some unit tests. For example, it is useful in
-          tests of factory classes where the test has to verify that a
-          newly created object has the expected dynamic type.  It is also
-          useful in managing the relationship between objects and their mocks.
-        </p>
-        <p>
-          RTTI is useful when considering multiple abstract objects.  Consider
-          <CODE_SNIPPET>
-            bool Base::Equal(Base* other) = 0;
-            bool Derived::Equal(Base* other) {
-              Derived* that = dynamic_cast&lt;Derived*&gt;(other);
-              if (that == NULL)
-                return false;
-              ...
-            }
-          </CODE_SNIPPET>
-        </p>
-
-      </PROS>
-      <DECISION>
-        <p>
-          RTTI has legitimate uses but is prone to abuse, so you must
-          be careful when using it.  You may use it freely
-          in unittests, but avoid it when possible in other code.
-          In particular, think twice before using RTTI in new code.
-          If you find yourself needing to write code that behaves differently
-          based on the class of an object, consider one of the following
-          alternatives to querying the type:
-        <ul>
-          <li>
-            Virtual methods are the preferred way of executing different
-            code paths depending on a specific subclass type.  This puts
-            the work within the object itself.
-          </li>
-          <li>
-            If the work belongs outside the object and instead in some
-            processing code, consider a double-dispatch solution, such
-            as the Visitor design pattern.  This allows a facility
-            outside the object itself to determine the type of class
-            using the built-in type system.
-          </li>
-        </ul>
-        </p>
-        <p>
-          When the logic of a program guarantees that a given instance
-          of a base class is in fact an instance of a particular derived class,
-          then a <code>dynamic_cast</code> may be used freely on the object.
-          
-          Usually one can use a
-          <code>static_cast</code> as an alternative in such situations.
-        </p>
-        <p>
-          Decision trees based on type are a strong indication that your
-          code is on the wrong track.
-          <BAD_CODE_SNIPPET>
-            if (typeid(*data) == typeid(D1)) {
-              ...
-            } else if (typeid(*data) == typeid(D2)) {
-              ...
-            } else if (typeid(*data) == typeid(D3)) {
-            ...
-          </BAD_CODE_SNIPPET>
-          Code such as this usually breaks when additional subclasses are
-          added to the class hierarchy.  Moreover, when properties of a subclass
-          change, it is difficult to find and modify all the affected code segments.
-        </p>
-        <p>
-          Do not hand-implement an RTTI-like workaround. The arguments
-          against RTTI apply just as much to workarounds like class
-          hierarchies with type tags.  Moreover, workarounds disguise your
-          true intent.
-        </p>
-      </DECISION>
-    </BODY>
-  </STYLEPOINT>
 
   <STYLEPOINT title="Casting">
     <SUMMARY>
-      Use C++ casts like <code>static_cast&lt;&gt;()</code>.  Do not use
-      other cast formats like <code>int y = (int)x;</code> or
-      <code>int y = int(x);</code>.
+      Casts are generally best avoided. In worst case, use C++ casts like
+      <code>static_cast&lt;&gt;()</code>. Do not use other cast formats 
+      like <code>int y = (int)x;</code> or <code>int y = int(x);</code>.
     </SUMMARY>
     <BODY>
       <DEFINITION>
-        C++ introduced a different cast system from C that
-        distinguishes the types of cast operations.
+        With the exception of dynamic_cast, the use of cast implies the possibility of a type error or 
+	the truncation of a numeric value.  Even an innocent-looking cast can become a serious problem if,
+	during development or maintenance, one of the types involved is changed.
+	C++ introduced a different cast system from C that distinguishes the types of cast operations.
       </DEFINITION>
-      <PROS>
-        The problem with C casts is the ambiguity of the operation;
-        sometimes you are doing a <em>conversion</em> (e.g.,
-        <code>(int)3.5</code>) and sometimes you are doing a
-        <em>cast</em> (e.g., <code>(int)"hello"</code>); C++ casts
-        avoid this.  Additionally C++ casts are more visible when
-        searching for them.
-      </PROS>
-      <CONS>
-        The syntax is nasty.
-      </CONS>
       <DECISION>
         <p>
-          Do not use C-style casts.  Instead, use these C++-style
-          casts.
-          
+          Casts are generally best avoided. In worst case, use these C++-style
+          casts. Limit your usage to the following.
         </p>
         <ul>
           
@@ -2449,123 +2129,11 @@ Krishna Kumar<br/>
           <li> Use <code>const_cast</code> to remove the <code>const</code>
                qualifier (see <a href="#Use_of_const">const</a>).
                </li>
-          
-          
-          <li> Use <code>reinterpret_cast</code> to do unsafe
-               conversions of pointer types to and from integer and
-               other pointer types. Use this only if you know what you are
-               doing and you understand the aliasing issues.
-               
-               </li>
+
         </ul>
-        <p> See the <a href="#Run-Time_Type_Information__RTTI_">RTTI section</a>
-            for guidance on the use of <code>dynamic_cast</code>.
-            </p>
-      </DECISION>
-    </BODY>
-  </STYLEPOINT>
-
-  <STYLEPOINT title="Streams">
-    <SUMMARY>
-      Use streams only for logging.
-    </SUMMARY>
-    <BODY>
-      <DEFINITION>
-        Streams are a replacement for <code>printf()</code> and
-        <code>scanf()</code>.
-      </DEFINITION>
-      <PROS>
-        With streams, you do not need to know the type of the object
-        you are printing.  You do not have problems with format
-        strings not matching the argument list.  (Though with gcc, you
-        do not have that problem with <code>printf</code> either.)  Streams
-        have automatic constructors and destructors that open and close the
-        relevant files.
-      </PROS>
-      <CONS>
-        Streams make it difficult to do functionality like
-        <code>pread()</code>.  Some formatting (particularly the common
-        format string idiom <code>%.*s</code>) is difficult if not
-        impossible to do efficiently using streams without using
-        <code>printf</code>-like hacks.  Streams do not support operator
-        reordering (the <code>%1s</code> directive), which is helpful for
-        internationalization.
-      </CONS>
-      <DECISION>
-        
-        <p>
-          Do not use streams, except where required by a logging interface.
-          Use <code>printf</code>-like routines instead.
-        </p>
-        <p>
-          There are various pros and cons to using streams, but in
-          this case, as in many other cases, consistency trumps the
-          debate.  Do not use streams in your code.
-        </p>
-
-        <SUBSECTION title="Extended Discussion">
-          <p>
-            There has been debate on this issue, so this explains the
-            reasoning in greater depth.  Recall the Only One Way
-            guiding principle: we want to make sure that whenever we
-            do a certain type of I/O, the code looks the same in all
-            those places.  Because of this, we do not want to allow
-            users to decide between using streams or using
-            <code>printf</code> plus Read/Write/etc.  Instead, we should
-            settle on one or the other.  We made an exception for logging
-            because it is a pretty specialized application, and for
-            historical reasons.
-          </p>
-          <p>
-            Proponents of streams have argued that streams are the obvious
-            choice of the two, but the issue is not actually so clear.  For
-            every advantage of streams they point out, there is an
-            equivalent disadvantage.  The biggest advantage is that
-            you do not need to know the type of the object to be
-            printing.  This is a fair point.  But, there is a
-            downside: you can easily use the wrong type, and the
-            compiler will not warn you.  It is easy to make this
-            kind of mistake without knowing when using streams.
-          </p>
-          <CODE_SNIPPET>
-            cout &lt;&lt; this;  // Prints the address
-            cout &lt;&lt; *this;  // Prints the contents
-          </CODE_SNIPPET>
-          <p>
-            The compiler does not generate an error because
-            <code>&lt;&lt;</code> has been overloaded.  We discourage
-            overloading for just this reason.
-          </p>
-          <p>
-            Some say <code>printf</code> formatting is ugly and hard to
-            read, but streams are often no better.  Consider the following
-            two fragments, both with the same typo.  Which is easier to
-            discover?
-          </p>
-          <CODE_SNIPPET>
-             cerr &lt;&lt; "Error connecting to '" &lt;&lt; foo-&gt;bar()-&gt;hostname.first
-                  &lt;&lt; ":" &lt;&lt; foo-&gt;bar()-&gt;hostname.second &lt;&lt; ": " &lt;&lt; strerror(errno);
-
-             fprintf(stderr, "Error connecting to '%s:%u: %s",
-                     foo-&gt;bar()-&gt;hostname.first, foo-&gt;bar()-&gt;hostname.second,
-                     strerror(errno));
-          </CODE_SNIPPET>
-          <p>
-            And so on and so forth for any issue you might bring up.
-            (You could argue, "Things would be better with the right
-            wrappers," but if it is true for one scheme, is it not
-            also true for the other?  Also, remember the goal is to
-            make the language smaller, not add yet more machinery that
-            someone has to learn.)
-          </p>
-          <p>
-            Either path would yield different advantages and
-            disadvantages, and there is not a clearly superior
-            solution.  The simplicity doctrine mandates we settle on
-            one of them though, and the majority decision was on
-            <code>printf</code> + <code>read</code>/<code>write</code>.
-          </p>
-        </SUBSECTION>
+	<p>
+	Casts really are mostly avoidable in modern C++. 
+	</p>
       </DECISION>
     </BODY>
   </STYLEPOINT>
@@ -2614,7 +2182,8 @@ Krishna Kumar<br/>
       Use <code>const</code> whenever it makes sense.
       With C++11,
       <code>constexpr</code> is a better choice for some uses of const.
-      <a href="http://www.possibility.com/Cpp/const.html"> More information </a> about const correctness.
+      <a href="http://www.possibility.com/Cpp/const.html"> More information</a>
+      about const correctness.
     </SUMMARY>
     <BODY>
       <DEFINITION>
@@ -2676,24 +2245,22 @@ Krishna Kumar<br/>
       </DECISION>
       <SUBSECTION title="Where to put the const">
         <p>
-          Some people favor the form <code>int const *foo</code> to
-          <code>const int* foo</code>.  They argue that this is more
-          readable because it's more consistent: it keeps the rule
-          that <code>const</code> always follows the object it's
-          describing.  However, this consistency argument doesn't
-          apply in codebases with few deeply-nested pointer
-          expressions since most <code>const</code> expressions have
-          only one <code>const</code>, and it applies to the
-          underlying value.  In such cases, there's no consistency to
-          maintain.
+          Use <code>const int* foo</code> as it is more idiomatic.
           Putting the <code>const</code> first is arguably more readable,
           since it follows English in putting the "adjective"
           (<code>const</code>) before the "noun" (<code>int</code>).
         </p>
+	<p>
+	  Note that in const pointer, "const" always comes after the
+	  "*". For example:
+	<CODE_SNIPPET>
+        int *const p1 = q;  // constant pointer to int variable
+        const int* p2 = q;  // pointer to constant int
+        int const* p3 = q;  // pointer to constant int
+	</CODE_SNIPPET>
+	</p>
         <p>
-          That said, while we encourage putting <code>const</code> first,
-          we do not require it.  But be consistent with the code around
-          you!
+          Use <code>const</code> first, excpet for const pointers.
         </p>
       </SUBSECTION>
     </BODY>
@@ -2744,18 +2311,9 @@ Krishna Kumar<br/>
 
   <STYLEPOINT title="Integer Types">
     <SUMMARY>
-      Of the built-in C++ integer types, the only one used
-      
-      is <code>int</code>.  If a program needs a variable of a different
-      size, use
-      
-      a precise-width integer type from
-      <code>&lt;stdint.h&gt;</code>, such as <code>int16_t</code>. If
-      your variable represents a value that could ever be greater than or
-      equal to 2^31 (2GiB), use a 64-bit type such as <code>int64_t</code>.
-      Keep in mind that even if your value won't ever be too large for an
-      <code>int</code>, it may be used in intermediate calculations which may
-      require a larger type. When in doubt, choose a larger type.
+      <code>int</code> is generally 32bits. If your variable represents a
+      value that could ever be greater than or equal to 2^31, use a 64-bit
+      type such as <code>int64_t</code> from <code>&lt;stdint.h&gt;</code>.
     </SUMMARY>
     <BODY>
       <DEFINITION>
@@ -2773,65 +2331,33 @@ Krishna Kumar<br/>
       </CONS>
       <DECISION>
         <p>
-          
           <code>&lt;stdint.h&gt;</code> defines
-          types like <code>int16_t</code>, <code>uint32_t</code>,
-          <code>int64_t</code>, etc.
+          types like <code>int16_t</code>, <code>int64_t</code>, etc.
           You should always use those in preference to
           <code>short</code>, <code>unsigned long long</code> and the
           like, when you need a guarantee on the size of an integer.
-          Of the C integer types, only <code>int</code> should be
-          used.  When appropriate, you are welcome to use standard
-          types like <code>size_t</code> and <code>ptrdiff_t</code>.
         </p>
         <p>
-          We use <code>int</code> very often, for integers we know are not
-          going to be too big, e.g., loop counters. Use plain old
-          <code>int</code> for such things. You should assume that an
-          <code>int</code> is
-          
-          at least 32 bits,
-          but don't assume that it has more than 32 bits.
-          If you need a 64-bit integer type, use
-          <code>int64_t</code> or
-          <code>uint64_t</code>.
+          Use <code>int</code>, for integers we know are not
+          going to be too big, e.g., loop counters.
         </p>
         <p>
-          For integers we know can be "big",
-           use
-          <code>int64_t</code>.
-          
+          For integers we know can be "big", use <code>int64_t</code>.
         </p>
         <p>
-          You should not use the unsigned integer types such as
-          <code>uint32_t</code>,
-          unless there is a valid reason such as representing a bit pattern
-          rather than a number, or you need defined overflow modulo 2^N.
-          In particular, do not use unsigned types to say a number will never
-          be negative.  Instead, use
-          
-          assertions for this.
-        </p>
-        
+          Do not use unsigned types to say a number will never
+          be negative. Instead, use assertions for this.
+        </p>    
         <p>
-          If your code is a container that returns a size, be sure to use
-          a type that will accommodate any possible usage of your container.
           When in doubt, use a larger type rather than a smaller type.
-        </p>
-        <p>
-          Use care when converting integer types. Integer conversions and
-          promotions can cause non-intuitive behavior.
-          
         </p>
       </DECISION>
 
       <SUBSECTION title="On Unsigned Integers">
         <p>
-          Some people, including some textbook authors, recommend
-          using unsigned types to represent numbers that are never
-          negative.  This is intended as a form of self-documentation.
-          However, in C, the advantages of such documentation are
-          outweighed by the real bugs it can introduce.  Consider:
+          Some textbook authors, recommend using unsigned types to 
+	  represent numbers that are never negative.  
+	  This is intended as a form of self-documentation. Consider:
         </p>
         <CODE_SNIPPET>
           for (unsigned int i = foo.Length()-1; i &gt;= 0; --i) ...
@@ -2840,164 +2366,16 @@ Krishna Kumar<br/>
           This code will never terminate!  Sometimes gcc will notice
           this bug and warn you, but often it will not.  Equally bad
           bugs can occur when comparing signed and unsigned
-          variables.  Basically, C's type-promotion scheme causes
-          unsigned types to behave differently than one might expect.
+          variables.  
         </p>
         <p>
           So, document that a variable is non-negative using
-          assertions.
-          Don't use an unsigned type.
+          assertions. Don't use an unsigned type.
         </p>
       </SUBSECTION>
     </BODY>
   </STYLEPOINT>
 
-  <STYLEPOINT title="64-bit Portability">
-    <SUMMARY>
-      Code should be 64-bit and 32-bit friendly.  Bear in mind problems of
-      printing, comparisons, and structure alignment.
-    </SUMMARY>
-    <BODY>
-      <ul>
-        <li>
-          <p>
-            <code>printf()</code> specifiers for some types are
-            not cleanly portable between 32-bit and 64-bit
-            systems. C99 defines some portable format
-            specifiers. Unfortunately, MSVC 7.1 does not
-            understand some of these specifiers and the
-            standard is missing a few, so we have to define our
-            own ugly versions in some cases (in the style of the
-            standard include file <code>inttypes.h</code>):
-          </p>
-          <CODE_SNIPPET>
-            // printf macros for size_t, in the style of inttypes.h
-            #ifdef _LP64
-            #define __PRIS_PREFIX "z"
-            #else
-            #define __PRIS_PREFIX
-            #endif
-
-            // Use these macros after a % in a printf format string
-            // to get correct 32/64 bit behavior, like this:
-            // size_t size = records.size();
-            // printf("%"PRIuS"\n", size);
-
-            #define PRIdS __PRIS_PREFIX "d"
-            #define PRIxS __PRIS_PREFIX "x"
-            #define PRIuS __PRIS_PREFIX "u"
-            #define PRIXS __PRIS_PREFIX "X"
-            #define PRIoS __PRIS_PREFIX "o"
-          </CODE_SNIPPET>
-          <table border="1" summary="portable printf specifiers">
-            <TBODY>
-              <tr align="center">
-                <th>Type</th>
-                <th>DO NOT use</th>
-                <th>DO use</th>
-                <th>Notes</th>
-              </tr>
-              <tr align="center">
-                <td><code>void *</code> (or any pointer)</td>
-                <td><code>%lx</code></td>
-                <td><code>%p</code></td>
-                <td> </td>
-              </tr>
-              
-              <tr align="center">
-                <td><code>int64_t</code></td>
-                <td><code>%qd</code>,
-                     <code>%lld</code></td>
-                <td><code>%"PRId64"</code></td>
-                <td/>
-              </tr>
-              
-              <tr align="center">
-                <td><code>uint64_t</code></td>
-                <td><code>%qu</code>,
-                    <code>%llu</code>,
-                    <code>%llx</code></td>
-                <td><code>%"PRIu64"</code>,
-                    <code>%"PRIx64"</code></td>
-                <td/>
-              </tr>
-              
-              <tr align="center">
-                <td><code>size_t</code></td>
-                <td><code>%u</code></td>
-                <td><code>%"PRIuS"</code>,
-                    <code>%"PRIxS"</code></td>
-                  <td>
-                      C99 specifies <code>%zu</code></td>
-              </tr>
-              <tr align="center">
-                <td><code>ptrdiff_t</code></td>
-                <td><code>%d</code></td>
-                <td><code>%"PRIdS"</code></td>
-                <td>
-                    C99 specifies <code>%td</code></td>
-              </tr>
-              
-            </TBODY>
-          </table>
-          <p>
-            Note that the <code>PRI*</code> macros expand to independent
-            strings which are concatenated by the compiler. Hence
-            if you are using a non-constant format string, you
-            need to insert the value of the macro into the format,
-            rather than the name. It is still possible, as usual,
-            to include length specifiers, etc., after the
-            <code>%</code> when using the <code>PRI*</code>
-            macros. So, e.g.  <code>printf("x = %30"PRIuS"\n",
-            x)</code> would expand on 32-bit Linux to
-            <code>printf("x = %30" "u" "\n", x)</code>, which the
-            compiler will treat as <code>printf("x = %30u\n",
-            x)</code>.
-          </p>
-          
-          </li>
-
-        <li> Remember that <code>sizeof(void *)</code> !=
-             <code>sizeof(int)</code>.  Use <code>intptr_t</code> if
-             you want a pointer-sized integer.
-             </li>
-
-        <li> You may need to be careful with structure alignments,
-             particularly for structures being stored on disk. Any
-             class/structure with a
-             
-             <code>int64_t</code>/<code>uint64_t</code>
-             member will by default end up being 8-byte aligned on a 64-bit
-             system. If you have such structures being shared on disk
-             between 32-bit and 64-bit code, you will need to ensure
-             that they are packed the same on both architectures.
-             
-             Most compilers offer a way to alter
-             structure alignment.  For gcc, you can use
-             <code>__attribute__((packed))</code>.  MSVC offers
-             <code>#pragma pack()</code> and
-             <code>__declspec(align())</code>.
-             </li>
-
-        <li>
-             
-             Use the <code>LL</code> or <code>ULL</code> suffixes as
-             needed to create 64-bit constants.  For example:
-             
-             <CODE_SNIPPET>
-             int64_t some_value = 0x123456789LL;
-             uint64_t some_mask = 3ULL &lt;&lt; 48;
-             </CODE_SNIPPET>
-             </li>
-
-        <li> If you really need different code on 32-bit and 64-bit
-             systems, use <code>#ifdef _LP64</code> to choose between
-             the code variants. (But please avoid this if
-             possible, and keep any such changes localized.)
-             </li>
-      </ul>
-    </BODY>
-  </STYLEPOINT>
 
   <STYLEPOINT title="Preprocessor Macros">
     <SUMMARY>
@@ -3014,46 +2392,21 @@ Krishna Kumar<br/>
 	such as inline functions, templates, and namespaces. 
       </p>
       <p>
-        Luckily, macros are not nearly as necessary in C++ as they are
-        in C.  Instead of using a macro to inline performance-critical
-        code, use an inline function.  Instead of using a macro to
-        store a constant, use a <code>const</code> variable.  Instead of
-        using a macro to "abbreviate" a long variable name, use a
-        reference.  Instead of using a macro to conditionally compile code
-        ... well, don't do that at all (except, of course, for the
-        <code>#define</code> guards to prevent double inclusion of
-        header files).  It makes testing much more difficult.
+	<ul>
+	  <li> 	Instead of using a macro to store a constant,
+          use a <code>const</code> variable.
+	  </li>
+	  <li> 	Instead of   using a macro to "abbreviate" a long
+	  variable name, use a reference. 
+	  </li>
+	  <li>
+	    Instead of using a macro to conditionally compile code
+            ... well, don't do that at all (except, of course, for the
+            <code>#define</code> guards to prevent double inclusion of
+            header files).  It makes testing much more difficult.
+	  </li>
+        </ul>
       </p>
-      <p>
-        Macros can do things these other techniques cannot, and you do
-        see them in the codebase, especially in the lower-level
-        libraries.  And some of their special features (like
-        stringifying, concatenation, and so forth) are not available
-        through the language proper.  But before using a macro,
-        consider carefully whether there's a non-macro way to achieve
-        the same result.
-      </p>
-      <p>
-        The following usage pattern will avoid many problems with
-        macros; if you use macros, follow it whenever possible:
-      </p>
-      <ul>
-        <li> Don't define macros in a <code>.h</code> file.
-             </li>
-        <li> <code>#define</code> macros right before you use them,
-             and <code>#undef</code> them right after.
-             </li>
-        <li> Do not just <code>#undef</code> an existing macro before
-             replacing it with your own; instead, pick a name that's
-             likely to be unique.
-             </li>
-        <li> Try not to use macros that expand to unbalanced C++
-             constructs, or at least document that behavior well.
-             </li>
-        <li> <emph> DO NOT USE </emph> <code>##</code> to generate function/class/variable
-             names.
-             </li>
-      </ul>
     </BODY>
   </STYLEPOINT>
 
@@ -3065,25 +2418,9 @@ Krishna Kumar<br/>
   </SUMMARY>
   <BODY>
     <p>
-      Use <code>0</code> for integers and <code>0.0</code> for reals.
-      This is not controversial.
-    </p>
-    <p>
-    
-    
-      For pointers (address values), there is a choice between <code>0</code>,
-      <code>NULL</code>, and <code>nullptr</code>.
-      For projects that allow C++11 features, use <code>nullptr</code>.
-      For C++03 projects, we prefer <code>NULL</code> because it looks like a
-      pointer.  In fact, some C++ compilers provide special definitions of
-      <code>NULL</code> which enable them to give useful warnings,
-      particularly in situations where <code>sizeof(NULL)</code> is not equal
-      to <code>sizeof(0)</code>.
-    
-    </p>
-    <p>
-      Use <code>'\0'</code> for chars.
-      This is the correct type and also makes code more readable.
+      For pointers, when using C++11, use <code>nullptr</code>.
+      For C++0x projects, use <code>NULL</code> because it looks like a
+      pointer.   
     </p>
   </BODY>
   </STYLEPOINT>
@@ -3350,6 +2687,36 @@ Krishna Kumar<br/>
           <code>std::bind</code>.
         </p>
       </DECISION>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Rvalue references">
+    <SUMMARY>
+      Do not use rvalue references, <code>std::forward</code>,
+      <code>std::move_iterator</code>, or <code>std::move_if_noexcept</code>.
+      Use the single-argument form of <code>std::move</code> only with
+      non-copyable arguments.
+    </SUMMARY>
+    <BODY>
+      <DEFINITION>
+        Rvalue references are a type of reference that can only bind to temporary
+        objects. The syntax is similar to traditional reference syntax.
+        For example, <code>void f(std::string&amp;&amp; s);</code> declares a
+        function whose argument is an rvalue reference to a string.
+      </DEFINITION>
+    </BODY>
+  </STYLEPOINT>
+
+  <STYLEPOINT title="Run-Time Type Information (RTTI)">
+    <SUMMARY>
+      Avoid using Run Time Type Information (RTTI).
+    </SUMMARY>
+    <BODY>
+      <DEFINITION>
+        RTTI allows a programmer to query the C++ class of an
+        object at run time.  This is done by use of <code>typeid</code> or
+        <code>dynamic_cast</code>.
+      </DEFINITION>
     </BODY>
   </STYLEPOINT>
 
