@@ -4044,11 +4044,16 @@ Krishna Kumar<br/>
       <p>
 	You can automatically format your code to confirm to this
 	style guide by running
-	<code>./astyle --style=stroustrup --break-closing-brackets  *.cc</code>
-	<code>./astyle --style=stroustrup --break-closing-brackets  *.h</code>
-	or
-	<code>./astyle -A4 -y *.cc</code>
-	<code>./astyle -A4 -y *.h</code>
+        <CODE_SNIPPET>
+          ./astyle --style=stroustrup --break-closing-brackets  *.cc
+          ./astyle --style=stroustrup --break-closing-brackets  *.h
+        </CODE_SNIPPET>
+      </p>
+      <p> or
+      <CODE_SNIPPET>
+        ./astyle -A4 -y *.cc
+        ./astyle -A4 -y *.h
+      </CODE_SNIPPET>
       </p>
     </BODY>
   </STYLEPOINT>
