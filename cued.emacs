@@ -7,3 +7,9 @@
 (setq c-default-style "stroustrup")
 (setq-default indent-tabs-mode nil)
 (add-hook 'c++-mode-hook '(lambda () (whitespace-mode 1)))
+
+;; autocomplete
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+(ac-config-default)

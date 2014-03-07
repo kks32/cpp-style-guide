@@ -4073,6 +4073,23 @@ Krishna Kumar<br/>
       </p>
     </BODY>
   </STYLEPOINT>
+
+
+  <STYLEPOINT title="auto-complete tool in emacs">
+    <SUMMARY>
+      Use <a href = "http://auto-complete.org/"> auto-complete-tool
+      for emacs</a> and include the commands in cued.emacs file to your
+      <code>~/.emacs</code> file.
+    </SUMMARY>
+    <BODY>
+      <p>
+        It is easy to <a href = "http://auto-complete.org/doc/manual.html#automatic-installation">install</a> the auto-completion tool using the <code>
+        install.el</code> script. Load it using <code> M+x load-file RET </code>
+        <code>~/path/to/auto-complete-x.x/etc/install.el</code>. Wait for
+        it to compile and update the <code>~/.emacs</code> file.
+      </p>
+    </BODY>
+  </STYLEPOINT>
 </CATEGORY>
 
 
