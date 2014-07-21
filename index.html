@@ -5,6 +5,14 @@
         <META content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <LINK rel="shortcut icon" type="image/x-icon" HREF="http://www.google.com/favicon.ico" />
         <LINK rel="stylesheet" type="text/css" HREF="styleguide.css" />
+        <SCRIPT type="text/javascript" language="javascript">
+          function toggledisplay(elementID)
+          {
+          (function(style) {
+          style.display = style.display === 'none' ? '' : 'none';
+          })(document.getElementById(elementID+"__body").style);
+          }
+        </SCRIPT>
         <SCRIPT type="text/javascript" language="javascript">function GetElementsByName(name) {
                   // Workaround a bug on old versions of opera.
                   if (document.getElementsByName) {
@@ -494,7 +502,7 @@
        see here on your left.  Click it now. You should see "Hooray"
        appear below.</DIV>
                 <DIV class="">
-                    <DIV class="stylepoint_body" name="Displaying_Hidden_Details_in_this_Guide__body" id="Displaying_Hidden_Details_in_this_Guide__body" style="display: none">
+                    <DIV class="stylepoint_body" name="Displaying_Hidden_Details_in_this_Guide__body" id="Displaying_Hidden_Details_in_this_Guide__body" style="">
                         <p>Hooray!  Now you know you can expand points to get more
        details.  Alternatively, there's an "expand all" at the
        top of this document.</p>
@@ -532,7 +540,7 @@
                 <SPAN name="link-General_Naming_Rules__button" id="link-General_Naming_Rules__button" class="link_button">
                     <A href="?showone=General_Naming_Rules#General_Naming_Rules">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('General_Naming_Rules')" name="General_Naming_Rules__button" id="General_Naming_Rules__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('General_Naming_Rules')" name="General_Naming_Rules__button" id="General_Naming_Rules__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Function names, variable names, and filenames should be
       descriptive; eschew abbreviation.</DIV>
                 <DIV class="">
@@ -572,7 +580,7 @@ int the_number_of_elements_in_a_cell
                 <SPAN name="link-File_Names__button" id="link-File_Names__button" class="link_button">
                     <A href="?showone=File_Names#File_Names">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('File_Names')" name="File_Names__button" id="File_Names__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('File_Names')" name="File_Names__button" id="File_Names__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Filenames should be all lowercase and can include underscores
       (
@@ -662,7 +670,7 @@ particle_soil_mpm.tcc     // Templatised class definitions.</PRE>
                 <SPAN name="link-Type_Names__button" id="link-Type_Names__button" class="link_button">
                     <A href="?showone=Type_Names#Type_Names">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Type_Names')" name="Type_Names__button" id="Type_Names__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Type_Names')" name="Type_Names__button" id="Type_Names__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Type names start with a capital letter and have a capital
       letter for each new word, with no underscores:
@@ -703,7 +711,7 @@ enum MpmErrors { ...</PRE>
                 <SPAN name="link-Variable_Names__button" id="link-Variable_Names__button" class="link_button">
                     <A href="?showone=Variable_Names#Variable_Names">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Variable_Names')" name="Variable_Names__button" id="Variable_Names__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Variable_Names')" name="Variable_Names__button" id="Variable_Names__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Variable names are all lowercase, with underscores between
       words. Class member variables have trailing underscores.  For
@@ -792,7 +800,7 @@ std::string materialname_;   // OK.</PRE>
                 <SPAN name="link-Function_Names__button" id="link-Function_Names__button" class="link_button">
                     <A href="?showone=Function_Names#Function_Names">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Function_Names')" name="Function_Names__button" id="Function_Names__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Function_Names')" name="Function_Names__button" id="Function_Names__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Functions should be lower case; accessors and mutators match
       the name of the variable:
@@ -861,7 +869,7 @@ int num_materials_;
                 <SPAN name="link-Namespace_Names__button" id="link-Namespace_Names__button" class="link_button">
                     <A href="?showone=Namespace_Names#Namespace_Names">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Namespace_Names')" name="Namespace_Names__button" id="Namespace_Names__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Namespace_Names')" name="Namespace_Names__button" id="Namespace_Names__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Namespace names are all lower-case, and keep it meaningful
                     <code>mpm_material</code>
@@ -885,7 +893,7 @@ int num_materials_;
                 <SPAN name="link-Macro_Names__button" id="link-Macro_Names__button" class="link_button">
                     <A href="?showone=Macro_Names#Macro_Names">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Macro_Names')" name="Macro_Names__button" id="Macro_Names__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Macro_Names')" name="Macro_Names__button" id="Macro_Names__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     You're not really going to
                     <A href="#Preprocessor_Macros">define
@@ -925,7 +933,7 @@ int num_materials_;
                 <SPAN name="link-Exceptions_to_Naming_Rules__button" id="link-Exceptions_to_Naming_Rules__button" class="link_button">
                     <A href="?showone=Exceptions_to_Naming_Rules#Exceptions_to_Naming_Rules">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Exceptions_to_Naming_Rules')" name="Exceptions_to_Naming_Rules__button" id="Exceptions_to_Naming_Rules__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Exceptions_to_Naming_Rules')" name="Exceptions_to_Naming_Rules__button" id="Exceptions_to_Naming_Rules__button">▶</SPAN>
                 <DIV style="display:inline;" class="">If you are naming something that is analogous to an existing C
       or C++ entity then you can follow the existing naming convention
       scheme.</DIV>
@@ -998,7 +1006,7 @@ int num_materials_;
                 <SPAN name="link-The__define_Guard__button" id="link-The__define_Guard__button" class="link_button">
                     <A href="?showone=The__define_Guard#The__define_Guard">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('The__define_Guard')" name="The__define_Guard__button" id="The__define_Guard__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('The__define_Guard')" name="The__define_Guard__button" id="The__define_Guard__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     All header files should have
                     <code>#define</code>
@@ -1043,7 +1051,7 @@ int num_materials_;
                 <SPAN name="link-Forward_Declarations__button" id="link-Forward_Declarations__button" class="link_button">
                     <A href="?showone=Forward_Declarations#Forward_Declarations">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Forward_Declarations')" name="Forward_Declarations__button" id="Forward_Declarations__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Forward_Declarations')" name="Forward_Declarations__button" id="Forward_Declarations__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     You may forward declare ordinary classes in order to avoid
         unnecessary
@@ -1163,7 +1171,7 @@ int num_materials_;
                 <SPAN name="link-Inline_Functions__button" id="link-Inline_Functions__button" class="link_button">
                     <A href="?showone=Inline_Functions#Inline_Functions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Inline_Functions')" name="Inline_Functions__button" id="Inline_Functions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Inline_Functions')" name="Inline_Functions__button" id="Inline_Functions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Define functions inline only when they are small, say, 5 lines
       or less.</DIV>
                 <DIV class="">
@@ -1233,7 +1241,7 @@ int num_materials_;
                 <SPAN name="link-The_.tcc_Files__button" id="link-The_.tcc_Files__button" class="link_button">
                     <A href="?showone=The_.tcc_Files#The_.tcc_Files">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('The_.tcc_Files')" name="The_.tcc_Files__button" id="The_.tcc_Files__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('The_.tcc_Files')" name="The_.tcc_Files__button" id="The_.tcc_Files__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     You may use file extension
                     <code>.tcc</code>
@@ -1294,7 +1302,7 @@ void Foo&lt;T&gt;::do_something(T param)
                 <SPAN name="link-Function_Parameter_Ordering__button" id="link-Function_Parameter_Ordering__button" class="link_button">
                     <A href="?showone=Function_Parameter_Ordering#Function_Parameter_Ordering">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Function_Parameter_Ordering')" name="Function_Parameter_Ordering__button" id="Function_Parameter_Ordering__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Function_Parameter_Ordering')" name="Function_Parameter_Ordering__button" id="Function_Parameter_Ordering__button">▶</SPAN>
                 <DIV style="display:inline;" class="">When defining a function, parameter order is: inputs,
       then outputs.</DIV>
                 <DIV class="">
@@ -1327,7 +1335,7 @@ void Foo&lt;T&gt;::do_something(T param)
                 <SPAN name="link-Names_and_Order_of_Includes__button" id="link-Names_and_Order_of_Includes__button" class="link_button">
                     <A href="?showone=Names_and_Order_of_Includes#Names_and_Order_of_Includes">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Names_and_Order_of_Includes')" name="Names_and_Order_of_Includes__button" id="Names_and_Order_of_Includes__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Names_and_Order_of_Includes')" name="Names_and_Order_of_Includes__button" id="Names_and_Order_of_Includes__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use standard order for readability and to avoid hidden
       dependencies: C library, C++ library,
@@ -1472,7 +1480,7 @@ void Foo&lt;T&gt;::do_something(T param)
                 <SPAN name="link-Namespaces__button" id="link-Namespaces__button" class="link_button">
                     <A href="?showone=Namespaces#Namespaces">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Namespaces')" name="Namespaces__button" id="Namespaces__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Namespaces')" name="Namespaces__button" id="Namespaces__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Unnamed namespaces in
                     <code>.cc</code>
@@ -1714,7 +1722,7 @@ inline void mpm_inline_function() {
                 <SPAN name="link-Nested_Classes__button" id="link-Nested_Classes__button" class="link_button">
                     <A href="?showone=Nested_Classes#Nested_Classes">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Nested_Classes')" name="Nested_Classes__button" id="Nested_Classes__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Nested_Classes')" name="Nested_Classes__button" id="Nested_Classes__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Although you may use public nested classes when they are part of
       an interface, consider a
@@ -1782,7 +1790,7 @@ inline void mpm_inline_function() {
                 <SPAN name="link-Nonmember,_Static_Member,_and_Global_Functions__button" id="link-Nonmember,_Static_Member,_and_Global_Functions__button" class="link_button">
                     <A href="?showone=Nonmember,_Static_Member,_and_Global_Functions#Nonmember,_Static_Member,_and_Global_Functions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Nonmember,_Static_Member,_and_Global_Functions')" name="Nonmember,_Static_Member,_and_Global_Functions__button" id="Nonmember,_Static_Member,_and_Global_Functions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Nonmember,_Static_Member,_and_Global_Functions')" name="Nonmember,_Static_Member,_and_Global_Functions__button" id="Nonmember,_Static_Member,_and_Global_Functions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Prefer nonmember functions within a namespace or static member
       functions to global functions; use completely global functions
       rarely.</DIV>
@@ -1843,7 +1851,7 @@ inline void mpm_inline_function() {
                 <SPAN name="link-Local_Variables__button" id="link-Local_Variables__button" class="link_button">
                     <A href="?showone=Local_Variables#Local_Variables">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Local_Variables')" name="Local_Variables__button" id="Local_Variables__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Local_Variables')" name="Local_Variables__button" id="Local_Variables__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Place a function's variables in the narrowest scope possible,
       and initialize variables in the declaration.</DIV>
                 <DIV class="">
@@ -1923,7 +1931,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
                 <SPAN name="link-Static_and_Global_Variables__button" id="link-Static_and_Global_Variables__button" class="link_button">
                     <A href="?showone=Static_and_Global_Variables#Static_and_Global_Variables">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Static_and_Global_Variables')" name="Static_and_Global_Variables__button" id="Static_and_Global_Variables__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Static_and_Global_Variables')" name="Static_and_Global_Variables__button" id="Static_and_Global_Variables__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Static or global variables of class type are forbidden: they cause
       hard-to-find bugs due to indeterminate order of construction and
@@ -2026,7 +2034,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
                 <SPAN name="link-Doing_Work_in_Constructors__button" id="link-Doing_Work_in_Constructors__button" class="link_button">
                     <A href="?showone=Doing_Work_in_Constructors#Doing_Work_in_Constructors">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Doing_Work_in_Constructors')" name="Doing_Work_in_Constructors__button" id="Doing_Work_in_Constructors__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Doing_Work_in_Constructors')" name="Doing_Work_in_Constructors__button" id="Doing_Work_in_Constructors__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Avoid doing complex initialization in constructors (in particular,
       initialization that can fail or that requires virtual method calls).</DIV>
                 <DIV class="">
@@ -2087,7 +2095,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
                 <SPAN name="link-Initialization__button" id="link-Initialization__button" class="link_button">
                     <A href="?showone=Initialization#Initialization">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Initialization')" name="Initialization__button" id="Initialization__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Initialization')" name="Initialization__button" id="Initialization__button">▶</SPAN>
                 <DIV style="display:inline;" class="">If your class defines member variables, you must provide an
       in-class initializer for every member variable or write a constructor
       (which can be a default constructor). If you do not declare
@@ -2166,7 +2174,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
                 <SPAN name="link-Explicit_Constructors__button" id="link-Explicit_Constructors__button" class="link_button">
                     <A href="?showone=Explicit_Constructors#Explicit_Constructors">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Explicit_Constructors')" name="Explicit_Constructors__button" id="Explicit_Constructors__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Explicit_Constructors')" name="Explicit_Constructors__button" id="Explicit_Constructors__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use the C++ keyword
                     <code>explicit</code>
@@ -2244,7 +2252,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
                 <SPAN name="link-Copy_Constructors__button" id="link-Copy_Constructors__button" class="link_button">
                     <A href="?showone=Copy_Constructors#Copy_Constructors">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Copy_Constructors')" name="Copy_Constructors__button" id="Copy_Constructors__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Copy_Constructors')" name="Copy_Constructors__button" id="Copy_Constructors__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Provide a copy constructor and assignment operator only when necessary.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Copy_Constructors__body" id="Copy_Constructors__body" style="display: none">
@@ -2314,7 +2322,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
                 <SPAN name="link-Delegating_and_inheriting_constructors__button" id="link-Delegating_and_inheriting_constructors__button" class="link_button">
                     <A href="?showone=Delegating_and_inheriting_constructors#Delegating_and_inheriting_constructors">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Delegating_and_inheriting_constructors')" name="Delegating_and_inheriting_constructors__button" id="Delegating_and_inheriting_constructors__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Delegating_and_inheriting_constructors')" name="Delegating_and_inheriting_constructors__button" id="Delegating_and_inheriting_constructors__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use delegating and inheriting constructors
       when they reduce code duplication.</DIV>
                 <DIV class="">
@@ -2397,7 +2405,7 @@ public:
                 <SPAN name="link-Structs_vs._Classes__button" id="link-Structs_vs._Classes__button" class="link_button">
                     <A href="?showone=Structs_vs._Classes#Structs_vs._Classes">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Structs_vs._Classes')" name="Structs_vs._Classes__button" id="Structs_vs._Classes__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Structs_vs._Classes')" name="Structs_vs._Classes__button" id="Structs_vs._Classes__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use a
                     <code>struct</code>
@@ -2464,7 +2472,7 @@ public:
                 <SPAN name="link-Inheritance__button" id="link-Inheritance__button" class="link_button">
                     <A href="?showone=Inheritance#Inheritance">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Inheritance')" name="Inheritance__button" id="Inheritance__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Inheritance')" name="Inheritance__button" id="Inheritance__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Composition is often more appropriate than inheritance.  When
       using inheritance, make it
@@ -2567,7 +2575,7 @@ public:
                 <SPAN name="link-Multiple_Inheritance__button" id="link-Multiple_Inheritance__button" class="link_button">
                     <A href="?showone=Multiple_Inheritance#Multiple_Inheritance">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Multiple_Inheritance')" name="Multiple_Inheritance__button" id="Multiple_Inheritance__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Multiple_Inheritance')" name="Multiple_Inheritance__button" id="Multiple_Inheritance__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Only very rarely is multiple implementation inheritance actually
       useful.  We allow multiple inheritance only when at most one of
@@ -2622,7 +2630,7 @@ public:
                 <SPAN name="link-Abstract_Base_Class__button" id="link-Abstract_Base_Class__button" class="link_button">
                     <A href="?showone=Abstract_Base_Class#Abstract_Base_Class">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Abstract_Base_Class')" name="Abstract_Base_Class__button" id="Abstract_Base_Class__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Abstract_Base_Class')" name="Abstract_Base_Class__button" id="Abstract_Base_Class__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Classes that provide an interface for creating families of related or
       dependent objects without specifying their concrete class.</DIV>
                 <DIV class="">
@@ -2666,7 +2674,7 @@ public:
                 <SPAN name="link-Operator_Overloading__button" id="link-Operator_Overloading__button" class="link_button">
                     <A href="?showone=Operator_Overloading#Operator_Overloading">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Operator_Overloading')" name="Operator_Overloading__button" id="Operator_Overloading__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Operator_Overloading')" name="Operator_Overloading__button" id="Operator_Overloading__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Do not overload operators except in rare, special circumstances.
       Do not create user-defined literals.</DIV>
                 <DIV class="">
@@ -2804,7 +2812,7 @@ public:
                 <SPAN name="link-Access_Control__button" id="link-Access_Control__button" class="link_button">
                     <A href="?showone=Access_Control#Access_Control">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Access_Control')" name="Access_Control__button" id="Access_Control__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Access_Control')" name="Access_Control__button" id="Access_Control__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Make data members
                     <code>private</code>
@@ -2848,7 +2856,7 @@ public:
                 <SPAN name="link-Declaration_Order__button" id="link-Declaration_Order__button" class="link_button">
                     <A href="?showone=Declaration_Order#Declaration_Order">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Declaration_Order')" name="Declaration_Order__button" id="Declaration_Order__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Declaration_Order')" name="Declaration_Order__button" id="Declaration_Order__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use the specified order of declarations within a class:
                     <code>public:</code>
@@ -2920,7 +2928,7 @@ public:
                 <SPAN name="link-Write_Short_Functions__button" id="link-Write_Short_Functions__button" class="link_button">
                     <A href="?showone=Write_Short_Functions#Write_Short_Functions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Write_Short_Functions')" name="Write_Short_Functions__button" id="Write_Short_Functions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Write_Short_Functions')" name="Write_Short_Functions__button" id="Write_Short_Functions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Prefer small and focused functions.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Write_Short_Functions__body" id="Write_Short_Functions__body" style="display: none">
@@ -2952,7 +2960,7 @@ public:
                 <SPAN name="link-Reference_Arguments__button" id="link-Reference_Arguments__button" class="link_button">
                     <A href="?showone=Reference_Arguments#Reference_Arguments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Reference_Arguments')" name="Reference_Arguments__button" id="Reference_Arguments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Reference_Arguments')" name="Reference_Arguments__button" id="Reference_Arguments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     All parameters passed by reference must be labeled
                     <code>const</code>
@@ -3044,7 +3052,7 @@ public:
                 <SPAN name="link-Function_Overloading__button" id="link-Function_Overloading__button" class="link_button">
                     <A href="?showone=Function_Overloading#Function_Overloading">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Function_Overloading')" name="Function_Overloading__button" id="Function_Overloading__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Function_Overloading')" name="Function_Overloading__button" id="Function_Overloading__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use overloaded functions (including constructors) only if a
       reader looking at a call site can get a good idea of what is
       happening without having to first figure out exactly which
@@ -3106,7 +3114,7 @@ public:
                 <SPAN name="link-Arrays__button" id="link-Arrays__button" class="link_button">
                     <A href="?showone=Arrays#Arrays">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Arrays')" name="Arrays__button" id="Arrays__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Arrays')" name="Arrays__button" id="Arrays__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Do not use
                     <code>arrays</code>
@@ -3144,7 +3152,7 @@ public:
                 <SPAN name="link-Friends__button" id="link-Friends__button" class="link_button">
                     <A href="?showone=Friends#Friends">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Friends')" name="Friends__button" id="Friends__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Friends')" name="Friends__button" id="Friends__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <code>friend</code>
@@ -3185,7 +3193,7 @@ public:
                 <SPAN name="link-Exceptions__button" id="link-Exceptions__button" class="link_button">
                     <A href="?showone=Exceptions#Exceptions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Exceptions')" name="Exceptions__button" id="Exceptions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Exceptions')" name="Exceptions__button" id="Exceptions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use C++ exceptions, especially when parsing user inputs.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Exceptions__body" id="Exceptions__body" style="display: none">
@@ -3234,7 +3242,7 @@ public:
                 <SPAN name="link-Casting__button" id="link-Casting__button" class="link_button">
                     <A href="?showone=Casting#Casting">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Casting')" name="Casting__button" id="Casting__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Casting')" name="Casting__button" id="Casting__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Casts are generally best avoided. In worst case, use C++ casts like
                     <code>static_cast&lt;&gt;()</code>
@@ -3290,7 +3298,7 @@ public:
                 <SPAN name="link-Preincrement_and_Predecrement__button" id="link-Preincrement_and_Predecrement__button" class="link_button">
                     <A href="?showone=Preincrement_and_Predecrement#Preincrement_and_Predecrement">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Preincrement_and_Predecrement')" name="Preincrement_and_Predecrement__button" id="Preincrement_and_Predecrement__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Preincrement_and_Predecrement')" name="Preincrement_and_Predecrement__button" id="Preincrement_and_Predecrement__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use prefix form (
                     <code>++i</code>
@@ -3363,7 +3371,7 @@ public:
                 <SPAN name="link-Use_of_const__button" id="link-Use_of_const__button" class="link_button">
                     <A href="?showone=Use_of_const#Use_of_const">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Use_of_const')" name="Use_of_const__button" id="Use_of_const__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Use_of_const')" name="Use_of_const__button" id="Use_of_const__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <code>const</code>
@@ -3507,7 +3515,7 @@ int const* p3 = q;  // pointer to constant int</PRE>
                 <SPAN name="link-Use_of_constexpr__button" id="link-Use_of_constexpr__button" class="link_button">
                     <A href="?showone=Use_of_constexpr#Use_of_constexpr">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Use_of_constexpr')" name="Use_of_constexpr__button" id="Use_of_constexpr__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Use_of_constexpr')" name="Use_of_constexpr__button" id="Use_of_constexpr__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     In C++11, use
                     <code>constexpr</code>
@@ -3576,7 +3584,7 @@ int const* p3 = q;  // pointer to constant int</PRE>
                 <SPAN name="link-Integer_Types__button" id="link-Integer_Types__button" class="link_button">
                     <A href="?showone=Integer_Types#Integer_Types">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Integer_Types')" name="Integer_Types__button" id="Integer_Types__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Integer_Types')" name="Integer_Types__button" id="Integer_Types__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     <code>int</code>
                     is generally 32bits. If your variable represents a
@@ -3668,7 +3676,7 @@ int const* p3 = q;  // pointer to constant int</PRE>
                 <SPAN name="link-Preprocessor_Macros__button" id="link-Preprocessor_Macros__button" class="link_button">
                     <A href="?showone=Preprocessor_Macros#Preprocessor_Macros">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Preprocessor_Macros')" name="Preprocessor_Macros__button" id="Preprocessor_Macros__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Preprocessor_Macros')" name="Preprocessor_Macros__button" id="Preprocessor_Macros__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Never use Macros. Prefer inline functions, enums,
       and
@@ -3712,7 +3720,7 @@ int const* p3 = q;  // pointer to constant int</PRE>
                 <SPAN name="link-0_and_nullptr/NULL__button" id="link-0_and_nullptr/NULL__button" class="link_button">
                     <A href="?showone=0_and_nullptr/NULL#0_and_nullptr/NULL">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('0_and_nullptr/NULL')" name="0_and_nullptr/NULL__button" id="0_and_nullptr/NULL__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('0_and_nullptr/NULL')" name="0_and_nullptr/NULL__button" id="0_and_nullptr/NULL__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <code>0</code>
@@ -3748,7 +3756,7 @@ int const* p3 = q;  // pointer to constant int</PRE>
                 <SPAN name="link-sizeof__button" id="link-sizeof__button" class="link_button">
                     <A href="?showone=sizeof#sizeof">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('sizeof')" name="sizeof__button" id="sizeof__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('sizeof')" name="sizeof__button" id="sizeof__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Prefer
                     <code>
@@ -3820,7 +3828,7 @@ memset(&amp;data, 0, sizeof(data));</PRE>
                 <SPAN name="link-auto__button" id="link-auto__button" class="link_button">
                     <A href="?showone=auto#auto">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('auto')" name="auto__button" id="auto__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('auto')" name="auto__button" id="auto__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <code>auto</code>
@@ -3874,7 +3882,7 @@ for (auto it = v.begin(); it != v.end(); ++it)
                 <SPAN name="link-for_loops__button" id="link-for_loops__button" class="link_button">
                     <A href="?showone=for_loops#for_loops">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('for_loops')" name="for_loops__button" id="for_loops__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('for_loops')" name="for_loops__button" id="for_loops__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use range based for loops and
                     <code>std::for_each</code>
@@ -3924,7 +3932,7 @@ for (gridItr = grid.begin(); gridItr != grid.end(); ++gridItr)
                 <SPAN name="link-Brace_Initialization__button" id="link-Brace_Initialization__button" class="link_button">
                     <A href="?showone=Brace_Initialization#Brace_Initialization">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Brace_Initialization')" name="Brace_Initialization__button" id="Brace_Initialization__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Brace_Initialization')" name="Brace_Initialization__button" id="Brace_Initialization__button">▶</SPAN>
                 <DIV style="display:inline;" class="">You may use brace initialization.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Brace_Initialization__body" id="Brace_Initialization__body" style="display: none">
@@ -3969,7 +3977,7 @@ std::vector&lt;std::string&gt; v{"foo", "bar"};</PRE>
                 <SPAN name="link-Ownership_and_Smart_Pointers__button" id="link-Ownership_and_Smart_Pointers__button" class="link_button">
                     <A href="?showone=Ownership_and_Smart_Pointers#Ownership_and_Smart_Pointers">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Ownership_and_Smart_Pointers')" name="Ownership_and_Smart_Pointers__button" id="Ownership_and_Smart_Pointers__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Ownership_and_Smart_Pointers')" name="Ownership_and_Smart_Pointers__button" id="Ownership_and_Smart_Pointers__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Prefer to have single, fixed owners for dynamically allocated objects.
       Prefer to transfer ownership with smart pointers.</DIV>
                 <DIV class="">
@@ -4114,7 +4122,7 @@ void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);</PRE>
                 <SPAN name="link-Boost__button" id="link-Boost__button" class="link_button">
                     <A href="?showone=Boost#Boost">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Boost')" name="Boost__button" id="Boost__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Boost')" name="Boost__button" id="Boost__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use libraries from the Boost library collection.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Boost__body" id="Boost__body" style="display: none">
@@ -4165,7 +4173,7 @@ void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);</PRE>
                 <SPAN name="link-C++11__button" id="link-C++11__button" class="link_button">
                     <A href="?showone=C++11#C++11">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('C++11')" name="C++11__button" id="C++11__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('C++11')" name="C++11__button" id="C++11__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use libraries and language extensions from C++11 when appropriate.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="C++11__body" id="C++11__body" style="display: none">
@@ -4216,7 +4224,7 @@ void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);</PRE>
                 <SPAN name="link-Comment_Style__button" id="link-Comment_Style__button" class="link_button">
                     <A href="?showone=Comment_Style#Comment_Style">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Comment_Style')" name="Comment_Style__button" id="Comment_Style__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Comment_Style')" name="Comment_Style__button" id="Comment_Style__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use the
                     <code>//</code>
@@ -4245,7 +4253,7 @@ void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);</PRE>
                 <SPAN name="link-File_Comments__button" id="link-File_Comments__button" class="link_button">
                     <A href="?showone=File_Comments#File_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('File_Comments')" name="File_Comments__button" id="File_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('File_Comments')" name="File_Comments__button" id="File_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Start each file with the description of its contents.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="File_Comments__body" id="File_Comments__body" style="display: none">
@@ -4298,7 +4306,7 @@ void FooConsumer(std::unique_ptr&lt;Foo&gt; ptr);</PRE>
                 <SPAN name="link-Class_Comments__button" id="link-Class_Comments__button" class="link_button">
                     <A href="?showone=Class_Comments#Class_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Class_Comments')" name="Class_Comments__button" id="Class_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Class_Comments')" name="Class_Comments__button" id="Class_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Every class definition should have an accompanying comment that
       describes what it is for and how it should be used.</DIV>
                 <DIV class="">
@@ -4332,7 +4340,7 @@ class mpm::ParticleCloudMpm {
                 <SPAN name="link-Function_Comments__button" id="link-Function_Comments__button" class="link_button">
                     <A href="?showone=Function_Comments#Function_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Function_Comments')" name="Function_Comments__button" id="Function_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Function_Comments')" name="Function_Comments__button" id="Function_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Declaration comments describe use of the function; comments at
       the definition of a function describe operation.</DIV>
                 <DIV class="">
@@ -4422,7 +4430,7 @@ bool is_table_full();</PRE>
                 <SPAN name="link-Variable_Comments__button" id="link-Variable_Comments__button" class="link_button">
                     <A href="?showone=Variable_Comments#Variable_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Variable_Comments')" name="Variable_Comments__button" id="Variable_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Variable_Comments')" name="Variable_Comments__button" id="Variable_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">In general the actual name of the variable should be descriptive
       enough to give a good idea of what the variable is used for.  In
       certain cases, more comments are required.</DIV>
@@ -4463,7 +4471,7 @@ const double tolerance = 1.0e-6;</PRE>
                 <SPAN name="link-Implementation_Comments__button" id="link-Implementation_Comments__button" class="link_button">
                     <A href="?showone=Implementation_Comments#Implementation_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Implementation_Comments')" name="Implementation_Comments__button" id="Implementation_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Implementation_Comments')" name="Implementation_Comments__button" id="Implementation_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">In your implementation you should have comments in tricky,
       non-obvious, interesting, or important parts of your code.</DIV>
                 <DIV class="">
@@ -4544,7 +4552,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-Punctuation,_Spelling_and_Grammar__button" id="link-Punctuation,_Spelling_and_Grammar__button" class="link_button">
                     <A href="?showone=Punctuation,_Spelling_and_Grammar#Punctuation,_Spelling_and_Grammar">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Punctuation,_Spelling_and_Grammar')" name="Punctuation,_Spelling_and_Grammar__button" id="Punctuation,_Spelling_and_Grammar__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Punctuation,_Spelling_and_Grammar')" name="Punctuation,_Spelling_and_Grammar__button" id="Punctuation,_Spelling_and_Grammar__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Pay attention to punctuation, spelling, and grammar; it is
       easier to read well-written comments than badly written ones.</DIV>
                 <DIV class="">
@@ -4569,7 +4577,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-TODO_Comments__button" id="link-TODO_Comments__button" class="link_button">
                     <A href="?showone=TODO_Comments#TODO_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('TODO_Comments')" name="TODO_Comments__button" id="TODO_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('TODO_Comments')" name="TODO_Comments__button" id="TODO_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <code>TODO</code>
@@ -4622,7 +4630,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-Deprecation_Comments__button" id="link-Deprecation_Comments__button" class="link_button">
                     <A href="?showone=Deprecation_Comments#Deprecation_Comments">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Deprecation_Comments')" name="Deprecation_Comments__button" id="Deprecation_Comments__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Deprecation_Comments')" name="Deprecation_Comments__button" id="Deprecation_Comments__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Mark deprecated interface points with
                     <code>DEPRECATED</code>
@@ -4684,7 +4692,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-Line_Length__button" id="link-Line_Length__button" class="link_button">
                     <A href="?showone=Line_Length#Line_Length">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Line_Length')" name="Line_Length__button" id="Line_Length__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Line_Length')" name="Line_Length__button" id="Line_Length__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Each line of text in your code should be at most 80 characters
       long.</DIV>
                 <DIV class="">
@@ -4738,7 +4746,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-Non-ASCII_Characters__button" id="link-Non-ASCII_Characters__button" class="link_button">
                     <A href="?showone=Non-ASCII_Characters#Non-ASCII_Characters">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Non-ASCII_Characters')" name="Non-ASCII_Characters__button" id="Non-ASCII_Characters__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Non-ASCII_Characters')" name="Non-ASCII_Characters__button" id="Non-ASCII_Characters__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Non-ASCII characters should be rare, and must use UTF-8 formatting.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Non-ASCII_Characters__body" id="Non-ASCII_Characters__body" style="display: none">
@@ -4765,7 +4773,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-Spaces_vs._Tabs__button" id="link-Spaces_vs._Tabs__button" class="link_button">
                     <A href="?showone=Spaces_vs._Tabs#Spaces_vs._Tabs">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Spaces_vs._Tabs')" name="Spaces_vs._Tabs__button" id="Spaces_vs._Tabs__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Spaces_vs._Tabs')" name="Spaces_vs._Tabs__button" id="Spaces_vs._Tabs__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use only spaces, and indent 4 spaces at a time.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Spaces_vs._Tabs__body" id="Spaces_vs._Tabs__body" style="display: none">
@@ -4782,7 +4790,7 @@ do_somethingElseThatIsLonger();  // Comment here so there are 2 spaces
                 <SPAN name="link-Function_Declarations_and_Definitions__button" id="link-Function_Declarations_and_Definitions__button" class="link_button">
                     <A href="?showone=Function_Declarations_and_Definitions#Function_Declarations_and_Definitions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Function_Declarations_and_Definitions')" name="Function_Declarations_and_Definitions__button" id="Function_Declarations_and_Definitions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Function_Declarations_and_Definitions')" name="Function_Declarations_and_Definitions__button" id="Function_Declarations_and_Definitions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Return type on the same line as function name, parameters on the
       same line if they fit.</DIV>
                 <DIV class="">
@@ -4871,7 +4879,7 @@ void Circle::rotate(double) {}</PRE>
                 <SPAN name="link-Function_Calls__button" id="link-Function_Calls__button" class="link_button">
                     <A href="?showone=Function_Calls#Function_Calls">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Function_Calls')" name="Function_Calls__button" id="Function_Calls__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Function_Calls')" name="Function_Calls__button" id="Function_Calls__button">▶</SPAN>
                 <DIV style="display:inline;" class="">On one line if it fits; otherwise, wrap arguments at the
       parenthesis.</DIV>
                 <DIV class="">
@@ -4929,7 +4937,7 @@ void Circle::rotate(double) {}</PRE>
                 <SPAN name="link-Braced_Initializer_Lists__button" id="link-Braced_Initializer_Lists__button" class="link_button">
                     <A href="?showone=Braced_Initializer_Lists#Braced_Initializer_Lists">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Braced_Initializer_Lists')" name="Braced_Initializer_Lists__button" id="Braced_Initializer_Lists__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Braced_Initializer_Lists')" name="Braced_Initializer_Lists__button" id="Braced_Initializer_Lists__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Format a braced list exactly like you would format a function call in its
       place.</DIV>
                 <DIV class="">
@@ -4978,7 +4986,7 @@ SomeType m = {  // Here, you could also break before {.
                 <SPAN name="link-Conditionals__button" id="link-Conditionals__button" class="link_button">
                     <A href="?showone=Conditionals#Conditionals">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Conditionals')" name="Conditionals__button" id="Conditionals__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Conditionals')" name="Conditionals__button" id="Conditionals__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Prefer no spaces inside parentheses.  The
                     <code>else</code>
@@ -5094,7 +5102,7 @@ else {
                 <SPAN name="link-Loops_and_Switch_Statements__button" id="link-Loops_and_Switch_Statements__button" class="link_button">
                     <A href="?showone=Loops_and_Switch_Statements#Loops_and_Switch_Statements">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Loops_and_Switch_Statements')" name="Loops_and_Switch_Statements__button" id="Loops_and_Switch_Statements__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Loops_and_Switch_Statements')" name="Loops_and_Switch_Statements__button" id="Loops_and_Switch_Statements__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Switch statements may use braces for blocks. Annotate non-trivial
       fall-through between cases. Empty loop bodies should use
@@ -5166,7 +5174,7 @@ while (condition) continue;  // Good - continue indicates no logic.</PRE>
                 <SPAN name="link-Pointer_and_Reference_Expressions__button" id="link-Pointer_and_Reference_Expressions__button" class="link_button">
                     <A href="?showone=Pointer_and_Reference_Expressions#Pointer_and_Reference_Expressions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Pointer_and_Reference_Expressions')" name="Pointer_and_Reference_Expressions__button" id="Pointer_and_Reference_Expressions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Pointer_and_Reference_Expressions')" name="Pointer_and_Reference_Expressions__button" id="Pointer_and_Reference_Expressions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">No spaces around period or arrow.  Pointer operators do not have
       trailing spaces.</DIV>
                 <DIV class="">
@@ -5221,7 +5229,7 @@ const std::string &amp; str;  // Bad - spaces on both sides of &amp;</PRE>
                 <SPAN name="link-Boolean_Expressions__button" id="link-Boolean_Expressions__button" class="link_button">
                     <A href="?showone=Boolean_Expressions#Boolean_Expressions">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Boolean_Expressions')" name="Boolean_Expressions__button" id="Boolean_Expressions__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Boolean_Expressions')" name="Boolean_Expressions__button" id="Boolean_Expressions__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     When you have a boolean expression that is longer than the
                     <a href="#Line_Length">standard line length</a>
@@ -5269,7 +5277,7 @@ const std::string &amp; str;  // Bad - spaces on both sides of &amp;</PRE>
                 <SPAN name="link-Return_Values__button" id="link-Return_Values__button" class="link_button">
                     <A href="?showone=Return_Values#Return_Values">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Return_Values')" name="Return_Values__button" id="Return_Values__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Return_Values')" name="Return_Values__button" id="Return_Values__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Do not needlessly surround the
                     <code>return</code>
@@ -5305,7 +5313,7 @@ return(result);                // return is not a function!</PRE>
                 <SPAN name="link-Variable_and_Array_Initialization__button" id="link-Variable_and_Array_Initialization__button" class="link_button">
                     <A href="?showone=Variable_and_Array_Initialization#Variable_and_Array_Initialization">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Variable_and_Array_Initialization')" name="Variable_and_Array_Initialization__button" id="Variable_and_Array_Initialization__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Variable_and_Array_Initialization')" name="Variable_and_Array_Initialization__button" id="Variable_and_Array_Initialization__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Your choice of
                     <code>=</code>
@@ -5369,7 +5377,7 @@ int pi{3.14};  // Compile error: narrowing conversion.</PRE>
                 <SPAN name="link-Preprocessor_Directives__button" id="link-Preprocessor_Directives__button" class="link_button">
                     <A href="?showone=Preprocessor_Directives#Preprocessor_Directives">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Preprocessor_Directives')" name="Preprocessor_Directives__button" id="Preprocessor_Directives__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Preprocessor_Directives')" name="Preprocessor_Directives__button" id="Preprocessor_Directives__button">▶</SPAN>
                 <DIV style="display:inline;" class="">The hash mark that starts a preprocessor directive should
       always be at the beginning of the line.</DIV>
                 <DIV class="">
@@ -5408,7 +5416,7 @@ if (lopsided_score) {
                 <SPAN name="link-Class_Format__button" id="link-Class_Format__button" class="link_button">
                     <A href="?showone=Class_Format#Class_Format">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Class_Format')" name="Class_Format__button" id="Class_Format__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Class_Format')" name="Class_Format__button" id="Class_Format__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Sections in
                     <code>public</code>
@@ -5493,7 +5501,7 @@ if (lopsided_score) {
                 <SPAN name="link-Constructor_Initializer_Lists__button" id="link-Constructor_Initializer_Lists__button" class="link_button">
                     <A href="?showone=Constructor_Initializer_Lists#Constructor_Initializer_Lists">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Constructor_Initializer_Lists')" name="Constructor_Initializer_Lists__button" id="Constructor_Initializer_Lists__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Constructor_Initializer_Lists')" name="Constructor_Initializer_Lists__button" id="Constructor_Initializer_Lists__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Constructor initializer lists can be all on one line or with
       subsequent lines indented four spaces.</DIV>
                 <DIV class="">
@@ -5526,7 +5534,7 @@ MpmClass::MpmClass(int var)
                 <SPAN name="link-Namespace_Formatting__button" id="link-Namespace_Formatting__button" class="link_button">
                     <A href="?showone=Namespace_Formatting#Namespace_Formatting">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Namespace_Formatting')" name="Namespace_Formatting__button" id="Namespace_Formatting__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Namespace_Formatting')" name="Namespace_Formatting__button" id="Namespace_Formatting__button">▶</SPAN>
                 <DIV style="display:inline;" class="">The contents of namespaces are not indented.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Namespace_Formatting__body" id="Namespace_Formatting__body" style="display: none">
@@ -5570,7 +5578,7 @@ namespace bar {</PRE>
                 <SPAN name="link-Horizontal_Whitespace__button" id="link-Horizontal_Whitespace__button" class="link_button">
                     <A href="?showone=Horizontal_Whitespace#Horizontal_Whitespace">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Horizontal_Whitespace')" name="Horizontal_Whitespace__button" id="Horizontal_Whitespace__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Horizontal_Whitespace')" name="Horizontal_Whitespace__button" id="Horizontal_Whitespace__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Use of horizontal whitespace depends on location.  Never put trailing
       whitespace at the end of a line.</DIV>
                 <DIV class="">
@@ -5661,7 +5669,7 @@ set&lt; list&lt;std::string&gt; &gt; x;  // You may optionally use
                 <SPAN name="link-Vertical_Whitespace__button" id="link-Vertical_Whitespace__button" class="link_button">
                     <A href="?showone=Vertical_Whitespace#Vertical_Whitespace">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('Vertical_Whitespace')" name="Vertical_Whitespace__button" id="Vertical_Whitespace__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('Vertical_Whitespace')" name="Vertical_Whitespace__button" id="Vertical_Whitespace__button">▶</SPAN>
                 <DIV style="display:inline;" class="">Minimize use of vertical whitespace.</DIV>
                 <DIV class="">
                     <DIV class="stylepoint_body" name="Vertical_Whitespace__body" id="Vertical_Whitespace__body" style="display: none">
@@ -5701,7 +5709,7 @@ set&lt; list&lt;std::string&gt; &gt; x;  // You may optionally use
                 <SPAN name="link-astyle__button" id="link-astyle__button" class="link_button">
                     <A href="?showone=astyle#astyle">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('astyle')" name="astyle__button" id="astyle__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('astyle')" name="astyle__button" id="astyle__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <code>
@@ -5736,7 +5744,7 @@ set&lt; list&lt;std::string&gt; &gt; x;  // You may optionally use
                 <SPAN name="link-.emacs__button" id="link-.emacs__button" class="link_button">
                     <A href="?showone=.emacs#.emacs">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('.emacs')" name=".emacs__button" id=".emacs__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('.emacs')" name=".emacs__button" id=".emacs__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use the lisp commands listed in
                     <a href="./cued.emacs">
@@ -5767,7 +5775,7 @@ set&lt; list&lt;std::string&gt; &gt; x;  // You may optionally use
                 <SPAN name="link-auto-complete_tool_in_emacs__button" id="link-auto-complete_tool_in_emacs__button" class="link_button">
                     <A href="?showone=auto-complete_tool_in_emacs#auto-complete_tool_in_emacs">link</A>
                 </SPAN>
-                <SPAN class="showhide_button" onclick="javascript:ShowHideByName('auto-complete_tool_in_emacs')" name="auto-complete_tool_in_emacs__button" id="auto-complete_tool_in_emacs__button">▶</SPAN>
+                <SPAN class="showhide_button" onclick="toggledisplay('auto-complete_tool_in_emacs')" name="auto-complete_tool_in_emacs__button" id="auto-complete_tool_in_emacs__button">▶</SPAN>
                 <DIV style="display:inline;" class="">
                     Use
                     <a href="http://auto-complete.org/">auto-complete-tool
