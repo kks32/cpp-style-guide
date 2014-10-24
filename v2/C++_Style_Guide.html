@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html><head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>CUED GeoMechanics C++ Style Guide</title>
@@ -11,18 +11,14 @@
       <h1>CUED GeoMechanics C++ Style Guide</h1>
       <h4 align="right">
         Version 2.0 Beta<br/>
-        Krishna Kumar <a href="mailto:kks32@cam.ac.uk"><img src="style/email.png"
-                                                            alt="email" height="42" width="42"></a><br/>
+        Krishna Kumar <a href="mailto:kks32@cam.ac.uk">
+          <img src="style/email.png" alt="email" height="42" width="42"></a><br/>
       </h4>
 
 
       <div class="horizontal_toc" id="tocDiv"></div>
-
-
       <div class="main_body">
-
         <h2 class="ignoreLink" id="Background">Background</h2>
-
         <p>
           C++ is the main development language for most of our projects.
           The goal of this guide is to manage this complexity by describing
@@ -58,7 +54,8 @@
 
         <div class="summary">
           <p>Function names, variable names, and filenames should be
-            descriptive; eschew abbreviation.</p>
+            descriptive; eschew abbreviation.
+          </p>
         </div>
 
         <div class="stylebody">
@@ -73,7 +70,7 @@
             variable or a parameter and <code>i</code> should be a loop index.
           </p>
 
-          <pre>
+          <pre class="goodcode">
             int number_particles_;   // No abbreviation.
             int num_errors;          // "num" is a widespread convention.
             int num_mpm_point;       // Most people know what "mpm" stands for.
@@ -88,7 +85,7 @@
             int pc_reader;           // Lots of things can be abbreviated "pc".
             int prtcl_id;            // Deletes internal letters.
             int the_number_of_elements_in_a_cell
-                                     // A bit too long.
+            // A bit too long.
           </pre>
         </div>
 

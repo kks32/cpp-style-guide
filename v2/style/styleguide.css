@@ -61,14 +61,15 @@ tbody tr:nth-child(even) {
 }
 
 code, samp, var {
-  background-color:#FAFAFA;
+  background-color:#FCFCFC;
   white-space: nowrap
 }
 
 pre {
   padding:6px 10px;
-  background-color:#FAFAFA;
-  border:1px solid #bbb;
+  background-color:#FCFCFC;
+  border-color: #bbb;
+  border-left-width:5px;
   overflow:auto;
 }
 
@@ -78,13 +79,25 @@ pre.prettyprint {
 }
 
 code.bad, code.badcode {
-  color: magenta;
+  color: #C00;
 }
 
 pre.bad, pre.badcode {
-  background-color:#ffe6d8;
-  border-color: #a03;
-  border-width: 1px;
+  color: #C00;
+  background-color:#FFF8F8;
+  border-color: #FFF0F0;
+  border-left-width: 5px;
+}
+
+code.good, code.goodcode {
+  color: #060;
+}
+
+pre.good, pre.goodcode {
+  color: #060;
+  background-color:#F8FFF8;
+  border-color: #F0FFF0;
+  border-left-width: 5px;
 }
 
 hr {
