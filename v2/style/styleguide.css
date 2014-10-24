@@ -83,8 +83,8 @@ code.bad, code.badcode {
 
 pre.bad, pre.badcode {
   background-color:#ffe6d8;
-  border-top:1px inset #a03;
-  border-left:1px inset #a03;
+  border-color: #a03;
+  border-width: 1px;
 }
 
 hr {
