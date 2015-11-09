@@ -50,8 +50,6 @@
 (setq-default indent-tabs-mode nil)
 (add-hook 'c++-mode-hook '(lambda () (whitespace-mode 1)))
 
-;; autocomplete
-(add-to-list 'load-path "~/.emacs.d/")
 
 ;; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
 (defun my:ac-c-header-init ()
@@ -74,7 +72,6 @@
 
 ;; activate ecb
 (require 'ecb)
-(require 'ecb-autoloads)
 
 (setq ecb-activate)
 (setq ecb-layout-name "leftright2")
