@@ -23,7 +23,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 (defvar tmtxt/packages
-  '(auto-complete clang-format ecb yasnippet))
+  '(auto-complete clang-format ecb yasnippet srefactor))
 (dolist (p tmtxt/packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -40,6 +40,9 @@
 ;; Setting c++ mode for .ipp and .tcc files  
 (put 'upcase-region 'disabled nil)
 (add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hh\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.tcc\\'" . c++-mode))
 
 ;; Setting stroustup style as the default indentation style for c++
@@ -50,6 +53,8 @@
 (setq-default indent-tabs-mode nil)
 (add-hook 'c++-mode-hook '(lambda () (whitespace-mode 1)))
 
+;; autocomplete
+(add-to-list 'load-path "~/.emacs.d/packages")
 
 ;; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
 (defun my:ac-c-header-init ()
@@ -72,6 +77,7 @@
 
 ;; activate ecb
 (require 'ecb)
+;(require 'ecb-autoloads)
 
 (setq ecb-activate)
 (setq ecb-layout-name "leftright2")
@@ -87,3 +93,6 @@
 
 ;; To use cut-copy-paste using C-x C-c C-v
 (cua-mode 1)
+
+;; Load theme seti
+(load-theme 'seti t)
